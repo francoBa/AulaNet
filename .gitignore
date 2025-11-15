@@ -98,7 +98,7 @@ secrets.json
 
 # Base de datos SQLite
 # Descomentá si NO querés versionar tu base local
-# db.sqlite3
+db.sqlite3
 # *.sqlite3
 db.sqlite3-journal
 
@@ -108,7 +108,7 @@ db.sqlite3-journal
 
 # --- Archivos de caché / media / static ---
 staticfiles/
-static/
+# static/ ---> Se ignora si se usa  collectstatic
 media/
 __pycache__/
 
