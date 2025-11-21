@@ -1,2 +1,3 @@
 # AulaNet
-Plataforma educativa desarrollada con Django que conecta colegios, docentes y estudiantes en una red de aprendizaje abierta y colaborativa
+Plataforma desarrollada con Django para calificar escuelas. Conecta colegios, docentes, estudiantes y padres buscando las mejores opciones educativas para sus hijos
+- Prueba N1
