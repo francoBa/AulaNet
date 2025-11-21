@@ -15,8 +15,8 @@ class ContactView(TemplateView):
 
 
 class Error404View(TemplateView):
-    template_name = "core/error/not_found.html"
+    template_name = "core/errors/not-found.html"
 
 
 class Error500View(TemplateView):
-    template_name = "core/error/internal-error.html"
+    template_name = "core/errors/internal-error.html"

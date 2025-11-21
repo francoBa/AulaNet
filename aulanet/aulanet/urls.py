@@ -26,7 +26,7 @@ urlpatterns = [
     path("", include("apps.core.urls", namespace="core")),
     path("", include("apps.user.urls", namespace="user")),
     path("", include("apps.blog.urls", namespace="blog")),
-    # path("", include("apps.school.urls", namespace="school")),
+    path("", include("apps.school.urls", namespace="school")),
 ]
 
 if settings.DEBUG:
