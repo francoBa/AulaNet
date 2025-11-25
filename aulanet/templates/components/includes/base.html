@@ -1,1 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}AulaNet{% endblock %}</title>
 
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      };
+    </script>
+
+    <!-- Grid Layout -->
+    <style>
+      .layout-grid {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas:
+          'header'
+          'content'
+          'footer';
+        min-height: 100vh;
+      }
+      header {
+        grid-area: header;
+      }
+      main {
+        grid-area: content;
+      }
+      footer {
+        grid-area: footer;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div class="layout-grid">
+      {% include "components/includes/header.html" %}
+
+      <main>{% block content %} {% endblock %}</main>
+
+      {% include "components/includes/footer.html" %}
+    </div>
+  </body>
+</html>
