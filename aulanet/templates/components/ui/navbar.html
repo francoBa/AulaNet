@@ -1,17 +1,27 @@
+{% load static %}
 <nav class="max-w-6xl mx-auto px-4 py-3">
-  <div class="grid grid-cols-3 items-center">
+  <div class="grid grid-cols-2 md:grid-cols-3 items-center">
     <!-- LOGO -->
     <div class="flex items-center space-x-3">
-      <span class="text-xl font-bold">AulaNet</span>
+      <a href="{% url 'core:index' %}">
+        <img
+          src="{% static 'img/logo.png' %}"
+          alt="AulaNet Logo"
+          class="h-8 w-8"
+        />
+      </a>
+      <a href="{% url 'core:index' %}"
+        ><span class="text-xl font-bold">AulaNet</span></a
+      >
     </div>
 
     <!-- MENU DESKTOP -->
     <div class="hidden md:flex justify-center space-x-6">
-      <a href="{% url 'core:index' %}" class="hover:text-blue-500">Home</a>
+      <a href="{% url 'core:index' %}" class="hover:text-blue-500">Inicio</a>
       <a href="{% url 'school:school-list' %}" class="hover:text-blue-500"
         >Colegios</a
       >
-      <a href="{% url 'blog:post-list' %}" class="hover:text-blue-500">Posts</a>
+      <a href="{% url 'core:about' %}" class="hover:text-blue-500">Nosotros</a>
       <a href="{% url 'core:contact' %}" class="hover:text-blue-500"
         >Contacto</a
       >
@@ -30,7 +40,7 @@
       <!-- LOGIN -->
       <a
         href="{% url 'user:login' %}"
-        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        class="px-4 py-2 block py-2 bg-[var(--bg-button-primary)] text-white rounded hover:bg-[var(--bg-button-primary-hover)]"
       >
         Login
       </a>
@@ -58,7 +68,7 @@
     <a
       href="{% url 'core:index' %}"
       class="block py-2 border-b dark:border-gray-600"
-      >Home</a
+      >Inicio</a
     >
     <a
       href="{% url 'school:school-list' %}"
@@ -66,9 +76,9 @@
       >Colegios</a
     >
     <a
-      href="{% url 'blog:post-list' %}"
+      href="{% url 'core:about' %}"
       class="block py-2 border-b dark:border-gray-600"
-      >Posts</a
+      >Nosotros</a
     >
     <a
       href="{% url 'core:contact' %}"
@@ -78,34 +88,9 @@
 
     <a
       href="{% url 'user:login' %}"
-      class="block py-2 bg-blue-600 text-white text-center rounded hover:bg-blue-700"
+      class="block py-2 bg-[var(--bg-button-primary)] text-white text-center rounded hover:bg-[var(--bg-button-primary-hover)]"
     >
       Login
     </a>
   </div>
-
-  <!-- SCRIPT: MOBILE + DARK MODE -->
-  <script>
-    // --- MOBILE MENU ---
-    document.getElementById('navToggle').onclick = () => {
-      const menu = document.getElementById('mobileMenu');
-      menu.classList.toggle('hidden');
-    };
-
-    // --- DARK MODE ---
-    const root = document.documentElement;
-
-    function toggleTheme() {
-      const isDark = root.classList.toggle('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    }
-
-    document.getElementById('themeToggle').onclick = toggleTheme;
-    document.getElementById('themeToggleMobile').onclick = toggleTheme;
-
-    // Cargar tema guardado
-    if (localStorage.getItem('theme') === 'dark') {
-      root.classList.add('dark');
-    }
-  </script>
 </nav>

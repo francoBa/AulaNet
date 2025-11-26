@@ -1,43 +1,26 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}AulaNet{% endblock %}</title>
-
+    <!-- Favicon -->
+    <link
+      rel="shortcut icon"
+      href="{% static 'favicon.ico' %}"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-      };
-    </script>
-
-    <!-- Grid Layout -->
-    <style>
-      .layout-grid {
-        display: grid;
-        grid-template-rows: auto 1fr auto;
-        grid-template-areas:
-          'header'
-          'content'
-          'footer';
-        min-height: 100vh;
-      }
-      header {
-        grid-area: header;
-      }
-      main {
-        grid-area: content;
-      }
-      footer {
-        grid-area: footer;
-      }
-    </style>
+    <script src="{% static 'js/config.js' %}"></script>
+    <script defer src="{% static 'js/main.js' %}"></script>
   </head>
 
-  <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+  <body
+    class="bg-[var(--bg-main)] dark:bg-[var(--bg-main)] text-[var(--color-main)] dark:text-[var(--color-main)]"
+  >
     <div class="layout-grid">
       {% include "components/includes/header.html" %}
 
