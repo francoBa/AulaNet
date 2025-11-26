@@ -6,16 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="{% static 'favicon.ico' %}"
+      type="image/x-icon"
+    />
 
     <!-- Tailwind -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"
+    ></script>
 
     <title>{% block title_layout %}AulaNet{% endblock title_layout %}</title>
   </head>
 
   <body class="bg-gray-100 text-gray-900">
-
     <!-- HEADER -->
     {% include 'components/includes/header.html' %}
 
@@ -24,12 +30,10 @@
 
     <!-- MAIN CONTENT -->
     <main class="max-w-6xl mx-auto p-4">
-      {% block content_layout %}
-      {% endblock content_layout %}
+      {% block content_layout %} {% endblock content_layout %}
     </main>
 
     <!-- FOOTER -->
     {% include 'components/includes/footer.html' %}
-
   </body>
 </html>

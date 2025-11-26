@@ -1,6 +1,6 @@
 from .base import *
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ["*"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -9,11 +9,10 @@ DEBUG = True
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
-os.environ['DJANGO_PORT'] = '3000'  # Puerto por defecto para desarrollo
-
+os.environ["DJANGO_PORT"] = "3000"  # Puerto por defecto para desarrollo
