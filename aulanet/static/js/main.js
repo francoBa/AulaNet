@@ -7,23 +7,27 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  // Dark mode
+  // Dark mode logic
   const root = document.documentElement;
+  const themeToggleBtn = document.getElementById('themeToggle');
+  const themeToggleMobileBtn = document.getElementById('themeToggleMobile');
 
+  // 1. Función para cambiar el tema
   const toggleTheme = () => {
     const isDark = root.classList.toggle('dark');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
   };
 
-  document
-    .getElementById('themeToggle')
-    ?.addEventListener('click', toggleTheme);
-  document
-    .getElementById('themeToggleMobile')
-    ?.addEventListener('click', toggleTheme);
+  // 2. Asignar eventos
+  themeToggleBtn?.addEventListener('click', toggleTheme);
+  themeToggleMobileBtn?.addEventListener('click', toggleTheme);
 
-  // Tema guardado
-  if (localStorage.getItem('theme') === 'dark') {
+  // 3. Cargar tema guardado
+  const savedTheme = localStorage.getItem('theme');
+
+  if (savedTheme === 'dark') {
     root.classList.add('dark');
+  } else if (savedTheme === 'light') {
+    root.classList.remove('dark');
   }
 });
