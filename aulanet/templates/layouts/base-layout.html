@@ -25,11 +25,8 @@
     <!-- HEADER -->
     {% include 'components/includes/header.html' %}
 
-    <!-- NAVBAR -->
-    {% include 'components/ui/navbar.html' %}
-
     <!-- MAIN CONTENT -->
-    <main class="max-w-6xl mx-auto p-4">
+    <main class="bg-gray-100 min-h-[calc(100dvh-56px-56px)] max-w-6xl mx-auto p-4">
       {% block content_layout %} {% endblock content_layout %}
     </main>
 
