@@ -14,9 +14,17 @@ class ContactView(TemplateView):
     template_name = "core/contact.html"
 
 
-class Error404View(TemplateView):
+class NotFoundView(TemplateView):
     template_name = "core/errors/not-found.html"
 
 
-class Error500View(TemplateView):
+class ServerErrorView(TemplateView):
     template_name = "core/errors/internal-error.html"
+
+
+def custom_404(request, exception=None):
+    return render(request, "core/errors/not-found.html", status=404)
+
+
+def custom_500(request):
+    return render(request, "core/errors/internal-error.html", status=500)

@@ -1,0 +1,41 @@
+<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .glitch {
+            animation: glitch 0.4s infinite;
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            20% {
+                transform: translate(-2px, 1px);
+            }
+
+            40% {
+                transform: translate(2px, -1px);
+            }
+
+            60% {
+                transform: translate(-1px, 2px);
+            }
+
+            80% {
+                transform: translate(1px, -2px);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+    </style>
+
+    <text x="50%" y="45%" text-anchor="middle" font-family="monospace" font-size="64" fill="#ffaa00" class="glitch">
+        500
+    </text>
+
+    <text x="50%" y="70%" text-anchor="middle" font-family="monospace" font-size="20" fill="#444">
+        Error interno del servidor
+    </text>
+</svg>

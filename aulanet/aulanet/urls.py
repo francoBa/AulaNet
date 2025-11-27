@@ -21,13 +21,16 @@ from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-
     # APP ROUTES
     path("", include("apps.core.urls", namespace="core")),
     path("", include("apps.user.urls", namespace="user")),
     path("", include("apps.blog.urls", namespace="blog")),
     path("", include("apps.school.urls", namespace="school")),
 ]
+
+# Handlers para producción
+handler404 = "apps.core.views.custom_404"
+handler500 = "apps.core.views.custom_500"
 
 if settings.DEBUG:
     from django.conf.urls.static import static
