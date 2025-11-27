@@ -81,45 +81,48 @@
     </h3>
 
     <!-- Grid de Tarjetas -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- Card Loop (Simulado) -->
-      {% for i in "1234" %}
-      <article
-        class="bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700"
-      >
-        <!-- Imagen Card -->
-        <div class="h-40 bg-gray-200 relative">
-          <img
-            src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=500&auto=format&fit=crop"
-            class="w-full h-full object-cover"
-            alt="Colegio"
-          />
-        </div>
-        <!-- Contenido Card -->
-        <div class="p-4">
-          <h4 class="font-main font-bold text-lg text-[var(--color-main)]">
-            Escuela Normal
-          </h4>
-          <p
-            class="font-secondary text-sm text-gray-500 dark:text-gray-400 mb-2"
-          >
-            Resistencia
-          </p>
+    <!-- Grid de Tarjetas -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-          <div class="flex items-center justify-between mt-3">
-            <!-- Estrellas (variable --bg-icons para el color amarillo) -->
-            <div
-              class="flex text-[var(--bg-icons)] text-[var(--font-size-icons)]"
-            >
-              <span>★</span><span>★</span><span>★</span><span>★</span
-              ><span class="text-gray-300">★</span>
-            </div>
-            <span class="text-xs text-gray-400 font-secondary">12 posts</span>
+  {% for i in "1234" %}
+  <a 
+    href="{% url 'school:school-detail' i %}" 
+    class="block bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700"
+  >
+      <!-- Imagen Card -->
+      <div class="h-40 bg-gray-200 relative">
+        <img
+          src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=500&auto=format&fit=crop"
+          class="w-full h-full object-cover"
+          alt="Colegio"
+        />
+      </div>
+
+      <!-- Contenido Card -->
+      <div class="p-4">
+        <h4 class="font-main font-bold text-lg text-[var(--color-main)]">
+          Escuela Nº {{ i }}
+        </h4>
+
+        <p class="font-secondary text-sm text-gray-500 dark:text-gray-400 mb-2">
+          Resistencia
+        </p>
+
+        <div class="flex items-center justify-between mt-3">
+          <!-- Estrellas -->
+          <div class="flex text-[var(--bg-icons)] text-[var(--font-size-icons)]">
+            <span>★</span><span>★</span><span>★</span><span>★</span>
+            <span class="text-gray-300">★</span>
           </div>
+
+          <span class="text-xs text-gray-400 font-secondary">12 posts</span>
         </div>
-      </article>
-      {% endfor %}
-    </div>
+      </div>
+  </a>
+  {% endfor %}
+
+</div>
+
   </section>
 
   <!-- SECCIÓN 3: ÚLTIMOS POSTS -->
@@ -133,38 +136,39 @@
     <div class="flex flex-col gap-4">
       <!-- Post Card Loop -->
       {% for i in "1234" %}
-      <article
-        class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center border border-gray-100 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-750 transition-colors"
-      >
-        <!-- Thumbnail -->
-        <div
-          class="w-full sm:w-24 h-24 bg-gray-200 rounded-md flex-shrink-0 overflow-hidden"
-        >
-          <img
-            src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=200&auto=format&fit=crop"
-            class="w-full h-full object-cover"
-            alt="Post"
-          />
-        </div>
+<a 
+  href="/escuela/{{ i }}/" 
+  class="block bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700"
+>
+  <!-- Imagen Card -->
+  <div class="h-40 bg-gray-200 relative">
+    <img
+      src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=500&auto=format&fit=crop"
+      class="w-full h-full object-cover"
+      alt="Colegio"
+    />
+  </div>
 
-        <!-- Info -->
-        <div class="flex-grow">
-          <h4 class="font-main font-bold text-lg text-[var(--color-main)]">
-            Fiestas patrias en el colegio
-          </h4>
-          <div
-            class="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400 font-secondary mt-1"
-          >
-            <span>Resistencia</span>
-            <span>•</span>
-            <span>Christian P.</span>
-            <span>•</span>
-            <span>Hace 2 días</span>
-          </div>
-          <div class="mt-2 text-[var(--bg-icons)] text-sm">★ 5.0</div>
-        </div>
-      </article>
-      {% endfor %}
+  <!-- Contenido Card -->
+  <div class="p-4">
+    <h4 class="font-main font-bold text-lg text-[var(--color-main)]">
+      Escuela Nº {{ i }}
+    </h4>
+
+    <p class="font-secondary text-sm text-gray-500 dark:text-gray-400 mb-2">
+      Resistencia
+    </p>
+
+    <div class="flex items-center justify-between mt-3">
+      <div class="flex text-[var(--bg-icons)] text-[var(--font-size-icons)]">
+        <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-gray-300">★</span>
+      </div>
+      <span class="text-xs text-gray-400 font-secondary">12 posts</span>
+    </div>
+  </div>
+</a>
+{% endfor %}
+
     </div>
 
     <!-- Link Ver Todos -->
