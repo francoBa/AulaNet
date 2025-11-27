@@ -30,4 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
   } else if (savedTheme === 'light') {
     root.classList.remove('dark');
   }
+
+  // 4. sticky header
+  document.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    if (window.scrollY > 10) {
+      header.classList.add('bg-white/60', 'dark:bg-gray-800/60');
+    } else {
+      header.classList.remove('bg-white/60', 'dark:bg-gray-800/60');
+    }
+  });
 });
