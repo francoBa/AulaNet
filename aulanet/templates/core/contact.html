@@ -8,26 +8,14 @@
 
 <style>
   @keyframes slideUpFadeOut {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    10% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    90% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
+    0% { opacity: 0; transform: translateY(20px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 1; transform: translateY(0); } 
   }
 
   .animate-slide-up-fade-out {
-    animation: slideUpFadeOut 1.5s ease forwards;
+    animation: slideUpFadeOut 3s ease forwards;
   }
 </style>
 
@@ -107,6 +95,7 @@
     {% for message in messages %}
     <div
       class="px-5 py-3 rounded-lg shadow-lg text-white animate-slide-up-fade-out {% if message.tags == 'success' %}bg-green-600{% else %}bg-red-600{% endif %}"
+      {% if message.tags == 'success' %} data-redirect="{% url 'core:index' %}" {% endif %}
     >
       {{ message }}
     </div>

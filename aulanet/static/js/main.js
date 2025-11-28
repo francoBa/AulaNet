@@ -40,4 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
       header.classList.remove('bg-white/60', 'dark:bg-gray-800/60');
     }
   });
+
+  // redirect del form
+  const successMessage = document.querySelector('[data-redirect]');
+  if (successMessage) {
+    setTimeout(() => {
+      window.location.href = successMessage.dataset.redirect;
+    }, 2500); // 2.5 segundos (para que coincida un poco con tu animación)
+  }
 });
