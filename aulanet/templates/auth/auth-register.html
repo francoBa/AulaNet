@@ -1,0 +1,54 @@
+{% extends "layouts/auth-layout.html" %}
+{% load static %}
+
+{% block title_layout %}Registro{% endblock title_layout %}
+
+{% block content_layout %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+
+  <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">
+      Crear tu cuenta en <span class="text-blue-600">AulaNet</span>
+    </h2>
+
+    <form method="POST" class="space-y-5">
+      {% csrf_token %}
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Nombre de usuario</label>
+        <input type="text" name="username"
+               class="w-full border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 px-3 py-2" required>
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Email</label>
+        <input type="email" name="email"
+               class="w-full border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 px-3 py-2" required>
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Contraseña</label>
+        <input type="password" name="password1"
+               class="w-full border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 px-3 py-2" required>
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Confirmar Contraseña</label>
+        <input type="password" name="password2"
+               class="w-full border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 px-3 py-2" required>
+      </div>
+
+      <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition">
+        Registrarse
+      </button>
+
+      <p class="text-center text-gray-600 text-sm mt-3">
+        ¿Ya tienes cuenta?
+        <a href="{% url 'user:login' %}" class="text-blue-600 hover:underline">Inicia sesión aquí</a>
+      </p>
+    </form>
+
+  </div>
+
+</div>
+{% endblock content_layout %}
