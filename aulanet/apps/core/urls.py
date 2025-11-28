@@ -9,4 +9,5 @@ urlpatterns = [
     path("acerca-de/", AboutView.as_view(), name="about"),
     path("404/", NotFoundView.as_view(), name="404"),
     path("500/", ServerErrorView.as_view(), name="500"),
+    path("contact/send/", contact_send, name="contact_send"),
 ]
