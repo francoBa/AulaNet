@@ -9,25 +9,30 @@ class CreateSchoolView(TemplateView):
     template_name = "school/create-school.html"
 
 
-# 2) Listado real (función) con filtros
-def school_list(request):
-    search = request.GET.get("search", "")
-    tipo = request.GET.get("tipo", "")
+# 2) Listado real (CLASE) con filtros
+class ListSchoolView(View):
+    template_name = "school/school-list.html"
 
-    schools = School.objects.all()
+    def get(self, request):
+        search = request.GET.get("search", "")
+        tipo = request.GET.get("tipo", "")
 
-    if search:
-        schools = schools.filter(name__icontains=search) | schools.filter(city__icontains=search)
+        schools = School.objects.all()
 
-    if tipo:
-        schools = schools.filter(school_type=tipo)
+        # Filtro por buscador
+        if search:
+            schools = schools.filter(name__icontains=search) | schools.filter(city__icontains=search)
 
-    context = {
-        "schools": schools,
-        "search": search,
-        "tipo": tipo,
-    }
-    return render(request, "school/school-list.html", context)
+        # Filtro por tipo
+        if tipo:
+            schools = schools.filter(school_type=tipo)
+
+        context = {
+            "schools": schools,
+            "search": search,
+            "tipo": tipo,
+        }
+        return render(request, self.template_name, context)
 
 
 #ReviewSchoolView eliminado o simplificado si no hay ratings
