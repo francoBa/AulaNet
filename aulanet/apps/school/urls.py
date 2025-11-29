@@ -1,10 +1,5 @@
 from django.urls import path
-from .views import (
-    CreateSchoolView,
-    ReviewSchoolView,
-    SchoolDetailView,
-    school_list,
-)
+from .views import *
 
 app_name = "school"
 
