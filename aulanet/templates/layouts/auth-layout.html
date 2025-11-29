@@ -7,7 +7,16 @@
   <script defer src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <title>{% block title_layout %}{% endblock title_layout %}</title>
 </head>
-<body class="bg-gray-100">
-  {% block content_layout %}{% endblock content_layout %}
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+
+
+  <!-- NAVBAR -->
+  {% include "components/ui/navbar.html" %}
+
+  <!-- CONTENIDO DE LA PÁGINA -->
+  {% block content_layout %}
+  {% endblock content_layout %}
+
+  <script src="{% static 'js/navbar.js' %}"></script>
 </body>
 </html>

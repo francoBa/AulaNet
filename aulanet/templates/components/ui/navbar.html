@@ -4,93 +4,48 @@
     <!-- LOGO -->
     <div class="flex items-center space-x-3">
       <a href="{% url 'core:index' %}">
-        <img
-          src="{% static 'img/logo.png' %}"
-          alt="AulaNet Logo"
-          class="h-8 w-8"
-        />
+        <img src="{% static 'img/logo.png' %}" alt="AulaNet Logo" class="h-8 w-8" />
       </a>
-      <a href="{% url 'core:index' %}"
-        ><span class="text-xl font-bold">AulaNet</span></a
-      >
+      <a href="{% url 'core:index' %}"><span class="text-xl font-bold">AulaNet</span></a>
     </div>
 
     <!-- MENU DESKTOP -->
     <div class="hidden md:flex justify-center space-x-6">
       <a href="{% url 'core:index' %}" class="hover:text-blue-500">Inicio</a>
-      <a href="{% url 'school:school-list' %}" class="hover:text-blue-500"
-        >Colegios</a
-      >
+      <a href="{% url 'school:school-list' %}" class="hover:text-blue-500">Colegios</a>
       <a href="{% url 'core:about' %}" class="hover:text-blue-500">Nosotros</a>
-      <a href="{% url 'core:contact' %}" class="hover:text-blue-500"
-        >Contacto</a
-      >
+      <a href="{% url 'core:contact' %}" class="hover:text-blue-500">Contacto</a>
     </div>
 
-    <!-- LADO DERECHO (login + tema) -->
+    <!-- LADO DERECHO (dark mode + login) -->
     <div class="hidden md:flex items-center justify-end space-x-3">
       <!-- BOTÓN DARK MODE -->
-      <button
-        id="themeToggle"
-        class="px-2 py-1 border rounded dark:border-gray-500"
-      >
-        🌓
-      </button>
+      <button id="themeToggle" class="px-2 py-1 border rounded dark:border-gray-500">🌓</button>
 
-      <!-- LOGIN -->
-      <a
-        href="{% url 'user:login' %}"
-        class="px-4 py-2 block py-2 bg-[var(--bg-button-primary)] text-white rounded hover:bg-[var(--bg-button-primary-hover)]"
-      >
+      <!-- LOGIN: solo si no estamos en login o register -->
+      {% if request.resolver_match.url_name not in 'login register' %}
+      <a href="{% url 'user:login' %}" class="px-4 py-2 block bg-[var(--bg-button-primary)] text-white rounded hover:bg-[var(--bg-button-primary-hover)]">
         Login
       </a>
+      {% endif %}
     </div>
 
     <!-- BOTÓN MOBILE MENU -->
-    <button
-      id="navToggle"
-      class="md:hidden justify-self-end px-2 py-1 border rounded dark:border-gray-500"
-    >
-      ☰
-    </button>
+    <button id="navToggle" class="md:hidden justify-self-end px-2 py-1 border rounded dark:border-gray-500">☰</button>
   </div>
 
   <!-- MENU MOBILE -->
   <div id="mobileMenu" class="hidden flex-col mt-3 space-y-2 md:hidden">
-    <!-- SWITCH TEMA MOBILE -->
-    <button
-      id="themeToggleMobile"
-      class="w-full py-2 border rounded dark:border-gray-500 text-center"
-    >
-      🌓 Tema
-    </button>
+    <button id="themeToggleMobile" class="w-full py-2 border rounded dark:border-gray-500 text-center">🌓 Tema</button>
+    <a href="{% url 'core:index' %}" class="block py-2 border-b dark:border-gray-600">Inicio</a>
+    <a href="{% url 'school:school-list' %}" class="block py-2 border-b dark:border-gray-600">Colegios</a>
+    <a href="{% url 'core:about' %}" class="block py-2 border-b dark:border-gray-600">Nosotros</a>
+    <a href="{% url 'core:contact' %}" class="block py-2 border-b dark:border-gray-600">Contacto</a>
 
-    <a
-      href="{% url 'core:index' %}"
-      class="block py-2 border-b dark:border-gray-600"
-      >Inicio</a
-    >
-    <a
-      href="{% url 'school:school-list' %}"
-      class="block py-2 border-b dark:border-gray-600"
-      >Colegios</a
-    >
-    <a
-      href="{% url 'core:about' %}"
-      class="block py-2 border-b dark:border-gray-600"
-      >Nosotros</a
-    >
-    <a
-      href="{% url 'core:contact' %}"
-      class="block py-2 border-b dark:border-gray-600"
-      >Contacto</a
-    >
-
-    <a
-      href="{% url 'user:login' %}"
-      class="block py-2 bg-[var(--bg-button-primary)] text-white text-center rounded hover:bg-[var(--bg-button-primary-hover)]"
-    >
+    {% if request.resolver_match.url_name not in 'login register' %}
+    <a href="{% url 'user:login' %}" class="block py-2 bg-[var(--bg-button-primary)] text-white text-center rounded hover:bg-[var(--bg-button-primary-hover)]">
       Login
     </a>
+    {% endif %}
   </div>
 </nav>
