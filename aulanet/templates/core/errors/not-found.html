@@ -1,12 +1,66 @@
 <!-- prettier-ignore -->
-{% extends 'layouts/base-layout.html' %}
+{% extends "layouts/general-layout.html" %}
+{% load static %}
 
-{% block title_layout %}
-    Página no encontrada
-{% endblock title_layout %}
+{% block title %}Página no encontrada{% endblock %}
 
-{% block content_layout %}
-<header>
-  <h1>Página no encontrada</h1>
-</header>
-{% endblock content_layout %}
+{% block page_content %}
+<div
+  class="min-h-[70vh] flex flex-col items-center justify-center text-center px-6"
+  style="color: var(--color-main); font-family: var(--font-main)"
+>
+  <!-- Número 404 -->
+  <div class="mb-6">
+    <img
+      src="{% static 'img/404.svg' %}"
+      alt="404 — Página no encontrada"
+      class="w-80 mx-auto drop-shadow-md"
+    />
+  </div>
+
+  <!-- Ícono HOME -->
+  <div
+    class="mb-6 opacity-90 transition-transform duration-300 hover:scale-110"
+  >
+    <img
+      src="{% static 'icons/flat/home-flat.svg' %}"
+      class="w-20 mx-auto"
+      style="
+        filter: invert(26%) sepia(63%) saturate(2419%) hue-rotate(206deg)
+          brightness(90%) contrast(94%);
+      "
+    />
+  </div>
+
+  <!-- Título -->
+  <h1
+    class="font-bold mb-4"
+    style="font-size: var(--font-size-title); color: var(--color-secondary)"
+  >
+    404 — Página no encontrada
+  </h1>
+
+  <!-- Descripción -->
+  <p
+    class="mb-8"
+    style="font-size: var(--font-size-subtitle); max-width: 550px"
+  >
+    Parece que te perdiste. La página que buscás no existe o fue movida.
+  </p>
+
+  <!-- Botón -->
+  <a
+    href="/"
+    class="px-6 py-3 rounded-lg transition font-semibold shadow-md"
+    style="
+      background: var(--bg-button-primary);
+      font-size: var(--font-size-button);
+      color: white;
+    "
+    onmouseover="this.style.background='var(--bg-button-primary-hover)'"
+    onmouseout="this.style.background='var(--bg-button-primary)'"
+  >
+    Volver al inicio
+  </a>
+</div>
+{% endblock %}

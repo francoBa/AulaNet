@@ -1,0 +1,29 @@
+<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .float {
+            animation: float 1.5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+    </style>
+
+    <text x="50%" y="45%" text-anchor="middle" font-family="monospace" font-size="64" fill="#ff5757" class="float">
+        404
+    </text>
+
+    <text x="50%" y="70%" text-anchor="middle" font-family="monospace" font-size="20" fill="#444">
+        Página no encontrada
+    </text>
+</svg>

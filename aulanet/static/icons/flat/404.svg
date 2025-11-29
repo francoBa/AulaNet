@@ -1,0 +1,26 @@
+<!-- 404.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-labelledby="title404">
+    <title id="title404">Página 404 — No encontrada</title>
+    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="14">
+        <!-- Documento -->
+        <rect x="60" y="40" width="320" height="240" rx="14" ry="14" />
+        <path d="M60 110h320" />
+        <path d="M60 160h220" />
+        <path d="M60 210h180" />
+
+        <!-- Lupa -->
+        <circle cx="460" cy="160" r="80" />
+        <path d="M520 220 L560 260" />
+
+        <!-- Cruz pequeña dentro de lupa (indica "no encontrado") -->
+        <path d="M440 140 L480 180" stroke-width="10" />
+        <path d="M480 140 L440 180" stroke-width="10" />
+    </g>
+
+    <!-- Texto 404 -->
+    <g fill="currentColor" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
+        font-weight="700" text-anchor="middle">
+        <text x="200" y="330" font-size="56">404</text>
+        <text x="380" y="330" font-size="20" fill="currentColor" opacity="0.8">Página no encontrada</text>
+    </g>
+</svg>

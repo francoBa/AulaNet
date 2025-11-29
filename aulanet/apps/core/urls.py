@@ -7,6 +7,7 @@ urlpatterns = [
     path("", IndexView.as_view(), name="index"),
     path("contacto/", ContactView.as_view(), name="contact"),
     path("acerca-de/", AboutView.as_view(), name="about"),
-    path("not-found/", Error404View.as_view(), name="404"),
-    path("internal-server-error/", Error500View.as_view(), name="500"),
+    path("404/", NotFoundView.as_view(), name="404"),
+    path("500/", ServerErrorView.as_view(), name="500"),
+    path("contact/send/", contact_send, name="contact_send"),
 ]

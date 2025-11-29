@@ -1,0 +1,13 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script defer src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>{% block title_layout %}{% endblock title_layout %}</title>
+</head>
+<body class="bg-gray-100">
+  {% block content_layout %}{% endblock content_layout %}
+</body>
+</html>

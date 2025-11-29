@@ -1,1 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}AulaNet{% endblock %}</title>
+    <!-- Favicon -->
+    <link
+      rel="shortcut icon"
+      href="{% static 'favicon.ico' %}"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{% static 'js/config.js' %}"></script>
+    <script defer src="{% static 'js/main.js' %}"></script>
+  </head>
 
+  <body
+    class="bg-[var(--bg-main)] dark:bg-[var(--bg-main)] text-[var(--color-main)] dark:text-[var(--color-main)]"
+  >
+    <div class="layout-grid">
+      {% include "components/includes/header.html" %}
+
+      <main>{% block content %} {% endblock %}</main>
+
+      {% include "components/includes/footer.html" %}
+    </div>
+  </body>
+</html>

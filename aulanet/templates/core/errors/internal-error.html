@@ -1,12 +1,37 @@
 <!-- prettier-ignore -->
-{% extends 'layouts/base-layout.html' %}
+{% extends "layouts/general-layout.html" %}
+{% load static %}
 
-{% block title_layout %}
-    Error Interno del Servidor
-{% endblock title_layout %}
+{% block title %}Error del servidor - AulaNet{% endblock %}
 
-{% block content_layout %}
-<header>
-  <h1>Error Interno del Servidor</h1>
-</header>
-{% endblock content_layout %}
+{% block page_content %}
+
+<section
+  class="min-h-[70vh] flex flex-col items-center justify-center text-center px-6"
+>
+  <h1
+    class="font-main text-title text-[var(--color-main)] dark:text-white mb-4"
+  >
+    Algo salió mal
+  </h1>
+
+  <p class="font-secondary text-lg text-gray-600 dark:text-gray-300 max-w-lg">
+    El servidor tuvo un problema inesperado. Nuestro equipo ya está trabajando
+    para solucionarlo.
+  </p>
+
+  <img
+    src="{% static 'img/500.svg' %}"
+    alt="500"
+    class="w-64 h-auto my-10 opacity-90"
+  />
+
+  <a
+    href="{% url 'core:index' %}"
+    class="px-6 py-3 rounded bg-[var(--bg-button-primary)] text-white font-semibold hover:bg-[var(--bg-button-primary-hover)] transition"
+  >
+    Volver al inicio
+  </a>
+</section>
+
+{% endblock %}
