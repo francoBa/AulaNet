@@ -6,3 +6,233 @@
   <h1>Calificar Escuela</h1>
 </header>
 {% endblock content_layout %}
+  <div class="w-full max-w-4xl shadow-2xl rounded-lg p-8 mx-auto" style="background: var(--bg-main); color: var(--color-main);">
+        <form action="#" method="POST">
+            
+            <section class="mb-10 p-6 bg-white rounded-lg shadow-md border-2 border-gray-300">
+                <header class="mb-6">
+                    <h2 class="text-xl font-semibold text-center text-gray-800">
+                        ¿Cómo estás conectado a la escuela?
+                    </h2>
+                </header>
+                
+                <div class="space-y-4 max-w-sm mx-auto">
+                    
+                    <div class="flex items-center justify-between">
+                        <label for="padre" class="text-gray-700">Padre</label>
+                        <input type="radio" id="padre" name="conexion" value="padre" class="form-checkbox text-blue-600 h-5 w-5 rounded custom-radio">
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <label for="estudiante" class="text-gray-700">Estudiante</label>
+                        <input type="radio" id="estudiante" name="conexion" value="estudiante" class="form-checkbox text-blue-600 h-5 w-5 rounded custom-radio" checked>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <label for="ex-estudiante" class="text-gray-700">Ex-estudiante</label>
+                        <input type="radio" id="ex-estudiante" name="conexion" value="ex-estudiante" class="form-checkbox text-blue-600 h-5 w-5 rounded custom-radio">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label for="trabajo" class="text-gray-700">Trabajo aqui</label>
+                        <input type="radio" id="trabajo" name="conexion" value="trabajo" class="form-checkbox text-blue-600 h-5 w-5 rounded custom-radio">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label for="otro" class="text-gray-700">Otro</label>
+                        <input type="radio" id="otro" name="conexion" value="otro" class="form-checkbox text-blue-600 h-5 w-5 rounded custom-radio">
+                    </div>
+                </div>
+            </section>
+            
+            
+
+            <h1 class="text-2xl font-bold text-center mb-8 text-gray-700">CALIFICA TU ESCUELA</h1>
+
+            <div class="p-6 bg-white rounded-lg shadow-md">
+                
+                <div class="grid grid-cols-6 gap-2 mb-6 border-b pb-4 border-gray-200">
+                    <div></div> 
+                    
+                    <div class="text-center">
+                        <span class="text-4xl">😡</span>
+                        <p class="text-xs font-semibold bg-yellow-400 rounded-full py-1 mt-1">muy malo</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl">😟</span>
+                        <p class="text-xs font-semibold bg-yellow-400 rounded-full py-1 mt-1">malo</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl">😐</span>
+                        <p class="text-xs font-semibold bg-yellow-400 rounded-full py-1 mt-1">regular</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl">😊</span>
+                        <p class="text-xs font-semibold bg-yellow-400 rounded-full py-1 mt-1">bueno</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl">😍</span>
+                        <p class="text-xs font-semibold bg-yellow-400 rounded-full py-1 mt-1">muy bueno</p>
+                    </div>
+                </div>
+                
+                <script>
+                    function createQuestionRow(question, groupName, selectedValue) {
+                        const values = ['muy malo', 'malo', 'regular', 'bueno', 'muy bueno'];
+                        let html = `
+                            <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                                <label class="col-span-1 text-sm text-gray-700 pr-2">${question}</label>
+                        `;
+                        values.forEach(value => {
+                            const checked = (value === selectedValue) ? 'checked' : '';
+                            html += `
+                                <div class="flex justify-center">
+                                    <input type="radio" name="${groupName}" value="${value}" class="h-5 w-5 custom-radio" ${checked}>
+                                </div>
+                            `;
+                        });
+                        html += `</div>`;
+                        return html;
+                    }
+                </script>
+                
+                <section class="mb-6">
+                    <h3 class="text-lg font-semibold text-center py-3 bg-gray-200 mb-2">AREA PEDAGOGICA</h3>
+                    
+                    <div class="space-y-2" id="area-pedagogica">
+                        <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                            <label class="col-span-1 text-sm text-gray-700 pr-2">Calidad educativa</label>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_1" value="muy malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_1" value="malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_1" value="regular" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_1" value="bueno" class="h-5 w-5 custom-radio" checked></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_1" value="muy bueno" class="h-5 w-5 custom-radio"></div>
+                        </div>
+
+                        <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                            <label class="col-span-1 text-sm text-gray-700 pr-2">Profesores</label>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_2" value="muy malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_2" value="malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_2" value="regular" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_2" value="bueno" class="h-5 w-5 custom-radio" checked></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_2" value="muy bueno" class="h-5 w-5 custom-radio"></div>
+                        </div>
+
+                        <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                            <label class="col-span-1 text-sm text-gray-700 pr-2">Uso de herramientas tecnológicas para aprender</label>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_3" value="muy malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_3" value="malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_3" value="regular" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_3" value="bueno" class="h-5 w-5 custom-radio" checked></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_3" value="muy bueno" class="h-5 w-5 custom-radio"></div>
+                        </div>
+
+                        <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                            <label class="col-span-1 text-sm text-gray-700 pr-2">Acceso a libros, biblioteca, laboratorios</label>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_4" value="muy malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_4" value="malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_4" value="regular" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_4" value="bueno" class="h-5 w-5 custom-radio" checked></div>
+                            <div class="flex justify-center"><input type="radio" name="pedagogica_4" value="muy bueno" class="h-5 w-5 custom-radio"></div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="mb-6">
+                    <h3 class="text-lg font-semibold text-center py-3 bg-gray-200 mb-2">AREA CULTURA</h3>
+                    
+                    <div class="space-y-2">
+                         <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                            <label class="col-span-1 text-sm text-gray-700 pr-2">Cultura escolar</label>
+                            <div class="flex justify-center"><input type="radio" name="cultura_1" value="muy malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="cultura_1" value="malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="cultura_1" value="regular" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="cultura_1" value="bueno" class="h-5 w-5 custom-radio" checked></div>
+                            <div class="flex justify-center"><input type="radio" name="cultura_1" value="muy bueno" class="h-5 w-5 custom-radio"></div>
+                        </div>
+
+                        <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                            <label class="col-span-1 text-sm text-gray-700 pr-2">Clubes y actividades</label>
+                            <div class="flex justify-center"><input type="radio" name="cultura_2" value="muy malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="cultura_2" value="malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="cultura_2" value="regular" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="cultura_2" value="bueno" class="h-5 w-5 custom-radio" checked></div>
+                            <div class="flex justify-center"><input type="radio" name="cultura_2" value="muy bueno" class="h-5 w-5 custom-radio"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb-6">
+                    <h3 class="text-lg font-semibold text-center py-3 bg-gray-200 mb-2">AREA BIENESTAR SOCIAL</h3>
+                    
+                    <div class="space-y-2">
+                         <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                            <label class="col-span-1 text-sm text-gray-700 pr-2">Manejo de conflictos o bullying</label>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_1" value="muy malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_1" value="malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_1" value="regular" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_1" value="bueno" class="h-5 w-5 custom-radio" checked></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_1" value="muy bueno" class="h-5 w-5 custom-radio"></div>
+                        </div>
+
+                        <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                            <label class="col-span-1 text-sm text-gray-700 pr-2">Inclusión social</label>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_2" value="muy malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_2" value="malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_2" value="regular" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_2" value="bueno" class="h-5 w-5 custom-radio" checked></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_2" value="muy bueno" class="h-5 w-5 custom-radio"></div>
+                        </div>
+
+                        <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                            <label class="col-span-1 text-sm text-gray-700 pr-2">Respeto entre compañeros</label>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_3" value="muy malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_3" value="malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_3" value="regular" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_3" value="bueno" class="h-5 w-5 custom-radio" checked></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_3" value="muy bueno" class="h-5 w-5 custom-radio"></div>
+                        </div>
+
+                        <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                            <label class="col-span-1 text-sm text-gray-700 pr-2">Seguridad</label>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_4" value="muy malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_4" value="malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_4" value="regular" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_4" value="bueno" class="h-5 w-5 custom-radio" checked></div>
+                            <div class="flex justify-center"><input type="radio" name="bienestar_4" value="muy bueno" class="h-5 w-5 custom-radio"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb-6">
+                    <h3 class="text-lg font-semibold text-center py-3 bg-gray-200 mb-2">AREA RECURSOS</h3>
+                    
+                    <div class="space-y-2">
+                         <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                            <label class="col-span-1 text-sm text-gray-700 pr-2">Recursos tecnológicos (computadoras, internet)</label>
+                            <div class="flex justify-center"><input type="radio" name="recursos_1" value="muy malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="recursos_1" value="malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="recursos_1" value="regular" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="recursos_1" value="bueno" class="h-5 w-5 custom-radio" checked></div>
+                            <div class="flex justify-center"><input type="radio" name="recursos_1" value="muy bueno" class="h-5 w-5 custom-radio"></div>
+                        </div>
+
+                        <div class="grid grid-cols-6 items-start py-2 border-b border-gray-100">
+                            <label class="col-span-1 text-sm text-gray-700 pr-2">Instalaciones (aulas, laboratorios, biblioteca)</label>
+                            <div class="flex justify-center"><input type="radio" name="recursos_2" value="muy malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="recursos_2" value="malo" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="recursos_2" value="regular" class="h-5 w-5 custom-radio"></div>
+                            <div class="flex justify-center"><input type="radio" name="recursos_2" value="bueno" class="h-5 w-5 custom-radio" checked></div>
+                            <div class="flex justify-center"><input type="radio" name="recursos_2" value="muy bueno" class="h-5 w-5 custom-radio"></div>
+                        </div>
+                    </div>
+                </section>
+                
+                <div class="flex justify-end pt-8">
+                    <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-gray-800 font-bold py-2 px-6 rounded shadow-md transition duration-150">
+                        Enviar Evaluación
+                    </button>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+{% endblock content_layout %}
