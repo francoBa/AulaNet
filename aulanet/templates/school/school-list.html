@@ -1,8 +1,84 @@
 <!-- prettier-ignore -->
-{% extends 'layouts/base-layout.html' %}
-{% block title_layout %} Escuelas {% endblock title_layout %}
-{% block content_layout %}
-<header>
-  <h1>Escuelas</h1>
-</header>
-{% endblock content_layout %}
+{% extends "layouts/general-layout.html" %}
+{% load static %}
+
+{% block title %}Escuelas — AulaNet{% endblock %}
+
+{% block page_content %}
+<section class="container mx-auto py-10">
+
+    <h1 class="text-3xl font-bold mb-6 dark:text-white">
+        Listado de Escuelas
+    </h1>
+
+    <!-- === FILTROS === -->
+    <form method="get" class="mb-6 flex gap-4">
+
+        <!-- BUSCADOR -->
+        <input type="text"
+               name="search"
+               placeholder="Buscar por nombre o ciudad…"
+               value="{{ search }}"
+               class="p-2 border rounded-lg w-64 
+                      dark:bg-gray-800 dark:text-white dark:border-gray-700">
+
+        <!-- SELECT TIPO -->
+        <select name="tipo"
+                onchange="this.form.submit()"
+                class="p-2 border rounded-lg dark:bg-gray-800 dark:text-white dark:border-gray-700">
+            <option value="">Todas</option>
+            <option value="publica" {% if tipo == "publica" %}selected{% endif %}>Pública</option>
+            <option value="privada" {% if tipo == "privada" %}selected{% endif %}>Privada</option>
+            <option value="especial" {% if tipo == "especial" %}selected{% endif %}>Especial</option>
+        </select>
+
+        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+            Buscar
+        </button>
+
+    </form>
+
+    {% if schools %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            {% for school in schools %}
+            <div class="group">
+                <a href="/escuela/{{ school.id }}/"
+                class="block bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
+                       rounded-xl overflow-hidden shadow-sm 
+                       group-hover:shadow-xl 
+                       transition-all duration-300 transform group-hover:-translate-y-1">
+
+                    <!-- Banner -->
+                    <div class="h-28 bg-gradient-to-r from-indigo-500 to-purple-500 
+                                dark:from-indigo-600 dark:to-purple-600"></div>
+
+                    <div class="p-5">
+
+                        <h2 class="text-xl font-bold mb-1 text-gray-900 dark:text-white">
+                            {{ school.name }}
+                        </h2>
+
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-1">
+                            📍 {{ school.city }}
+                        </p>
+
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">
+                            Tipo: {{ school.school_type|title }}
+                        </p>
+
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+        <p class="text-gray-600 dark:text-gray-300">
+            No hay escuelas cargadas aún.
+        </p>
+    {% endif %}
+
+</section>
+{% endblock %}
