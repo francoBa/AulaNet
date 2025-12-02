@@ -5,151 +5,89 @@
 
 {% block page_content %}
 
-<style>
-  /* Fondo*/
-  .contact-bg {
-    position: relative;
-    min-height: 100%;
-  }
+<div
+  class="min-h-[70vh] flex flex-col items-center px-6 py-12 text-center text-text font-main"
+>
+  <h1 class="text-title font-bold mb-4">Contacto</h1>
 
-  .contact-bg::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("{% static 'img/contact-bg.jpg' %}");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.75;
-    z-index: -1;
-  }
+  <p class="text-subtitle mb-10 max-w-2xl">
+    Si tenés consultas o sugerencias, completá el formulario y te respondemos.
+  </p>
 
-  /* Glass card */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.68);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 16px;
-    padding: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  }
+  <!-- FORM -->
+  <form
+    id="contact-form"
+    method="POST"
+    action="{% url 'core:contact_send' %}"
+    class="w-full max-w-xl bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-slate-700 text-left"
+  >
+    {% csrf_token %}
 
-  :root.dark .glass-card {
-    background: rgba(30, 30, 30, 0.55);
-    border-color: rgba(255, 255, 255, 0.08);
-  }
-
-  /* Animación para los mensajes */
-  @keyframes slideUpFadeOut {
-    0% { opacity: 0; transform: translateY(20px); }
-    10% { opacity: 1; transform: translateY(0); }
-    90% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-10px); }
-  }
-  .animate-slide-up-fade-out {
-    animation: slideUpFadeOut 3s ease forwards;
-  }
-</style>
-
-<section class="contact-bg py-16 px-6 md:px-12 text-black dark:text-[var(--color-main)] font-main">
-
-  <div class="max-w-4xl mx-auto space-y-12">
-
-    <!-- ENCABEZADO EN GLASS CARD -->
-    <div class="glass-card text-center">
-      <h1 class="text-title font-bold mb-4">Contacto</h1>
-      <p class="text-subtitle">
-        Si tenés consultas o sugerencias, completá el formulario y te respondemos.
-      </p>
+    <div class="mb-4">
+      <label class="block mb-1 font-semibold">Nombre completo</label>
+      <input
+        type="text"
+        name="name"
+        autocomplete="name"
+        required
+        class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-text focus:ring-2 focus:ring-color-secondary transition"
+      />
     </div>
 
-    <!-- FORMULARIO EN GLASS CARD (igual estilo que Nosotros) -->
-    <form
-      id="contact-form"
-      method="POST"
-      action="{% url 'core:contact_send' %}"
-      class="glass-card text-left text-black dark:text-white max-w-2xl mx-auto space-y-4"
+    <div class="mb-4">
+      <label class="block mb-1 font-semibold">Email</label>
+      <input
+        type="email"
+        name="email"
+        autocomplete="email"
+        required
+        class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-text focus:ring-2 focus:ring-color-secondary transition"
+      />
+    </div>
+
+    <div class="mb-4">
+      <label class="block mb-1 font-semibold">Asunto</label>
+      <input
+        type="text"
+        name="subject"
+        autocomplete="on"
+        required
+        class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-text focus:ring-2 focus:ring-color-secondary transition"
+      />
+    </div>
+
+    <div class="mb-6">
+      <label class="block mb-1 font-semibold">Mensaje</label>
+      <textarea
+        name="message"
+        rows="5"
+        autocomplete="on"
+        required
+        class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-text focus:ring-2 focus:ring-color-secondary transition"
+      ></textarea>
+    </div>
+
+    <button
+      type="submit"
+      class="w-full py-3 rounded-lg font-semibold text-white bg-[var(--bg-button-primary)] hover:bg-[var(--bg-button-primary-hover)] text-button"
     >
-      {% csrf_token %}
+      Enviar mensaje
+    </button>
+  </form>
 
-      <div>
-        <label class="block mb-1 font-semibold">Nombre completo</label>
-        <input
-          type="text"
-          name="name"
-          required
-          class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-slate-600 
-                 bg-white/40 dark:bg-slate-700/40 backdrop-blur-sm 
-                 focus:ring-2 focus:ring-color-secondary transition"
-        />
-      </div>
-
-      <div>
-        <label class="block mb-1 font-semibold">Email</label>
-        <input
-          type="email"
-          name="email"
-          required
-          class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-slate-600 
-                 bg-white/40 dark:bg-slate-700/40 backdrop-blur-sm 
-                 focus:ring-2 focus:ring-color-secondary transition"
-        />
-      </div>
-
-      <div>
-        <label class="block mb-1 font-semibold">Asunto</label>
-        <input
-          type="text"
-          name="subject"
-          required
-          class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-slate-600 
-                 bg-white/40 dark:bg-slate-700/40 backdrop-blur-sm 
-                 focus:ring-2 focus:ring-color-secondary transition"
-        />
-      </div>
-
-      <div>
-        <label class="block mb-1 font-semibold">Mensaje</label>
-        <textarea
-          name="message"
-          rows="5"
-          required
-          class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-slate-600 
-                 bg-white/40 dark:bg-slate-700/40 backdrop-blur-sm 
-                 focus:ring-2 focus:ring-color-secondary transition"
-        ></textarea>
-      </div>
-
-      <button
-        type="submit"
-        class="w-full py-3 rounded-xl font-semibold text-white 
-               bg-[var(--bg-button-primary)] hover:bg-[var(--bg-button-primary-hover)] 
-               text-button"
-      >
-        Enviar mensaje
-      </button>
-    </form>
-
-    <!-- TOASTS -->
-    {% if messages %}
-    <div id="toastContainer" class="fixed bottom-6 right-6 space-y-2 z-50">
-      {% for message in messages %}
-        <div
-          class="px-5 py-3 rounded-lg shadow-lg text-white animate-slide-up-fade-out 
-                 {% if message.tags == 'success' %}bg-green-600{% else %}bg-red-600{% endif %}"
-          {% if message.tags == 'success' %} data-redirect="{% url 'core:index' %}" {% endif %}
-        >
-          {{ message }}
-        </div>
-      {% endfor %}
+  <!-- TOASTS -->
+  {% if messages %}
+  <div id="toastContainer" class="fixed bottom-6 right-6 space-y-2 z-50">
+    {% for message in messages %}
+    <div
+      class="px-5 py-3 rounded-lg shadow-lg text-white animate-slide-up-fade-out {% if message.tags == 'success' %}bg-green-600{% else %}bg-red-600{% endif %}"
+      {% if message.tags == 'success' %} data-redirect="{% url 'core:index' %}" {% endif %}
+    >
+      {{ message }}
     </div>
-    {% endif %}
-
+    {% endfor %}
   </div>
-</section>
+  {% endif %}
+</div>
 
 {% endblock %}

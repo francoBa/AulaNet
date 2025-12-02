@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView
+from django.shortcuts import render, redirect
 
 # Authentication (render-only for now)
 class AuthLoginView(TemplateView):
@@ -43,5 +44,7 @@ class UserProfileView(TemplateView):
 class UserUpdateView(TemplateView):
     template_name = "user/user-update.html"
 
-class UserUpdateView(TemplateView):
-    template_name = "user/user-update.html"
+    def post(self, request, *args, **kwargs):
+        # Aquí iría la lógica para actualizar los datos del usuario
+        # Por ahora, solo redirigimos al perfil del usuario
+        return redirect("user:user-profile")
