@@ -14,25 +14,25 @@ def get_avatar_filename(instance, filename):
 
 class User(AbstractUser):
     id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    ciudad=models.CharField(max_length=120, blank=True)
-    escuela = models.ForeignKey("school.School", null=True, blank=True, on_delete=models.SET_NULL)
-    tipo = models.CharField (max_length=50, blank=True)
-    relacion_escuela = models.CharField(max_length=100, blank=True)
-    fecha_nacimiento = models.DateField(null=True, blank=True)
+    city=models.CharField(max_length=120, blank=True)
+    school = models.ForeignKey("school.School", null=True, blank=True, on_delete=models.SET_NULL)
+    type = models.CharField (max_length=50, blank=True)
+    related_school = models.CharField(max_length=100, blank=True)
+    birthdate = models.DateField(null=True, blank=True)
     avatar = models.ImageField(
         upload_to=get_avatar_filename, default="user/default/avatar-default.png"
     )
 
     @property
-    def edad(self):
-        if not self.fecha_nacimiento:
+    def age(self):
+        if not self.birthdate:
             return None
 
         today = date.today()
         return (
             today.year
-            - self.fecha_nacimiento.year
-            - ((today.month, today.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day))
+            - self.birthdate.year
+            - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
         )
 
     
