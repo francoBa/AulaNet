@@ -9,7 +9,7 @@ class Categoria(models.Model):
     title = models.CharField(max_length=30, unique=True, null=False)
 
     def __str__(self):
-        return self.nombre
+        return self.title
 
 #Modelo del post
 class Post(models.Model):
@@ -23,13 +23,13 @@ class Post(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     
     class Meta:
-        ordering = ['-publicado']
+        ordering = ['-created_at']
 
     def __str__(self):
-        return self.titulo
+        return self.title
     
     def delete(self, using = None, keep_parents = False):
-        self.imagen.delete(self.imagen.name)
+        self.image.delete(self.image.name)
         super().delete()
     
 
