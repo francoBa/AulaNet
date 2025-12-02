@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import uuid
 
 class School(models.Model):
     SCHOOL_TYPES = [
@@ -8,7 +8,7 @@ class School(models.Model):
         ('privada', 'Privada'),
         ('especial', 'Especial'),
     ]
-
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=120)
     school_type = models.CharField(max_length=20, choices=SCHOOL_TYPES)
