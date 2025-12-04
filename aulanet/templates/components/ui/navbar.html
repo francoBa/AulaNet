@@ -1,13 +1,14 @@
 {% load static %}
-<nav class="max-w-6xl mx-auto px-4 py-3">
+<div style="background-color: #101E37;">
+<nav class="max-w-6xl mx-auto px-4 py-3" style="background-color: #101E37;">
   <div class="grid grid-cols-2 md:grid-cols-3 items-center">
     <!-- LOGO -->
     <div class="flex items-center space-x-3">
       <a href="{% url 'core:index' %}">
         <img
-          src="{% static 'img/logo.png' %}"
+          src="{% static 'img/logo-rombo-amarillo.png' %}"
           alt="AulaNet Logo"
-          class="h-8 w-8"
+          class="h-18 w-18"
         />
       </a>
       <a href="{% url 'core:index' %}"
@@ -17,14 +18,13 @@
 
     <!-- MENU DESKTOP -->
     <div class="hidden md:flex justify-center space-x-6">
-      <a href="{% url 'core:index' %}" class="hover:text-blue-500">Inicio</a>
-      <a href="{% url 'school:school-list' %}" class="hover:text-blue-500"
+      <a href="{% url 'core:index' %}" class="text-xl text-white hover:text-white-blue-100">Inicio</a>
+      <a href="{% url 'school:school-list' %}" class="text-xl text-white hover:text-white-blue-100"
         >Colegios</a
       >
-      <a href="{% url 'core:about' %}" class="hover:text-blue-500">Nosotros</a>
-      <a href="{% url 'core:contact' %}" class="hover:text-blue-500"
-        >Contacto</a
-      >
+      <a href="{% url 'core:about' %}" class="text-xl text-white hover:text-blue-100">Nosotros</a>
+      <a href="{% url 'core:contact' %}" class="text-xl text-white hover:text-white-blue-100"
+        >Contacto</a>
     </div>
 
     <!-- LADO DERECHO (login + tema) -->
@@ -40,7 +40,7 @@
       <!-- LOGIN -->
       <a
         href="{% url 'user:login' %}"
-        class="px-4 py-2 block py-2 bg-[var(--bg-button-primary)] text-white rounded hover:bg-[var(--bg-button-primary-hover)]"
+        class="text-xl px-4 py-2 block py-2 bg-[var(--bg-button-primary)] text-white rounded hover:bg-[var(--bg-button-primary-hover)]"
       >
         Login
       </a>
@@ -94,3 +94,4 @@
     </a>
   </div>
 </nav>
+</div>
