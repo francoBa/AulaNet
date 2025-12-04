@@ -35,9 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('scroll', () => {
     const header = document.querySelector('header');
     if (window.scrollY > 10) {
-      header.classList.add('bg-white/60', 'dark:bg-gray-800/60');
+      header.classList.add('bg-[#101e37]/60', 'dark:bg-gray-800/60');
     } else {
-      header.classList.remove('bg-white/60', 'dark:bg-gray-800/60');
+      header.classList.remove('bg-[#101e37]/60', 'dark:bg-gray-800/60');
     }
   });
 
