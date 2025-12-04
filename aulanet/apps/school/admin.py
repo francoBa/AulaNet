@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import School, SchoolRating
+from .models import School, SchoolRating, Review 
 # Register your models here.
 @admin.register(School)
 class SchoolAdmin(admin.ModelAdmin):
@@ -8,3 +8,5 @@ class SchoolAdmin(admin.ModelAdmin):
     list_filter = ('school_type',)
 
 admin.site.register(SchoolRating)
+
+admin.site.register(Review)
