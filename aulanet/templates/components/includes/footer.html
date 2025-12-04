@@ -3,12 +3,27 @@
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
 
       <div>
+<<<<<<< Updated upstream
       <img src="{% static 'img\logo.png' %}" alt="Logo" class="h-12 mb-4">
+=======
+<<<<<<< Updated upstream
+      <img src="{% static 'img\logoAulanet.png' %}" alt="Logo" class="h-12 mb-4">
+=======
+      <img src="{% static 'img/logo-rombo-amarillo.png' %}" alt="Logo" class="h-12 mb-4">
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
       <p class="text-gray-400 text-sm">
-        Tu blog para encontrar, calificar y compartir experiencias sobre escuelas de Resistencia - Chaco.
+        Tu blog para encontrar, calificar y compartir experiencias sobre colegios de Resistencia - Chaco.
       </p>
     </div>
-  <section
+  
+   <div class="hidden md:flex items-center justify-end space-x-3">
+      <a href="{% url 'core:about' %}" class="text-xl text-white hover:text-blue-100">Nosotros</a>
+      <a href="{% url 'core:contact' %}" class="text-xl text-white hover:text-white-blue-100"
+        >Contacto</a>
+    </div>
+
+    <section
     class="max-w-6xl mx-auto px-4 text-center text-sm text-gray-600 dark:text-gray-300"
   >
     © {% now "Y" %} AulaNet — Proyecto Final Informatorio | C3 - Todos los derechos reservados.

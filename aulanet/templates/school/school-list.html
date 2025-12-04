@@ -2,13 +2,21 @@
 {% extends "layouts/general-layout.html" %}
 {% load static %}
 
+<<<<<<< Updated upstream
 {% block title %}Escuelas — AulaNet{% endblock %}
+=======
+{% block title %}Colegios — AulaNet{% endblock %}
+>>>>>>> Stashed changes
 
 {% block page_content %}
 <section class="container mx-auto py-10">
 
     <h1 class="text-3xl font-bold mb-6 dark:text-white">
+<<<<<<< Updated upstream
         Listado de Escuelas
+=======
+        Listado de Colegios
+>>>>>>> Stashed changes
     </h1>
 
     <!-- === FILTROS === -->
@@ -27,8 +35,13 @@
                 onchange="this.form.submit()"
                 class="p-2 border rounded-lg dark:bg-gray-800 dark:text-white dark:border-gray-700">
             <option value="">Todas</option>
+<<<<<<< Updated upstream
             <option value="publica" {% if tipo == "publica" %}selected{% endif %}>Pública</option>
             <option value="privada" {% if tipo == "privada" %}selected{% endif %}>Privada</option>
+=======
+            <option value="publica" {% if tipo == "publica" %}selected{% endif %}>Público</option>
+            <option value="privada" {% if tipo == "privada" %}selected{% endif %}>Privado</option>
+>>>>>>> Stashed changes
             <option value="especial" {% if tipo == "especial" %}selected{% endif %}>Especial</option>
         </select>
 
@@ -76,7 +89,11 @@
 
     {% else %}
         <p class="text-gray-600 dark:text-gray-300">
+<<<<<<< Updated upstream
             No hay escuelas cargadas aún.
+=======
+            No hay colegios cargados aún.
+>>>>>>> Stashed changes
         </p>
     {% endif %}
 
