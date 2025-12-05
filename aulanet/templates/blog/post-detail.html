@@ -1,12 +1,191 @@
-<!-- prettier-ignore -->
-{% extends 'layouts/base-layout.html' %}
+{% extends 'layouts/general-layout.html' %}
+{% load static %}
+{% load score_extras %}
 
-{% block title_layout %}
-    Detalle de Publicación
-{% endblock title_layout %}
+{% block title %}
+{{ post.title }}
+{% endblock title %}
 
-{% block content_layout %}
-<header>
-  <h1>Detalle de Publicación</h1>
+{% block page_content %}
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background: #f7f7f7;
+    }
+
+    .post-header {
+        background: #0a6a4a;
+        color: white;
+        padding: 60px 40px;
+        text-align: center;
+    }
+    .post-header h1 {
+        margin: 0;
+        font-size: 48px;
+        font-weight: 700;
+    }
+    .post-header p {
+        margin-top: 10px;
+        font-size: 18px;
+    }
+
+    .post-container {
+        max-width: 900px;
+        margin: 30px auto 60px auto;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .post-image {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+    }
+
+    .post-content {
+        padding: 30px;
+    }
+
+    .post-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #222;
+    }
+
+    .post-meta {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .post-body {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #444;
+    }
+
+    /* Comentarios */
+    .comments-section {
+        margin-top: 40px;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+    }
+
+    .comment-card {
+        padding: 15px;
+        border-radius: 12px;
+        background: #f7f7f7;
+        margin-bottom: 15px;
+    }
+
+    .comment-user {
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .comment-date {
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 10px;
+    }
+
+    .comment-actions {
+        margin-top: 5px;
+    }
+
+    .comment-btn {
+        background: #0a6a4a;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 12px;
+        margin-right: 5px;
+        display: inline-block;
+    }
+    .comment-btn:hover {
+        background: #09563c;
+    }
+
+    .comment-form textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        resize: vertical;
+    }
+    .comment-form button {
+        background: #0a6a4a;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+    }
+    .comment-form button:hover {
+        background: #09563c;
+    }
+</style>
+
+<header class="post-header">
+    <h1>{{ post.title }}</h1>
+    {% if post.author.school %}
+        <p>{{ post.author.username }} - Escuela: {{ post.author.school.name }}</p>
+        {% with scores=post.author.school.user_set.all|score_values %}
+            {% if scores %}
+                <p>Puntuación promedio: {{ scores|average_score }}</p>
+            {% endif %}
+        {% endwith %}
+    {% endif %}
 </header>
-{% endblock content_layout %}
+
+<div class="post-container">
+    <img src="{{ post.image.url|default:'https://placehold.co/900x400' }}" class="post-image" />
+    <div class="post-content">
+        <div class="post-body">
+            {{ post.content|linebreaks }}
+        </div>
+    </div>
+
+    <!-- Comentarios -->
+    <div class="comments-section">
+        <h3>Comentarios</h3>
+
+        {% for comment in comments %}
+        <div class="comment-card">
+            <div class="comment-user">{{ comment.user.username }}</div>
+            <div class="comment-date">{{ comment.created_at|date:"d/m/Y H:i" }}</div>
+            <div class="comment-text">{{ comment.content|linebreaks }}</div>
+            <div class="comment-actions">
+                {% if user.is_staff or comment.user == user %}
+                    <a href="{% url 'blog:comment-edit' comment.id %}" class="comment-btn">Editar</a>
+                    <form action="{% url 'blog:comment-delete' comment.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="comment-btn">Eliminar</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p>No hay comentarios aún.</p>
+        {% endfor %}
+
+        <!-- Formulario para agregar comentario -->
+        <div class="comment-form">
+            <h4>Agregar un comentario</h4>
+            <form method="post" action="{% url 'blog:comment-add' post.slug %}">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock page_content %}

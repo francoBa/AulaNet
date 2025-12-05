@@ -21,11 +21,12 @@ from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # APP ROUTES
-    path("", include("apps.core.urls", namespace="core")),
-    path("", include("apps.user.urls", namespace="user")),
-    path("", include("apps.blog.urls", namespace="blog")),
-    path("", include("apps.school.urls", namespace="school")),
+
+    # APP ROUTES con prefijo seguro
+    path("", include("apps.core.urls", namespace="core")),       # Inicio, About, Contact
+    path("user/", include("apps.user.urls", namespace="user")),  # Login, Perfil
+    path("blog/", include("apps.blog.urls", namespace="blog")),  # Posts
+    path("school/", include("apps.school.urls", namespace="school")),  # Escuelas
 ]
 
 # Handlers para producción

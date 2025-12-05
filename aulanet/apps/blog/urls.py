@@ -1,15 +1,28 @@
 from django.urls import path
-from .views import *
+from .views import (
+    PostListView,
+    PostDetailView,
+    CommentAddView,
+    CommentEditView,
+    CommentDeleteView,
+    school_rating_view,
+)
 
 app_name = "blog"
 
 urlpatterns = [
+    # Lista de posts (PÚBLICA)
     path("posts/", PostListView.as_view(), name="post-list"),
-    path("post/detalle/", PostDetailView.as_view(), name="post-detail"),
-    # path("post/<int:pk>/", PostDetailView.as_view(), name="post-detail"),
-    path("post/nuevo/", PostNewView.as_view(), name="post-new"),
-    path("post/editar/", PostUpdateView.as_view(), name="post-update"),
-    # path("post/<int:pk>/editar/", PostUpdateView.as_view(), name="post-update"),
-    path("post/eliminar/", PostDeleteView.as_view(), name="post-delete"),
-    # path("post/<int:pk>/eliminar/", PostDeleteView.as_view(), name="post-delete"),
+    
+    # Detalle de post (PÚBLICO)
+    path("post/<slug:slug>/", PostDetailView.as_view(), name="post-detail"),
+    
+    # Comentarios (PRIVADO)
+    path("comment/add/<slug:slug>/", CommentAddView.as_view(), name="comment-add"),
+    path("comment/edit/<int:pk>/", CommentEditView.as_view(), name="comment-edit"),
+    path("comment/delete/<int:pk>/", CommentDeleteView.as_view(), name="comment-delete"),
+    
+    # Puntuación de la escuela (PRIVADO)
+    path("school/<int:school_id>/rate/", school_rating_view, name="school-rate"),
+    path("school/<int:school_id>/rate/<slug:post_slug>/", school_rating_view, name="school-rate-post"),
 ]

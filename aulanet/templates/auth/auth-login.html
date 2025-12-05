@@ -12,9 +12,17 @@
     <form method="POST" class="space-y-5">
       {% csrf_token %}
 
+      {% if form.non_field_errors %}
+        <div class="bg-red-100 text-red-700 p-2 rounded">
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
       <div>
-        <label class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Email</label>
-        <input type="email" name="email"
+        <label class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Usuario o Email</label>
+        <input type="text" name="email_or_username" value="{{ form.email_or_username.value|default_if_none:'' }}"
                class="w-full border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 px-3 py-2 bg-white dark:bg-slate-700 text-gray-800 dark:text-gray-100" required>
       </div>
 

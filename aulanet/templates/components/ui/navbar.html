@@ -1,97 +1,61 @@
 {% load static %}
 <div style="background-color: #101E37;">
-<nav class="max-w-6xl mx-auto px-4 py-3" style="background-color: #101E37;">
+<nav class="max-w-6xl mx-auto px-4 py-2">
   <div class="grid grid-cols-2 md:grid-cols-3 items-center">
     <!-- LOGO -->
     <div class="flex items-center space-x-3">
       <a href="{% url 'core:index' %}">
-        <img
-          src="{% static 'img/logo-rombo-amarillo.png' %}"
-          alt="AulaNet Logo"
-          class="h-18 w-18"
-        />
+        <img src="{% static 'img/logo-rombo-amarillo.png' %}" alt="AulaNet Logo" class="h-10 md:h-12 w-auto transition-all"/>
       </a>
-      <a href="{% url 'core:index' %}"
-        ><span class="text-xl font-bold">AulaNet</span></a
-      >
+      <a href="{% url 'core:index' %}">
+        <span class="text-xl font-bold text-white">AulaNet</span>
+      </a>
     </div>
 
     <!-- MENU DESKTOP -->
-    <div class="hidden md:flex justify-center space-x-6">
-      <a href="{% url 'core:index' %}" class="text-xl text-white hover:text-white-blue-100">Inicio</a>
-      <a href="{% url 'school:school-list' %}" class="text-xl text-white hover:text-white-blue-100"
-        >Colegios</a
-      >
-      <a href="{% url 'core:about' %}" class="text-xl text-white hover:text-blue-100">Nosotros</a>
-      <a href="{% url 'core:contact' %}" class="text-xl text-white hover:text-white-blue-100"
-        >Contacto</a>
+    <div class="hidden md:flex justify-center space-x-5">
+      <a href="{% url 'core:index' %}" class="text-lg text-white hover:text-blue-300">Inicio</a>
+      <a href="{% url 'school:school-list' %}" class="text-lg text-white hover:text-blue-300">Colegios</a>
+      <a href="{% url 'blog:post-list' %}" class="text-lg text-white hover:text-blue-300">Posts</a>
+      <a href="{% url 'core:about' %}" class="text-lg text-white hover:text-blue-300">Nosotros</a>
+      <a href="{% url 'core:contact' %}" class="text-lg text-white hover:text-blue-300">Contacto</a>
     </div>
 
-    <!-- LADO DERECHO (login + tema) -->
-    <div class="hidden md:flex items-center justify-end space-x-3">
+    <!-- LADO DERECHO (desktop) -->
+    <div class="hidden md:flex items-center justify-end space-x-2">
       <!-- BOTÓN DARK MODE -->
-      <button
-        id="themeToggle"
-        class="px-2 py-1 border rounded dark:border-gray-500"
-      >
-        🌓
-      </button>
+      <button id="themeToggle" class="px-2 py-1 border rounded dark:border-gray-500">🌓</button>
 
-      <!-- LOGIN -->
-      <a
-        href="{% url 'user:login' %}"
-        class="text-xl px-4 py-2 block py-2 bg-[var(--bg-button-primary)] text-white rounded hover:bg-[var(--bg-button-primary-hover)]"
-      >
-        Login
-      </a>
+      {% if user.is_authenticated %}
+        <span class="text-white px-2">Hola, {{ user.username }}</span>
+        <a href="{% url 'user:user-profile' %}" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">Perfil</a>
+        <a href="{% url 'user:logout' %}" class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Log out</a>
+      {% else %}
+        <a href="{% url 'user:login' %}" class="px-3 py-1 bg-[var(--bg-button-primary)] text-white rounded hover:bg-[var(--bg-button-primary-hover)] text-sm">Login</a>
+      {% endif %}
     </div>
 
     <!-- BOTÓN MOBILE MENU -->
-    <button
-      id="navToggle"
-      class="md:hidden justify-self-end px-2 py-1 border rounded dark:border-gray-500"
-    >
-      ☰
-    </button>
+    <button id="navToggle" class="md:hidden justify-self-end px-2 py-1 border rounded dark:border-gray-500">☰</button>
   </div>
 
   <!-- MENU MOBILE -->
-  <div id="mobileMenu" class="hidden flex-col mt-3 space-y-2 md:hidden">
-    <!-- SWITCH TEMA MOBILE -->
-    <button
-      id="themeToggleMobile"
-      class="w-full py-2 border rounded dark:border-gray-500 text-center"
-    >
-      🌓 Tema
-    </button>
+  <div id="mobileMenu" class="hidden flex-col mt-2 space-y-2 md:hidden text-gray-200">
+    <button id="themeToggleMobile" class="w-full py-2 border rounded dark:border-gray-500 text-center">🌓 Tema</button>
 
-    <a
-      href="{% url 'core:index' %}"
-      class="block py-2 border-b dark:border-gray-600"
-      >Inicio</a
-    >
-    <a
-      href="{% url 'school:school-list' %}"
-      class="block py-2 border-b dark:border-gray-600"
-      >Colegios</a
-    >
-    <a
-      href="{% url 'core:about' %}"
-      class="block py-2 border-b dark:border-gray-600"
-      >Nosotros</a
-    >
-    <a
-      href="{% url 'core:contact' %}"
-      class="block py-2 border-b dark:border-gray-600"
-      >Contacto</a
-    >
+    <a href="{% url 'core:index' %}" class="block py-2 border-b dark:border-gray-600">Inicio</a>
+    <a href="{% url 'school:school-list' %}" class="block py-2 border-b dark:border-gray-600">Colegios</a>
+    <a href="{% url 'blog:post-list' %}" class="block py-2 border-b dark:border-gray-600">Posts</a>
+    <a href="{% url 'core:about' %}" class="block py-2 border-b dark:border-gray-600">Nosotros</a>
+    <a href="{% url 'core:contact' %}" class="block py-2 border-b dark:border-gray-600">Contacto</a>
 
-    <a
-      href="{% url 'user:login' %}"
-      class="block py-2 bg-[var(--bg-button-primary)] text-white text-center rounded hover:bg-[var(--bg-button-primary-hover)]"
-    >
-      Login
-    </a>
+    {% if user.is_authenticated %}
+      <span class="block px-3 py-2 text-white">Hola, {{ user.username }}</span>
+      <a href="{% url 'user:user-profile' %}" class="block py-2 bg-blue-600 text-white text-center rounded hover:bg-blue-700">Perfil</a>
+      <a href="{% url 'user:logout' %}" class="block py-2 bg-red-600 text-white text-center rounded hover:bg-red-700">Log out</a>
+    {% else %}
+      <a href="{% url 'user:login' %}" class="block py-2 bg-[var(--bg-button-primary)] text-white text-center rounded hover:bg-[var(--bg-button-primary-hover)]">Login</a>
+    {% endif %}
   </div>
 </nav>
 </div>

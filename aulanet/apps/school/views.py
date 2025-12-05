@@ -1,15 +1,32 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import TemplateView
-from .models import School
+from django.contrib import messages
+from django.db import models
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
+from .models import School, Review, SchoolRating
+from .forms import SchoolForm
 
 
-# 1) Create (solo plantilla por ahora)
-class CreateSchoolView(TemplateView):
+class CreateSchoolView(View):
     template_name = "school/create-school.html"
 
+    def get(self, request):
+        form = SchoolForm()
+        return render(request, self.template_name, {"form": form})
 
-# 2) Listado real (CLASE) con filtros
+    def post(self, request):
+        form = SchoolForm(request.POST, request.FILES)
+        if form.is_valid():
+            school = form.save()
+            messages.success(request, f"La escuela '{school.name}' se creó correctamente.")
+            return redirect("school:school-detail", slug=school.slug)
+
+        messages.error(request, "Hubo errores en el formulario. Por favor revisa los datos.")
+        return render(request, self.template_name, {"form": form})
+
+
 class ListSchoolView(View):
     template_name = "school/school-list.html"
 
@@ -19,42 +36,94 @@ class ListSchoolView(View):
 
         schools = School.objects.all()
 
-        # Filtro por buscador
         if search:
-            schools = schools.filter(name__icontains=search) | schools.filter(city__icontains=search)
+            schools = schools.filter(
+                models.Q(name__icontains=search) |
+                models.Q(city__icontains=search)
+            )
 
-        # Filtro por tipo
         if tipo:
             schools = schools.filter(school_type=tipo)
 
-        context = {
-            "schools": schools,
-            "search": search,
-            "tipo": tipo,
-        }
-        return render(request, self.template_name, context)
+        # Calcular promedio de estrellas
+        for school in schools:
+            ratings = school.ratings.all()
+            school.average_rating = (
+                sum(r.value for r in ratings) / ratings.count()
+                if ratings.exists() else 0
+            )
+
+        return render(request, self.template_name,
+            {"schools": schools, "search": search, "tipo": tipo}
+        )
 
 
-#ReviewSchoolView eliminado o simplificado si no hay ratings
-# solo para mostrar las escuelas
-class ReviewSchoolView(View):
-    def get(self, request):
-        schools = School.objects.all()
-        return render(request, "school/review-school.html", {"schools": schools})
-
-    def post(self, request):
-        # Si no vas a manejar ratings, por ahora solo redirige
-        return render(request, "school/review-school.html", {"schools": School.objects.all()})
-
-
-# Detalle de la escuela sin ratings
 class SchoolDetailView(View):
-    def get(self, request, pk):
-        school = get_object_or_404(School, pk=pk)
-        return render(request, "school/school-detail.html", {
-            "school": school
+    template_name = "school/school-detail.html"
+
+    def get(self, request, slug):
+        school = get_object_or_404(School, slug=slug)
+
+        ratings = school.ratings.all()
+        average = (
+            sum(r.value for r in ratings) / ratings.count()
+            if ratings.exists() else 0
+        )
+
+        return render(request, self.template_name, {
+            "school": school,
+            "ratings": ratings,
+            "average": round(average, 1)
         })
 
-    def post(self, request, pk):
-        # Sin ratings, solo redirigir al detalle
-        return redirect("school:school-detail", pk=pk)
+
+@method_decorator(login_required, name='dispatch')
+class RateSchoolView(View):
+
+    def post(self, request, slug):
+        school = get_object_or_404(School, slug=slug)
+        value = int(request.POST.get("value", 0))
+
+        if value < 1 or value > 5:
+            messages.error(request, "Valor inválido.")
+            return redirect("school:school-detail", slug=slug)
+
+        # Si el usuario ya calificó → actualiza
+        rating, created = SchoolRating.objects.update_or_create(
+            user=request.user,
+            school=school,
+            defaults={"value": value}
+        )
+
+        if created:
+            messages.success(request, "¡Gracias por puntuar!")
+        else:
+            messages.success(request, "Tu calificación fue actualizada.")
+
+        return redirect("school:school-detail", slug=slug)
+
+
+@method_decorator(login_required, name='dispatch')
+class ReviewSchoolView(View):
+    template_name = "school/review-school.html"
+
+    def get(self, request, slug):
+        school = get_object_or_404(School, slug=slug)
+        return render(request, self.template_name, {"school": school})
+
+    def post(self, request, slug):
+        school = get_object_or_404(School, slug=slug)
+        comment = request.POST.get("comment")
+
+        if not comment:
+            messages.error(request, "El comentario no puede estar vacío.")
+            return redirect("school:review-school", slug=slug)
+
+        Review.objects.create(
+            school=school,
+            author=request.user,
+            comment=comment
+        )
+
+        messages.success(request, "Tu reseña fue publicada.")
+        return redirect("school:review-school", slug=slug)

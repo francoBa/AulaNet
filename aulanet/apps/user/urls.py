@@ -1,14 +1,14 @@
+# apps/user/urls.py
 from django.urls import path
-from .views import *
+from . import views
 
 app_name = "user"
 
 urlpatterns = [
-    # AUTH SYSTEM
-    path("login/", AuthLoginView.as_view(), name="login"),
-    path("register/", AuthRegisterView.as_view(), name="register"),
+    path("login/", views.auth_login, name="login"),
+    path("logout/", views.auth_logout, name="logout"),
+    path("register/", views.auth_register, name="register"),
 
-    # USER PROFILE
-    path("user/profile/", UserProfileView.as_view(), name="user-profile"),
-    path("user/profile/edit/", UserUpdateView.as_view(), name="user-update"),
+    path("profile/", views.user_profile, name="user-profile"),
+    path("profile/edit/", views.user_update, name="user-update"),
 ]

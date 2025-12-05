@@ -1,60 +1,99 @@
 {% extends 'layouts/general-layout.html' %}
 
 {% block title %}
-    Actualización de Perfil de Usuario
+  Editar Perfil
 {% endblock %}
-    
+
 {% block page_content %}
-    {% load static %}
-    <h1 class="flex w-full max-w-4xl mx-auto text-2xl font-semibold mb-6">Actualizar Datos de Usuario</h1>
-    <div class="flex w-full max-w-4xl shadow-2xl rounded-lg p-8 mx-auto gap-8" style="background: var(--bg-main); color: var(--color-main);">
-        <div class="flex flex-col items-center mr-8 w-96">
-            <img src="{% static 'img/default-user.png' %}" alt="Actualizar Perfil" class="rounded-full object-cover ">
-            <button class="mt-4 mx-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Cambiar Foto de Perfil</button>
+{% load static %}
+<div class="min-h-full w-full py-8">
+    <h1 class="max-w-4xl mx-auto text-3xl font-bold mb-4">Editar Perfil</h1>
 
-        </div> 
-        
-        <form action="#" method="POST" class="w-full">
+    <section class="mb-8 max-w-4xl mx-auto px-4 py-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700">
+        <form method="POST" enctype="multipart/form-data" class="flex flex-col gap-6">
             {% csrf_token %}
-            <div class="mb-4">
-                <label for="nombres" class="block text-sm font-medium mb-2">Nombres</label>
-                <input type="text" id="nombres" name="nombres" class="w-full p-2 text-black border border-gray-300 rounded" value="Nombres">
-            </div>
-            <div class="mb-4">
-                <label for="apellido" class="block text-sm font-medium mb-2">Apellido</label>
-                <input type="text" id="apellido" name="apellido" class="w-full p-2 text-black border border-gray-300 rounded" value="Apellidos">
-            </div>
-            <div class="mb-4">
-                <label for="email" class="block text-sm font-medium mb-2">Correo Electrónico</label>
-                <input type="email" id="email" name="email" class="w-full p-2 text-black border border-gray-300 rounded" value="email@email.com">
-            </div>
-            <div class="mb-4">
-                <label for="telefono" class="block text-sm font-medium mb-2">Telefono</label>
-                <input type="tel" id="telefono" name="telefono" class="w-full p-2 text-black border border-gray-300 rounded" value="+54">
-            </div>
-            <div class="mb-4">
-                <label for="escuela" class="block text-sm font-medium mb-2">Escuela</label>
-                <select id="escuela" name="escuela" class="w-full p-2 text-black border border-gray-300 rounded">
-                    <option value="escuela0">Sin Escuela</option>
-                    <option value="escuela1">Escuela 1</option>
-                    <option value="escuela2">Escuela 2</option>
-                    <option value="escuela3">Escuela 3</option>
-                </select>
-            </div>
-            <div class="mb-4">
-                <label for="relacion" class="block text-sm font-medium mb-2">Relacion con la Escuela</label>
-                <select id="relacion" name="relacion" class="w-full p-2 text-black border border-gray-300 rounded">
-                    <option value="default">Sin Escuela</option>
-                    <option value="padre">Padre de Alumno</option>
-                    <option value="docente">Docente 2</option>
-                    <option value="directivo">Directivo</option>
-                </select>
-            </div>
-            
-            <div class="flex justify-end">
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Actualizar Perfil</button>
-            </div>
-        </form>
 
-    </div>
+            <!-- Avatar -->
+            <div class="flex flex-row items-center gap-6">
+                <div class='w-[200px] h-[200px] bg-gray-500 rounded-full flex items-center justify-center'>
+                    <img src="{{ user.get_avatar_url }}" alt="Avatar" class="rounded-full object-cover w-full h-full">
+                </div>
+                <div class="flex flex-col gap-2 flex-1">
+                    {{ form.avatar.label_tag }}
+                    <input type="file" name="{{ form.avatar.name }}" id="{{ form.avatar.id_for_label }}" class="text-black">
+                </div>
+            </div>
+
+            <!-- Nombre y Email -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    {{ form.first_name.label_tag }}
+                    <input type="text" name="{{ form.first_name.name }}" value="{{ form.first_name.value }}" id="{{ form.first_name.id_for_label }}" class="text-black">
+                </div>
+                <div>
+                    {{ form.last_name.label_tag }}
+                    <input type="text" name="{{ form.last_name.name }}" value="{{ form.last_name.value }}" id="{{ form.last_name.id_for_label }}" class="text-black">
+                </div>
+                <div class="col-span-2">
+                    {{ form.email.label_tag }}
+                    <input type="email" name="{{ form.email.name }}" value="{{ form.email.value }}" id="{{ form.email.id_for_label }}" class="text-black">
+                </div>
+            </div>
+
+            <!-- Ciudad, Tipo, Related School -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    {{ form.city.label_tag }}
+                    <input type="text" name="{{ form.city.name }}" value="{{ form.city.value }}" id="{{ form.city.id_for_label }}" class="text-black">
+                </div>
+                <div>
+                    {{ form.type.label_tag }}
+                    <input type="text" name="{{ form.type.name }}" value="{{ form.type.value }}" id="{{ form.type.id_for_label }}" class="text-black">
+                </div>
+                <div class="col-span-2">
+                    {{ form.related_school.label_tag }}
+                    <input type="text" name="{{ form.related_school.name }}" value="{{ form.related_school.value }}" id="{{ form.related_school.id_for_label }}" class="text-black">
+                </div>
+            </div>
+
+            <!-- Escuela y Score -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    {{ form.school.label_tag }}
+                    <select name="{{ form.school.name }}" id="{{ form.school.id_for_label }}" class="text-black">
+                        {% for s in form.school.field.queryset %}
+                            <option value="{{ s.id }}" {% if user.school and user.school.id == s.id %}selected{% endif %}>{{ s.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    {{ form.score.label_tag }}
+                    <input type="number" name="{{ form.score.name }}" value="{{ form.score.value }}" min="1" max="5" id="{{ form.score.id_for_label }}" class="text-black">
+                    {% if form.score.help_text %}
+                        <small class="text-xs text-gray-500 dark:text-gray-400">{{ form.score.help_text }}</small>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Birthdate -->
+            <div>
+                {{ form.birthdate.label_tag }}
+                <input type="date" name="{{ form.birthdate.name }}" value="{{ form.birthdate.value }}" id="{{ form.birthdate.id_for_label }}" class="text-black">
+            </div>
+
+            <!-- Botón Guardar -->
+            <div class="mt-4">
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Guardar cambios</button>
+            </div>
+
+            {% if messages %}
+                <ul class="mt-4">
+                    {% for message in messages %}
+                        <li class="text-sm text-green-500 dark:text-green-400">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </form>
+    </section>
+</div>
 {% endblock %}

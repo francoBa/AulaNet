@@ -1,50 +1,60 @@
-from django.views.generic import TemplateView
+# apps/user/views.py
 from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout, get_user_model
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .forms import UserRegisterForm, UserUpdateForm, LoginForm
 
-# Authentication (render-only for now)
-class AuthLoginView(TemplateView):
-    template_name = "auth/auth-login.html"
+User = get_user_model()
 
-class AuthRegisterView(TemplateView):
-    template_name = "auth/auth-register.html"
+def auth_login(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f"Bienvenido/a, {user.username}")
+            return redirect(request.GET.get("next", "core:index"))
+    else:
+        form = LoginForm()
+    return render(request, "auth/auth-login.html", {"form": form})
 
-# User profile
-class UserProfileView(TemplateView):
-    template_name = "user/user-profile.html"
-from django.views.generic import FormView, TemplateView
-from django import forms
+def auth_logout(request):
+    logout(request)
+    messages.info(request, "Has cerrado sesión.")
+    return redirect("user:login")
 
-# Temporary forms (so FormView doesn't crash)
-class LoginForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+def auth_register(request):
+    if request.method == "POST":
+        form = UserRegisterForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, f"Registro completado. Bienvenido/a {user.username}")
+            return redirect("core:index")
+    else:
+        form = UserRegisterForm()
+    return render(request, "auth/auth-register.html", {"form": form})
 
-class RegisterForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
+@login_required
+def user_profile(request):
+    # Traer últimos 10 posts y comentarios del usuario
+    latest_posts = request.user.post_set.all().order_by('-created_at')[:10]
+    latest_comments = request.user.comment_set.all().order_by('-created_at')[:10]
+    return render(request, "user/user-profile.html", {
+        "user": request.user,
+        "latest_posts": latest_posts,
+        "latest_comments": latest_comments,
+    })
 
-
-class AuthLoginView(FormView):
-    template_name = "auth/auth-login.html"
-    form_class = LoginForm
-    success_url = "/"
-
-
-class AuthRegisterView(FormView):
-    template_name = "auth/auth-register.html"
-    form_class = RegisterForm
-    success_url = "/login/"
-
-
-class UserProfileView(TemplateView):
-    template_name = "user/user-profile.html"
-
-
-class UserUpdateView(TemplateView):
-    template_name = "user/user-update.html"
-
-    def post(self, request, *args, **kwargs):
-        # Aquí iría la lógica para actualizar los datos del usuario
-        # Por ahora, solo redirigimos al perfil del usuario
-        return redirect("user:user-profile")
+@login_required
+def user_update(request):
+    if request.method == "POST":
+        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Perfil actualizado correctamente.")
+            return redirect("user:user-profile")
+    else:
+        form = UserUpdateForm(instance=request.user)
+    return render(request, "user/user-update.html", {"form": form})

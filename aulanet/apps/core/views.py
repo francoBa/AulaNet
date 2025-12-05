@@ -1,14 +1,28 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from django.http import JsonResponse
 from django.core.mail import EmailMessage
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from apps.school.models import School
+from apps.blog.models import Post
 
 
 class IndexView(TemplateView):
     template_name = "core/index.html"
+
+    def get(self, request, *args, **kwargs):
+        # Tomar 4 escuelas destacadas
+        schools = School.objects.all()[:4]
+
+        # Tomar 4 posts recientes
+        posts = Post.objects.all().order_by('-created_at')[:4]
+
+        context = {
+            'schools': schools,
+            'posts': posts,
+        }
+        return render(request, self.template_name, context)
 
 
 class AboutView(TemplateView):
@@ -37,9 +51,7 @@ def custom_500(request):
 
 def contact_send(request):
     if request.method != "POST":
-        return redirect(
-            "core:contact"
-        )  # Redirige a la página de contacto si no es POST
+        return redirect("core:contact")
 
     name = request.POST.get("name", "").strip()
     email = request.POST.get("email", "").strip()
@@ -56,29 +68,6 @@ def contact_send(request):
         messages.error(request, "El email no es válido")
         return redirect("core:contact")
 
-    # # Armar mensaje
-    # body = f"""
-    # Nuevo mensaje de contacto
-
-    # Nombre: {name}
-    # Email: {email}
-    # Asunto: {subject}
-
-    # Mensaje:
-    # {message}
-    # """
-
-    # try:
-    #     mail = EmailMessage(
-    #         subject=f"[AulaNet] {subject}",
-    #         body=body,
-    #         from_email="noreply@aulanet.com",  # Cambiar según config
-    #         to=["tudestino@gmail.com"],  # Adonde recibirlo
-    #         reply_to=[email],
-    #     )
-    #     mail.send()
-    # except Exception as e:
-    #     return JsonResponse({"success": False, "error": "Error al enviar email"})
-
+    # Se comenta el envío real de email por ahora
     messages.success(request, "Mensaje enviado correctamente")
     return redirect("core:contact")
