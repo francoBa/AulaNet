@@ -25,6 +25,11 @@ class School(models.Model):
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='schools/', blank=True, null=True)
 
+    def __str__(self):
+        return self.name
+
+
+
 class Review(models.Model):
     id = id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name= 'reviews')
