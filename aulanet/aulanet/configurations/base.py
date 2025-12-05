@@ -72,6 +72,8 @@ WSGI_APPLICATION = "aulanet.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_USER_MODEL = 'user.User'
+POST_DEFAULT_IMAGE = "post/default/post-default.png"
+AVATAR_DEFAULT_IMAGE = "user/default/avatar-default.jpg"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
