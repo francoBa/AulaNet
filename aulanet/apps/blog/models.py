@@ -4,6 +4,7 @@ from django.conf import settings
 from django.utils.text import slugify
 import uuid
 import os
+from apps.school.models import School   # ← AGREGADO
 
 # Categorías
 class Category(models.Model):
@@ -31,6 +32,9 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, default=None)
     content = models.TextField()
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    school = models.ForeignKey(School, on_delete=models.CASCADE, null=True, blank=True)  # ← AGREGADO
+
     image = models.ImageField(upload_to='posts/cover/', blank=True, null=True, default='posts/default/post-default.jpg')
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(default=timezone.now)

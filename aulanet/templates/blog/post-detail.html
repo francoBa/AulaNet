@@ -50,19 +50,6 @@
         padding: 30px;
     }
 
-    .post-title {
-        font-size: 32px;
-        font-weight: 700;
-        margin-bottom: 10px;
-        color: #222;
-    }
-
-    .post-meta {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 20px;
-    }
-
     .post-body {
         font-size: 16px;
         line-height: 1.6;
@@ -146,6 +133,23 @@
 </header>
 
 <div class="post-container">
+
+    <!-- BOTONES EDITAR / ELIMINAR (autor o staff) -->
+    {% if request.user.is_authenticated and request.user == post.author or request.user.is_staff %}
+    <div style="padding: 20px; display: flex; gap: 15px;">
+        <a href="{% url 'blog:post-edit' slug=post.slug %}"
+           style="background:#0a6a4a; padding:10px 16px; border-radius:10px; color:white; text-decoration:none;">
+           ✏️ Editar Post
+        </a>
+
+        <a href="{% url 'blog:post-delete' slug=post.slug %}"
+           style="background:#c00000; padding:10px 16px; border-radius:10px; color:white; text-decoration:none;">
+           🗑️ Eliminar Post
+        </a>
+    </div>
+    {% endif %}
+    <!-- FIN -->
+
     <img src="{{ post.image.url|default:'https://placehold.co/900x400' }}" class="post-image" />
     <div class="post-content">
         <div class="post-body">
@@ -159,11 +163,11 @@
 
         {% for comment in comments %}
         <div class="comment-card">
-            <div class="comment-user">{{ comment.user.username }}</div>
+            <div class="comment-user">{{ comment.author.username }}</div>
             <div class="comment-date">{{ comment.created_at|date:"d/m/Y H:i" }}</div>
             <div class="comment-text">{{ comment.content|linebreaks }}</div>
             <div class="comment-actions">
-                {% if user.is_staff or comment.user == user %}
+                {% if user.is_staff or comment.author == user %}
                     <a href="{% url 'blog:comment-edit' comment.id %}" class="comment-btn">Editar</a>
                     <form action="{% url 'blog:comment-delete' comment.id %}" method="post" style="display:inline;">
                         {% csrf_token %}
@@ -176,7 +180,6 @@
         <p>No hay comentarios aún.</p>
         {% endfor %}
 
-        <!-- Formulario para agregar comentario -->
         <div class="comment-form">
             <h4>Agregar un comentario</h4>
             <form method="post" action="{% url 'blog:comment-add' post.slug %}">

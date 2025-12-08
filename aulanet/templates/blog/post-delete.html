@@ -1,12 +1,17 @@
-<!-- prettier-ignore -->
-{% extends 'layouts/base-layout.html' %}
-
-{% block title_layout %}
-    Borrado de Publicación
-{% endblock title_layout %}
+{% extends "layouts/base-layout.html" %}
 
 {% block content_layout %}
-<header>
-  <h1>Borrado de Publicación</h1>
-</header>
-{% endblock content_layout %}
+<div class="container mt-4">
+
+    <h2>¿Querés eliminar este post?</h2>
+
+    <p><strong>{{ post.title }}</strong></p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'blog:post-detail' post.slug %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+
+</div>
+{% endblock %}

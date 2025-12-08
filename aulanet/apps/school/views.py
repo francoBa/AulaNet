@@ -8,6 +8,9 @@ from django.utils.decorators import method_decorator
 from .models import School, Review, SchoolRating
 from .forms import SchoolForm
 
+# Importar Post (lo necesitas para obtener los últimos 3 posts)
+from apps.blog.models import Post
+
 
 class CreateSchoolView(View):
     template_name = "school/create-school.html"
@@ -53,8 +56,10 @@ class ListSchoolView(View):
                 if ratings.exists() else 0
             )
 
-        return render(request, self.template_name,
-            {"schools": schools, "search": search, "tipo": tipo}
+        return render(
+            request,
+            self.template_name,
+            {"schools": schools, "search": search, "tipo": tipo},
         )
 
 
@@ -67,19 +72,27 @@ class SchoolDetailView(View):
         ratings = school.ratings.all()
         average = (
             sum(r.value for r in ratings) / ratings.count()
-            if ratings.exists() else 0
+            if ratings.exists()
+            else 0
         )
 
-        return render(request, self.template_name, {
-            "school": school,
-            "ratings": ratings,
-            "average": round(average, 1)
-        })
+        # 🔥 Últimos 3 posts sobre esta escuela (directamente desde post.school)
+        latest_posts = Post.objects.filter(school=school).order_by("-created_at")[:3]
+
+        return render(
+            request,
+            self.template_name,
+            {
+                "school": school,
+                "ratings": ratings,
+                "average": round(average, 1),
+                "latest_posts": latest_posts,
+            },
+        )
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class RateSchoolView(View):
-
     def post(self, request, slug):
         school = get_object_or_404(School, slug=slug)
         value = int(request.POST.get("value", 0))
@@ -88,11 +101,10 @@ class RateSchoolView(View):
             messages.error(request, "Valor inválido.")
             return redirect("school:school-detail", slug=slug)
 
-        # Si el usuario ya calificó → actualiza
         rating, created = SchoolRating.objects.update_or_create(
             user=request.user,
             school=school,
-            defaults={"value": value}
+            defaults={"value": value},
         )
 
         if created:
@@ -103,7 +115,7 @@ class RateSchoolView(View):
         return redirect("school:school-detail", slug=slug)
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class ReviewSchoolView(View):
     template_name = "school/review-school.html"
 
@@ -122,7 +134,7 @@ class ReviewSchoolView(View):
         Review.objects.create(
             school=school,
             author=request.user,
-            comment=comment
+            comment=comment,
         )
 
         messages.success(request, "Tu reseña fue publicada.")

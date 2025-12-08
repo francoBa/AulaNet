@@ -1,12 +1,18 @@
-<!-- prettier-ignore -->
-{% extends 'layouts/base-layout.html' %}
+{% extends 'layouts/general-layout.html' %}
 
-{% block title_layout %}
-    Edición de Publicación
-{% endblock title_layout %}
+{% block title_layout %} Editar Post {% endblock %}
 
 {% block content_layout %}
-<header>
-  <h1>Edición de Publicación</h1>
-</header>
-{% endblock content_layout %}
+<h2>Editar Post</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <a href="{% url 'blog:post-detail' slug=object.slug %}" class="btn btn-secondary">
+        Cancelar
+    </a>
+</form>
+
+{% endblock %}
