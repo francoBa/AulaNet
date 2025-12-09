@@ -1,62 +1,174 @@
+<!-- prettier-ignore -->
 {% extends 'layouts/general-layout.html' %}
+{% load static %}
 
-{% block title %}
-    Actualización de Perfil de Usuario
-{% endblock %}
-    
+{% block title %}Actualización de Perfil{% endblock %}
+
 {% block page_content %}
-    {% load static %}
-    <h1 class="flex w-full max-w-4xl mx-auto text-2xl font-semibold mb-6">Actualizar Datos de Usuario</h1>
-    <div class="flex w-full max-w-4xl shadow-2xl rounded-lg p-8 mx-auto gap-8" style="background: var(--bg-main); color: var(--color-main);">
-        <div class="flex flex-col items-center mr-8 w-96">
-            <img src="{% static 'img/default-user.png' %}" alt="Actualizar Perfil" class="rounded-full object-cover ">
-            <button class="mt-4 mx-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Cambiar Foto de Perfil</button>
+<div class="min-h-screen py-10 px-4">
+  <h1
+    class="flex w-full max-w-5xl mx-auto text-3xl font-bold mb-8 text-gray-800 dark:text-white"
+  >
+    Configuración de la Cuenta
+  </h1>
 
-        </div> 
-        
-        <form action="#" method="POST" class="w-full">
-            {% csrf_token %}
-            <div class="mb-4">
-                <label for="nombres" class="block text-sm font-medium mb-2">Nombres</label>
-                <input type="text" id="nombres" name="nombres" class="w-full p-2 text-black border border-gray-300 rounded" value="Nombres">
-            </div>
-            <div class="mb-4">
-                <label for="apellido" class="block text-sm font-medium mb-2">Apellido</label>
-                <input type="text" id="apellido" name="apellido" class="w-full p-2 text-black border border-gray-300 rounded" value="Apellidos">
-            </div>
-            <div class="mb-4">
-                <label for="email" class="block text-sm font-medium mb-2">Correo Electrónico</label>
-                <input type="email" id="email" name="email" class="w-full p-2 text-black border border-gray-300 rounded" value="email@email.com">
-            </div>
-            <div class="mb-4">
-                <label for="telefono" class="block text-sm font-medium mb-2">Telefono</label>
-                <input type="tel" id="telefono" name="telefono" class="w-full p-2 text-black border border-gray-300 rounded" value="+54">
-            </div>
-            <div class="mb-4">
-                <label for="escuela" class="block text-sm font-medium mb-2">Colegio</label>
-                <select id="escuela" name="escuela" class="w-full p-2 text-black border border-gray-300 rounded">
-                    <option value="escuela0">Sin Colegio</option>
-                    <option value="escuela1">Colegio 1</option>
-                    <option value="escuela2">Colegio 2</option>
-                    <option value="escuela3">Colegio 3</option>
-                </select>
-            </div>
-            <div class="mb-4">
-                <label for="relacion" class="block text-sm font-medium mb-2">Relacion con el Colegio</label>
-                <select id="relacion" name="relacion" class="w-full p-2 text-black border border-gray-300 rounded">
-                    <option value="default">Sin Colegio</option>
-                    <option value="padre">Padre de Alumno</option>
-                    <option value="docente">Docente 2</option>
-                    <option value="directivo">Directivo</option>
-                </select>
-            </div>
-            
-            <div class="flex justify-end">
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Actualizar Perfil</button>
-            </div>
-        </form>
+  <form
+    method="POST"
+    enctype="multipart/form-data"
+    class="flex flex-col md:flex-row w-full max-w-5xl bg-white dark:bg-slate-800 shadow-xl rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-700 mx-auto"
+  >
+    {% csrf_token %}
 
+    <div
+      class="w-full md:w-1/3 bg-gray-50 dark:bg-slate-900/50 p-8 flex flex-col items-center border-b md:border-b-0 md:border-r border-gray-200 dark:border-slate-700"
+    >
+      <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-6">
+        Foto de Perfil
+      </h2>
+
+      <div
+        class="w-48 h-48 rounded-full overflow-hidden border-4 border-white dark:border-slate-600 shadow-lg mb-6 relative group"
+      >
+        {% if user.avatar %}
+        <img
+          src="{{ user.avatar.url }}"
+          alt="Avatar"
+          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        {% else %}
+        <img
+          src="{% static 'img/default-user.png' %}"
+          alt="Default Avatar"
+          class="w-full h-full object-cover"
+        />
+        {% endif %}
+      </div>
+
+      <div class="w-full">
+        <label
+          for="id_avatar"
+          class="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed border-blue-300 dark:border-blue-700 rounded-xl cursor-pointer bg-blue-50 dark:bg-slate-800 hover:bg-blue-100 dark:hover:bg-slate-700 transition group text-center"
+        >
+          <svg
+            class="w-8 h-8 text-blue-500 mb-2 group-hover:scale-110 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+            ></path>
+          </svg>
+
+          <span
+            class="js-file-name text-sm font-medium text-blue-600 dark:text-blue-400"
+            data-default-text="Cambiar foto"
+          >
+            Cambiar foto
+          </span>
+
+          {{ form.avatar }}
+        </label>
+        <p class="text-xs text-gray-400 text-center mt-2">
+          JPG, PNG o GIF. Máx 5MB.
+        </p>
+      </div>
     </div>
 
-{% endblock %}
+    <div class="w-full md:w-2/3 p-8">
+      <h2
+        class="text-2xl font-bold text-gray-800 dark:text-white mb-6 border-b dark:border-slate-700 pb-2"
+      >
+        Información Personal
+      </h2>
 
+      <div class="space-y-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1"
+              >Nombres</label
+            >
+            {{ form.first_name }}
+            <span class="text-red-500 text-xs"
+              >{{ form.first_name.errors.0 }}</span
+            >
+          </div>
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1"
+              >Apellidos</label
+            >
+            {{ form.last_name }}
+            <span class="text-red-500 text-xs"
+              >{{ form.last_name.errors.0 }}</span
+            >
+          </div>
+        </div>
+
+        <div>
+          <label
+            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1"
+            >Correo Electrónico</label
+          >
+          {{ form.email }}
+          <span class="text-red-500 text-xs">{{ form.email.errors.0 }}</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1"
+              >Ciudad</label
+            >
+            {{ form.city }}
+          </div>
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1"
+              >Fecha de Nacimiento</label
+            >
+            {{ form.birthdate }}
+          </div>
+        </div>
+
+        <hr class="border-gray-100 dark:border-slate-700 my-4" />
+
+        <div>
+          <label
+            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1"
+            >Colegio</label
+          >
+          {{ form.school }}
+        </div>
+
+        <div>
+          <label
+            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1"
+            >Relación con el Colegio</label
+          >
+          {{ form.type }}
+        </div>
+
+        <div class="flex items-center justify-end gap-4 pt-6 mt-4">
+          <a
+            href="{% url 'user:user-profile' %}"
+            class="px-6 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 font-medium transition"
+          >
+            Cancelar
+          </a>
+          <button
+            type="submit"
+            class="px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg hover:shadow-blue-500/30 font-bold transition transform hover:-translate-y-0.5"
+          >
+            Guardar Cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
