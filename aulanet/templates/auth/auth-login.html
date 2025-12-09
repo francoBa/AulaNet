@@ -1,39 +1,84 @@
-{% extends "layouts/general-layout.html" %}
+<!-- prettier-ignore -->
+{% extends "layouts/auth-layout.html" %}
 {% block title %}Iniciar Sesión{% endblock %}
 
 {% block page_content %}
-<div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
-
-  <div class="w-full max-w-md bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-lg">
-    <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6">
-      Bienvenido a <span class="text-blue-600">AulaNet</span>
+<div
+  class="w-full max-w-md bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 transition-colors duration-300"
+>
+  <div class="text-center mb-8">
+    <h2 class="text-3xl font-bold text-gray-800 dark:text-white">
+      Bienvenido a
+      <span class="text-blue-600 dark:text-blue-400">AulaNet</span>
     </h2>
-
-    <form method="POST" class="space-y-5">
-      {% csrf_token %}
-
-      <div>
-        <label class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Email</label>
-        <input type="email" name="email"
-               class="w-full border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 px-3 py-2 bg-white dark:bg-slate-700 text-gray-800 dark:text-gray-100" required>
-      </div>
-
-      <div>
-        <label class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Contraseña</label>
-        <input type="password" name="password"
-               class="w-full border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 px-3 py-2 bg-white dark:bg-slate-700 text-gray-800 dark:text-gray-100" required>
-      </div>
-
-      <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition">
-        Iniciar Sesión
-      </button>
-
-      <p class="text-center text-gray-600 dark:text-gray-300 text-sm mt-3">
-        ¿No tienes cuenta?
-        <a href="{% url 'user:register' %}" class="text-blue-600 hover:underline">Regístrate aquí</a>
-      </p>
-    </form>
+    <p class="text-gray-500 dark:text-gray-400 mt-2 text-sm">
+      Ingresa tus credenciales para continuar
+    </p>
   </div>
 
+  <form method="POST" class="space-y-6">
+    <!-- prettier-ignore -->
+    {% csrf_token %}
+
+      {% if form.non_field_errors %}
+    <div
+      class="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-300 px-4 py-3 rounded-lg text-sm flex items-center gap-2"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <div>{{ form.non_field_errors }}</div>
+    </div>
+    <!-- prettier-ignore -->
+    {% endif %}
+
+      {% for field in form %}
+    <div>
+      <label
+        class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 ml-1"
+      >
+        {{ field.label }}
+      </label>
+      <!-- prettier-ignore -->
+      {{ field }}
+        
+        {% if field.errors %}
+      <p class="text-red-500 text-xs mt-1 ml-1 font-medium">
+        {{ field.errors.0 }}
+      </p>
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    <div class="pt-2">
+      <button
+        type="submit"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-blue-500/30 transform hover:-translate-y-0.5 transition-all duration-200"
+      >
+        Iniciar Sesión
+      </button>
+    </div>
+
+    <div class="text-center mt-6">
+      <p class="text-gray-600 dark:text-gray-400 text-sm">
+        ¿No tienes cuenta?
+        <a
+          href="{% url 'user:register' %}"
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold hover:underline transition-colors"
+        >
+          Regístrate aquí
+        </a>
+      </p>
+    </div>
+  </form>
 </div>
 {% endblock page_content %}
