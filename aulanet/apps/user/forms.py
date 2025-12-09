@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import User
 
@@ -52,3 +53,38 @@ class RegisterForm(UserCreationForm):
             self.fields[name].widget.attrs["placeholder"] = text
 
         self.fields["username"].widget.attrs["autofocus"] = True
+
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "city",
+            "birthdate",
+            "school",
+            "type",
+            "avatar",
+        ]
+        labels = {
+            "first_name": "Nombres",
+            "last_name": "Apellidos",
+            "type": "Relación con el colegio",
+            "birthdate": "Fecha de Nacimiento",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.widget.attrs["class"] = INPUT_CLASSES
+
+        self.fields["birthdate"].widget = forms.DateInput(
+            attrs={"type": "date", "class": INPUT_CLASSES}
+        )
+
+        self.fields["avatar"].widget.attrs.update(
+            {"class": "hidden js-file-input", "id": "avatar"}
+        )

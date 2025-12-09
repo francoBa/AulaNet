@@ -49,17 +49,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Input de Archivos
-  const fileInput = document.getElementById('imagenes');
-  const fileDisplay = document.getElementById('file-name-display');
+  const fileInputs = document.querySelectorAll('.js-file-input');
 
-  if (fileInput && fileDisplay) {
-    fileInput.addEventListener('change', function () {
+  fileInputs.forEach((input) => {
+    input.addEventListener('change', function () {
+      // Buscamos el contenedor
+      const container = this.closest('label') || this.parentElement;
+      const fileDisplay = container.querySelector('.js-file-name');
+
+      if (!fileDisplay) return;
+
       if (this.files && this.files.length > 0) {
         if (this.files.length === 1) {
           fileDisplay.textContent = this.files[0].name;
         } else {
           fileDisplay.textContent = `${this.files.length} archivos seleccionados`;
         }
+        // Estilos de "Activo"
         fileDisplay.classList.remove(
           'italic',
           'text-gray-500',
@@ -71,7 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
           'dark:text-white'
         );
       } else {
-        fileDisplay.textContent = 'Seleccionar imágenes...';
+        // Estilos de "Reset"
+        const defaultText =
+          fileDisplay.dataset.defaultText || 'Seleccionar archivo...';
+        fileDisplay.textContent = defaultText;
+
         fileDisplay.classList.add(
           'italic',
           'text-gray-500',
@@ -84,5 +94,5 @@ document.addEventListener('DOMContentLoaded', () => {
         );
       }
     });
-  }
+  });
 });
