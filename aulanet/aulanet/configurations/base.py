@@ -71,6 +71,10 @@ WSGI_APPLICATION = "aulanet.wsgi.application"
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
+AUTH_USER_MODEL = "user.User"
+POST_DEFAULT_IMAGE = "post/default/post-default.png"
+AVATAR_DEFAULT_IMAGE = "user/default/avatar-default.jpg"
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -114,3 +118,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Manejar el redirect del login, registro y logout
+LOGIN_URL = "user:login"
+LOGIN_REDIRECT_URL = "core:index"
+LOGOUT_REDIRECT_URL = "core:index"

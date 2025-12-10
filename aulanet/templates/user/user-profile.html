@@ -5,16 +5,13 @@
 {% endblock %}
 
 {% block page_content %}
+{% load static %}
 <div class="min-h-full w-full py-8">
     <h1 class="max-w-4xl mx-auto text-3xl font-bold mb-4">Datos de Usuario</h1>
     <section class="mb-8 p-auto max-w-4xl mx-auto px-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700" >        
         <div class="flex flex-row items-top gap-8 py-4">
             <div class='w-[200px] h-[200px] bg-gray-500 rounded-full flex items-center justify-center' > 
-                <svg class="w-full h-full" style="--bg:rgb(30,41,59); --fg:rgb(226,232,240)" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Avatar placeholder">
-                    <circle cx="60" cy="60" r="58" fill="var(--bg)"/>
-                    <circle cx="60" cy="40" r="18" fill="var(--fg)"/>
-                    <ellipse cx="60" cy="83" rx="32" ry="19" fill="var(--fg)" />
-                </svg> 
+                <img src="{% static 'img/default-user.png' %}" alt="Actualizar Perfil" class="rounded-full object-cover "> 
             </div>
             
             <div class="flex flex-col gap-6 mt-4">

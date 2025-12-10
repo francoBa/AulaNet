@@ -1,47 +1,33 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView
+from django.views.generic.edit import CreateView, UpdateView
+from django.shortcuts import render, redirect
+from .forms import *
+from .models import User
 
-# Authentication (render-only for now)
-class AuthLoginView(TemplateView):
+
+class AuthLoginView(LoginView):
     template_name = "auth/auth-login.html"
-
-class AuthRegisterView(TemplateView):
-    template_name = "auth/auth-register.html"
-
-# User profile
-class UserProfileView(TemplateView):
-    template_name = "user/user-profile.html"
-from django.views.generic import FormView, TemplateView
-from django import forms
-
-# Temporary forms (so FormView doesn't crash)
-class LoginForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
-
-class RegisterForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
+    authentication_form = LoginForm
 
 
-class AuthLoginView(FormView):
-    template_name = "auth/auth-login.html"
-    form_class = LoginForm
-    success_url = "/"
-
-
-class AuthRegisterView(FormView):
+class AuthRegisterView(CreateView):
     template_name = "auth/auth-register.html"
     form_class = RegisterForm
-    success_url = "/login/"
+    success_url = reverse_lazy("user:login")
 
 
-class UserProfileView(TemplateView):
+class UserProfileView(LoginRequiredMixin, TemplateView):
     template_name = "user/user-profile.html"
 
 
-class UserUpdateView(TemplateView):
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserUpdateForm
     template_name = "user/user-update.html"
+    success_url = reverse_lazy("user:user-profile")
 
-class UserUpdateView(TemplateView):
-    template_name = "user/user-update.html"
+    def get_object(self):
+        return self.request.user

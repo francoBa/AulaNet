@@ -1,8 +1,135 @@
 <!-- prettier-ignore -->
 {% extends 'layouts/base-layout.html' %}
-{% block title_layout %} Creación de Nueva Escuela {% endblock title_layout %}
+{% block title_layout %} Creación de un Nuevo Colegio {% endblock title_layout %}
 {% block content_layout %}
-<header>
-  <h1>Creación de Nueva Escuela</h1>
-</header>
+
+<div class="flex flex-col items-center pt-8 pb-16 px-4 mx-auto">
+    
+    <h1 class="text-4xl font-bold text-gray-800 mb-2">Creacion de un nuevo colegio</h1>
+    <p class="text-lg text-gray-600 mb-8">Aquí vas a poder crear un nuevo colegio</p>
+    
+    <div class="w-full max-w-lg shadow-2xl rounded-lg bg-white p-6 sm:p-8">
+        
+        <h2 class="text-3xl font-bold text-blue-700 text-center mb-6">Nuevo colegio</h2>
+
+        
+        <form action="#" method="POST" enctype="multipart/form-data" class="space-y-5">
+            {% csrf_token %}
+            
+            <div>
+                <label for="categoria" class="block text-base font-medium text-gray-700 mb-1">Tipo de gestion</label>
+                <div class="relative">
+                  <select id="categoria" name="categoria" class="w-full p-4 border border-gray-500 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 appearance-none bg-white">
+                      <option value="">Selecciona un tipo de gestion</option>
+                      <option value="">Privado</option>
+                      <option value="publica">Público</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+                  
+            </div>
+            
+            <div>
+                <label for="tipo" class="block text-base font-medium text-gray-700 mb-1">Nivel escolar</label>
+                <div class="relative">
+                  <select id="tipo" name="tipo" class="w-full p-4 border border-gray-500 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 appearance-none bg-white">
+                      <option value="">Selecciona un nivel escolar</option>
+                      <option value="primaria">Primario</option>
+                      <option value="secundaria">Secundario</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+            </div>
+
+            <div>
+                <label for="numero" class="block text-base font-medium text-gray-700 mb-1">Número del colegio</label>
+                <div class="relative">
+                  <select id="numero" name="numero" class="w-full p-4 border border-gray-500 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 appearance-none bg-white">
+                      <option value="">Selecciona un número de colegio</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+            </div>
+
+            <div>
+                <label for="nombre" class="block text-base font-medium text-gray-700 mb-1">Nombre del colegio</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Escribe el nombre de la escuela" class="w-full p-4 border border-gray-500 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="direccion" class="block text-base font-medium text-gray-700 mb-1">Direccion del colegio</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Escribe el nombre de la escuela" class="w-full p-4 border border-gray-500 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="localidad" class="block text-base font-medium text-gray-700 mb-1">Localidad</label>
+                <div class="relative">
+                  <select id="localidad" name="localidad" class="w-full p-4 border border-gray-500 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 appearance-none bg-white">
+                    <option value="">Selecciona la localidad</option>
+                    <option value="1">Resistencia</option>
+                    <option value="2">Barranqueras</option>
+                    <option value="3">Puerto Tirol</option>
+                    <option value="4">Fontana</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+            </div>
+
+            <div>
+                <label for="telefono" class="block text-base font-medium text-gray-700 mb-1">Teléfono</label>
+                <div class="flex rounded-lg shadow-sm">
+                    <span class="inline-flex items-center px-3 text-base text-gray-500 border border-r-0 border-gray-300 rounded-l-lg bg-gray-50">
+                        🇦🇷 +54
+                    </span>
+                    <input type="tel" id="telefono" name="telefono" placeholder="teléfono" class="flex-1 min-w-0 block w-full p-4 border border-gray-500 rounded-r-lg focus:border-blue-500 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <div>
+                <label for="foto" class="block text-base font-medium text-gray-700 mb-1">Adjuntar foto</label>
+                <label for="foto" class="flex items-center justify-between w-full p-4 border border-gray-500 rounded-lg shadow-sm cursor-pointer bg-white hover:bg-gray-50 transition">
+                    <span class="text-gray-500 italic">Seleccionar archivo...</span>
+                    <span class="text-gray-400">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8v8a5 5 0 1 0 10 0V6.5a3.5 3.5 0 1 0-7 0V15a2 2 0 0 0 4 0V8"/>
+                        </svg>
+
+                    </span>
+                    <input type="file" id="foto" name="foto" class="hidden">
+                </label>
+            </div>
+
+            <div>
+                <label for="descripcion" class="block text-base font-medium text-gray-700 mb-1">Describa el colegio</label>
+                <textarea id="descripcion" name="descripcion" rows="4" placeholder="Escribe aquí la descripción" class="w-full p-4 border border-gray-500 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 resize-none"></textarea>
+            </div>
+
+            <div class="pt-4">
+                <button type="submit" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 rounded-lg shadow-md transition duration-150 text-lg uppercase">
+                    CREAR POST
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
 {% endblock content_layout %}

@@ -1,96 +1,179 @@
 {% load static %}
-<nav class="max-w-6xl mx-auto px-4 py-3">
+
+<nav class="max-w-7xl mx-auto px-4 py-3">
   <div class="grid grid-cols-2 md:grid-cols-3 items-center">
-    <!-- LOGO -->
     <div class="flex items-center space-x-3">
       <a href="{% url 'core:index' %}">
         <img
-          src="{% static 'img/logo.png' %}"
+          src="{% static 'img/logo-rombo-amarillo.png' %}"
           alt="AulaNet Logo"
-          class="h-8 w-8"
+          class="h-10 w-auto md:h-12 transition-all"
         />
       </a>
-      <a href="{% url 'core:index' %}"
-        ><span class="text-xl font-bold">AulaNet</span></a
-      >
+      <a href="{% url 'core:index' %}">
+        <span class="text-lg md:text-xl font-bold text-white">AulaNet</span>
+      </a>
     </div>
 
     <!-- MENU DESKTOP -->
     <div class="hidden md:flex justify-center space-x-6">
-      <a href="{% url 'core:index' %}" class="hover:text-blue-500">Inicio</a>
-      <a href="{% url 'school:school-list' %}" class="hover:text-blue-500"
+      <a
+        href="{% url 'core:index' %}"
+        class="text-lg text-gray-200 hover:text-white transition"
+        >Inicio</a
+      >
+      <a
+        href="{% url 'school:school-list' %}"
+        class="text-lg text-gray-200 hover:text-white transition"
         >Colegios</a
       >
-      <a href="{% url 'core:about' %}" class="hover:text-blue-500">Nosotros</a>
-      <a href="{% url 'core:contact' %}" class="hover:text-blue-500"
+      <a
+        href="{% url 'core:about' %}"
+        class="text-lg text-gray-200 hover:text-white transition"
+        >Nosotros</a
+      >
+      <a
+        href="{% url 'core:contact' %}"
+        class="text-lg text-gray-200 hover:text-white transition"
         >Contacto</a
       >
     </div>
 
-    <!-- LADO DERECHO (login + tema) -->
-    <div class="hidden md:flex items-center justify-end space-x-3">
-      <!-- BOTÓN DARK MODE -->
+    <div class="hidden md:flex items-center justify-end space-x-4">
+      <!-- Botón Dark Mode -->
       <button
         id="themeToggle"
-        class="px-2 py-1 border rounded dark:border-gray-500"
+        class="p-2 rounded-full text-gray-200 hover:bg-white/10 transition"
       >
         🌓
       </button>
 
-      <!-- LOGIN -->
+      <!-- LÓGICA DE USUARIO -->
+      {% if user.is_authenticated %}
+
+      <!-- Usuario Logueado -->
+      <div class="flex items-center gap-3">
+        <!-- Nombre del usuario (Link al perfil) -->
+        <a
+          href="{% url 'user:user-profile' %}"
+          class="text-white font-medium hover:underline truncate max-w-[150px]"
+          title="Ir al perfil"
+        >
+          Hola, {{ user.first_name|default:user.username }}
+        </a>
+
+        <!-- Botón de Logout (Formulario por seguridad) -->
+        <form action="{% url 'user:logout' %}" method="post" class="inline">
+          {% csrf_token %}
+          <button
+            type="submit"
+            class="p-2 text-red-300 hover:text-red-100 hover:bg-red-500/20 rounded-full transition"
+            title="Cerrar Sesión"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 2.062-2.062m0 0-2.062-2.062m2.062 2.062H7.5"
+              />
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      {% else %}
+
+      <!-- Usuario NO Logueado -->
       <a
         href="{% url 'user:login' %}"
-        class="px-4 py-2 block py-2 bg-[var(--bg-button-primary)] text-white rounded hover:bg-[var(--bg-button-primary-hover)]"
+        class="text-sm font-bold px-5 py-2 bg-[var(--bg-button-primary)] text-white rounded-full hover:bg-[var(--bg-button-primary-hover)] transition shadow-md"
       >
         Login
       </a>
+
+      {% endif %}
     </div>
 
     <!-- BOTÓN MOBILE MENU -->
     <button
       id="navToggle"
-      class="md:hidden justify-self-end px-2 py-1 border rounded dark:border-gray-500"
+      class="md:hidden justify-self-end p-2 text-white border border-gray-600 rounded hover:bg-white/10"
     >
       ☰
     </button>
   </div>
 
   <!-- MENU MOBILE -->
-  <div id="mobileMenu" class="hidden flex-col mt-3 space-y-2 md:hidden">
-    <!-- SWITCH TEMA MOBILE -->
-    <button
-      id="themeToggleMobile"
-      class="w-full py-2 border rounded dark:border-gray-500 text-center"
-    >
-      🌓 Tema
-    </button>
-
+  <div
+    id="mobileMenu"
+    class="hidden flex-col mt-4 space-y-2 md:hidden pb-4 border-t border-gray-700 pt-4"
+  >
+    <!-- Enlaces comunes -->
     <a
       href="{% url 'core:index' %}"
-      class="block py-2 border-b dark:border-gray-600"
+      class="block py-2 px-2 text-gray-200 hover:text-white hover:bg-white/10 rounded"
       >Inicio</a
     >
     <a
       href="{% url 'school:school-list' %}"
-      class="block py-2 border-b dark:border-gray-600"
+      class="block py-2 px-2 text-gray-200 hover:text-white hover:bg-white/10 rounded"
       >Colegios</a
     >
     <a
       href="{% url 'core:about' %}"
-      class="block py-2 border-b dark:border-gray-600"
+      class="block py-2 px-2 text-gray-200 hover:text-white hover:bg-white/10 rounded"
       >Nosotros</a
     >
     <a
       href="{% url 'core:contact' %}"
-      class="block py-2 border-b dark:border-gray-600"
+      class="block py-2 px-2 text-gray-200 hover:text-white hover:bg-white/10 rounded"
       >Contacto</a
     >
 
-    <a
-      href="{% url 'user:login' %}"
-      class="block py-2 bg-[var(--bg-button-primary)] text-white text-center rounded hover:bg-[var(--bg-button-primary-hover)]"
-    >
-      Login
-    </a>
+    <!-- Lógica de Usuario Mobile -->
+    <div class="border-t border-gray-700 mt-2 pt-2 space-y-2">
+      <button
+        id="themeToggleMobile"
+        class="w-full text-left py-2 px-2 text-gray-200 hover:text-white hover:bg-white/10 rounded"
+      >
+        🌓 Cambiar Tema
+      </button>
+
+      {% if user.is_authenticated %}
+      <!-- Perfil Mobile -->
+      <a
+        href="{% url 'user:user-profile' %}"
+        class="block py-2 px-2 text-blue-300 hover:text-blue-100 hover:bg-white/10 rounded font-semibold"
+      >
+        👤 Mi Perfil ({{ user.username }})
+      </a>
+
+      <!-- Logout Mobile -->
+      <form action="{% url 'user:logout' %}" method="post" class="w-full">
+        {% csrf_token %}
+        <button
+          type="submit"
+          class="w-full text-left py-2 px-2 text-red-400 hover:text-red-200 hover:bg-white/10 rounded font-semibold"
+        >
+          🚪 Cerrar Sesión
+        </button>
+      </form>
+      {% else %}
+      <!-- Login Mobile -->
+      <a
+        href="{% url 'user:login' %}"
+        class="block mt-2 py-2 bg-[var(--bg-button-primary)] text-white text-center rounded hover:bg-[var(--bg-button-primary-hover)]"
+      >
+        Iniciar Sesión
+      </a>
+      {% endif %}
+    </div>
   </div>
 </nav>

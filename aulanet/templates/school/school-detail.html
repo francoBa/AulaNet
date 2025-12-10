@@ -1,34 +1,148 @@
-{% extends 'layouts/general-layout.html' %}
+{% extends "layouts/general-layout.html" %}
+{% load static %}
 
-{% block title %} {{ school.name }} {% endblock %}
+{% block title %}{{ school.name }} — AulaNet{% endblock %}
 
 {% block page_content %}
-<section class="max-w-5xl mx-auto px-4 py-10">
+<section class="container mx-auto py-10">
 
-  <h1 class="text-3xl font-main font-bold text-[var(--color-main)] mb-4">
-    {{ school.name }}
-  </h1>
+    <!-- Nombre + Rating promedio -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+        <h1 class="text-3xl font-bold dark:text-white">
+            {{ school.name }}
+        </h1>
 
-  <p class="text-gray-600 dark:text-gray-300 font-secondary mb-6">
-    {{ school.city }}
-  </p>
+        <div class="flex items-center mt-3 sm:mt-0">
+            {% for n in 1|add:"0"|make_list %}
+            {% endfor %}
+            {% for n in "12345" %}
+                {% if school.rating >= forloop.counter %}
+                    <span class="text-yellow-400 text-2xl">★</span>
+                {% else %}
+                    <span class="text-gray-400 dark:text-gray-600 text-2xl">★</span>
+                {% endif %}
+            {% endfor %}
 
-  {% if school.image %}
-  <img src="{{ school.image.url }}" class="w-full rounded-xl shadow-lg mb-8" />
-  {% endif %}
+            <span class="ml-2 dark:text-gray-300">
+                <strong>{{ school.rating }}</strong>/5
+                <span class="text-gray-500">({{ school.rating_count }} votos)</span>
+            </span>
+        </div>
+    </div>
 
-  {% if school.description %}
-  <p class="text-gray-700 dark:text-gray-300 font-secondary leading-relaxed">
-    {{ school.description }}
-  </p>
-  {% endif %}
+    <!-- Imagen + Datos -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Imagen -->
+        <div>
+            {% if school.image %}
+                <img src="{{ school.image.url }}" class="rounded-xl shadow" alt="{{ school.name }}">
+            {% else %}
+                <img src="{% static 'img/no-image.png' %}" 
+                     class="rounded-xl shadow" alt="Sin imagen">
+            {% endif %}
+        </div>
 
-  <div class="mt-8">
-    <a href="{% url 'school:school-list' %}"
-       class="text-[var(--color-secondary)] underline">
-      ← Volver al listado
-    </a>
-  </div>
+        <!-- Info -->
+        <div class="md:col-span-2 dark:text-gray-200">
+
+            <p class="mb-2">
+                <strong class="font-semibold">Ciudad:</strong> {{ school.city }}
+            </p>
+
+            <p class="mb-2">
+                <strong class="font-semibold">Tipo:</strong> {{ school.get_school_type_display }}
+            </p>
+
+            <p class="mt-4 text-gray-700 dark:text-gray-300">
+                {{ school.description|default:"Sin descripción disponible." }}
+            </p>
+
+        </div>
+    </div>
+
+    <hr class="my-10 border-gray-300 dark:border-gray-700">
+
+    <!-- FORMULARIO DE RATING -->
+    <h2 class="text-2xl font-bold mb-4 dark:text-white">Calificar este colegio</h2>
+
+    {% if not request.user.is_authenticated %}
+
+        <p class="text-gray-600 dark:text-gray-300">
+            Debes iniciar sesión para calificar.
+        </p>
+
+    {% else %}
+
+        <form method="POST" action="{% url 'school:review-school' %}">
+            {% csrf_token %}
+            <input type="hidden" name="school" value="{{ school.id }}">
+
+            <div class="rating flex flex-row text-4xl mb-4">
+                {% for i in "54321" %}
+                    <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}"
+                           class="hidden"
+                           {% if user_rating and user_rating|stringformat:"s" == i %}checked{% endif %}>
+
+                    <label for="star{{ i }}" class="cursor-pointer text-gray-400 hover:text-yellow-400 transition">
+                        ★
+                    </label>
+                {% endfor %}
+            </div>
+
+            <button class="px-5 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">
+                Enviar Calificación
+            </button>
+
+            {% if user_rating %}
+            <p class="mt-2 text-green-600 dark:text-green-400">
+                Ya calificaste: <strong>{{ user_rating }} ★</strong>
+            </p>
+            {% endif %}
+        </form>
+
+        <style>
+            .rating input:checked ~ label {
+                color: gold;
+            }
+        </style>
+
+    {% endif %}
+
+    <hr class="my-10 border-gray-300 dark:border-gray-700">
+
+    <!-- REVIEWS -->
+    <h2 class="text-2xl font-bold dark:text-white mb-4">Opiniones de usuarios</h2>
+
+    {% if reviews %}
+        {% for r in reviews %}
+            <div class="border dark:border-gray-700 rounded-xl p-4 mb-4 dark:bg-gray-800">
+
+                <p class="font-semibold dark:text-white">
+                    {{ r.user.username }}
+                </p>
+
+                <div class="flex flex-row mt-1 mb-2">
+                    {% for i in "12345" %}
+                        {% if r.value >= forloop.counter %}
+                            <span class="text-yellow-400 text-xl">★</span>
+                        {% else %}
+                            <span class="text-gray-400 dark:text-gray-600 text-xl">★</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <p class="text-gray-700 dark:text-gray-300">
+                    {{ r.value }} estrellas
+                </p>
+
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-gray-600 dark:text-gray-400">
+            Todavía no hay calificaciones.
+        </p>
+    {% endif %}
 
 </section>
 {% endblock %}
