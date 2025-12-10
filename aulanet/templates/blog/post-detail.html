@@ -2,193 +2,156 @@
 {% load static %}
 {% load score_extras %}
 
-{% block title %}
-{{ post.title }}
-{% endblock title %}
+{% block title %}{{ post.title }}{% endblock title %}
 
 {% block page_content %}
 
-<style>
-    body {
-        margin: 0;
-        font-family: "Inter", sans-serif;
-        background: #f7f7f7;
-    }
+<div class="max-w-4xl mx-auto bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg mt-8">
 
-    .post-header {
-        background: #0a6a4a;
-        color: white;
-        padding: 60px 40px;
-        text-align: center;
-    }
-    .post-header h1 {
-        margin: 0;
-        font-size: 48px;
-        font-weight: 700;
-    }
-    .post-header p {
-        margin-top: 10px;
-        font-size: 18px;
-    }
+    <!-- Título -->
+    <h1 class="text-3xl font-bold mb-3 dark:text-white">
+        {{ post.title }}
+    </h1>
 
-    .post-container {
-        max-width: 900px;
-        margin: 30px auto 60px auto;
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        overflow: hidden;
-    }
-
-    .post-image {
-        width: 100%;
-        height: 400px;
-        object-fit: cover;
-    }
-
-    .post-content {
-        padding: 30px;
-    }
-
-    .post-body {
-        font-size: 16px;
-        line-height: 1.6;
-        color: #444;
-    }
-
-    /* Comentarios */
-    .comments-section {
-        margin-top: 40px;
-        border-top: 1px solid #eee;
-        padding-top: 20px;
-    }
-
-    .comment-card {
-        padding: 15px;
-        border-radius: 12px;
-        background: #f7f7f7;
-        margin-bottom: 15px;
-    }
-
-    .comment-user {
-        font-weight: 600;
-        margin-bottom: 5px;
-    }
-
-    .comment-date {
-        font-size: 12px;
-        color: #888;
-        margin-bottom: 10px;
-    }
-
-    .comment-actions {
-        margin-top: 5px;
-    }
-
-    .comment-btn {
-        background: #0a6a4a;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-size: 12px;
-        margin-right: 5px;
-        display: inline-block;
-    }
-    .comment-btn:hover {
-        background: #09563c;
-    }
-
-    .comment-form textarea {
-        width: 100%;
-        padding: 12px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        margin-bottom: 10px;
-        resize: vertical;
-    }
-    .comment-form button {
-        background: #0a6a4a;
-        color: white;
-        padding: 10px 16px;
-        border-radius: 10px;
-        border: none;
-        cursor: pointer;
-    }
-    .comment-form button:hover {
-        background: #09563c;
-    }
-</style>
-
-<header class="post-header">
-    <h1>{{ post.title }}</h1>
-    {% if post.author.school %}
-        <p>{{ post.author.username }} - Escuela: {{ post.author.school.name }}</p>
-        {% with scores=post.author.school.user_set.all|score_values %}
-            {% if scores %}
-                <p>Puntuación promedio: {{ scores|average_score }}</p>
+    <!-- Info autor + escuela + puntuación -->
+    <div class="text-sm text-gray-700 dark:text-gray-300 mb-4">
+        <p class="font-medium">
+            {{ post.author.username }}
+            {% if post.author.school %}
+                — Escuela: {{ post.author.school.name }}
             {% endif %}
-        {% endwith %}
+        </p>
+
+        {% if post.author.school %}
+            {% with scores=post.author.school.user_set.all|score_values %}
+            {% if scores %}
+                <p class="text-gray-600 dark:text-gray-400">
+                    ⭐ Puntuación promedio: {{ scores|average_score }}
+                </p>
+            {% endif %}
+            {% endwith %}
+        {% endif %}
+        
+        <p class="text-gray-500 dark:text-gray-400">
+            Publicado el {{ post.created_at|date:"d M Y H:i" }}
+        </p>
+    </div>
+
+    <!-- Imagen -->
+    {% if post.image %}
+        <img src="{{ post.image.url }}" class="w-full max-h-[420px] object-cover rounded-lg mb-6 border border-gray-300 dark:border-gray-700">
     {% endif %}
-</header>
 
-<div class="post-container">
+    <!-- Contenido -->
+    <div class="prose dark:prose-invert max-w-none dark:text-gray-300 text-lg">
+        {{ post.content|safe }}
+    </div>
 
-    <!-- BOTONES EDITAR / ELIMINAR (autor o staff) -->
+    <!-- Editar / Eliminar -->
     {% if request.user.is_authenticated and request.user == post.author or request.user.is_staff %}
-    <div style="padding: 20px; display: flex; gap: 15px;">
+    <div class="flex gap-3 mt-6">
         <a href="{% url 'blog:post-edit' slug=post.slug %}"
-           style="background:#0a6a4a; padding:10px 16px; border-radius:10px; color:white; text-decoration:none;">
-           ✏️ Editar Post
+           class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            ✏️ Editar
         </a>
 
         <a href="{% url 'blog:post-delete' slug=post.slug %}"
-           style="background:#c00000; padding:10px 16px; border-radius:10px; color:white; text-decoration:none;">
-           🗑️ Eliminar Post
+           class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+            🗑️ Eliminar
         </a>
     </div>
     {% endif %}
-    <!-- FIN -->
 
-    <img src="{{ post.image.url|default:'https://placehold.co/900x400' }}" class="post-image" />
-    <div class="post-content">
-        <div class="post-body">
-            {{ post.content|linebreaks }}
-        </div>
-    </div>
+    <hr class="my-10 border-gray-300 dark:border-gray-700" />
 
-    <!-- Comentarios -->
-    <div class="comments-section">
-        <h3>Comentarios</h3>
+    <!-- Título de comentarios -->
+    <h2 class="text-2xl font-bold mb-6 dark:text-white">Comentarios</h2>
+
+    <!-- Listado de comentarios -->
+    <div class="space-y-5">
 
         {% for comment in comments %}
-        <div class="comment-card">
-            <div class="comment-user">{{ comment.author.username }}</div>
-            <div class="comment-date">{{ comment.created_at|date:"d/m/Y H:i" }}</div>
-            <div class="comment-text">{{ comment.content|linebreaks }}</div>
-            <div class="comment-actions">
+            <div class="p-5 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 shadow" >
+
+                <div class="flex justify-between items-center mb-1">
+                    <span class="font-semibold text-gray-900 dark:text-white">
+                        {{ comment.author.username }}
+                    </span>
+
+                    <span class="text-xs text-gray-600 dark:text-gray-400">
+                        {{ comment.created_at|date:"d M Y H:i" }}
+                    </span>
+                </div>
+
+                <p class="text-gray-800 dark:text-gray-300 leading-relaxed">
+                    {{ comment.content|linebreaks }}
+                </p>
+
+                <!-- Botones de editar/eliminar comentario -->
                 {% if user.is_staff or comment.author == user %}
-                    <a href="{% url 'blog:comment-edit' comment.id %}" class="comment-btn">Editar</a>
-                    <form action="{% url 'blog:comment-delete' comment.id %}" method="post" style="display:inline;">
+                <div class="flex gap-2 mt-3">
+                    <a href="{% url 'blog:comment-edit' comment.id %}"
+                       class="px-3 py-1 bg-blue-600 text-white rounded-md text-xs hover:bg-blue-700">
+                        Editar
+                    </a>
+
+                    <form action="{% url 'blog:comment-delete' comment.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="comment-btn">Eliminar</button>
+                        <button type="submit"
+                                class="px-3 py-1 bg-red-600 text-white rounded-md text-xs hover:bg-red-700">
+                            Eliminar
+                        </button>
                     </form>
+                </div>
                 {% endif %}
+
             </div>
-        </div>
         {% empty %}
-        <p>No hay comentarios aún.</p>
+
+            <div class="p-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-center text-gray-600 dark:text-gray-400">
+                No hay comentarios todavía.
+            </div>
+
         {% endfor %}
 
-        <div class="comment-form">
-            <h4>Agregar un comentario</h4>
-            <form method="post" action="{% url 'blog:comment-add' post.slug %}">
-                {% csrf_token %}
-                {{ comment_form.as_p }}
-                <button type="submit">Enviar</button>
-            </form>
-        </div>
     </div>
+
+    <!-- Formulario agregar comentario -->
+<div class="mt-8">
+
+    {% if request.user.is_authenticated %}
+
+        <label class="block font-semibold dark:text-white mb-2">Agregar un comentario</label>
+
+        <form method="post" action="{% url 'blog:comment-add' post.slug %}" class="space-y-3">
+            {% csrf_token %}
+            
+            <div class="bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 p-3 rounded-lg">
+                {{ comment_form.content }}
+            </div>
+
+            <!-- Fuerza que las letras del textarea sean negras incluso en dark mode -->
+            <style>
+                textarea, textarea * {
+                    color: black !important;
+                }
+            </style>
+
+            <button type="submit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Publicar comentario
+            </button>
+        </form>
+
+    {% else %}
+        <p class="dark:text-gray-400">
+            <a href="{% url 'user:login' %}" class="text-blue-500">Inicia sesión</a> para comentar.
+        </p>
+    {% endif %}
+
+</div>
+
+
 </div>
 
 {% endblock page_content %}

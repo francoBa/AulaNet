@@ -1,62 +1,85 @@
 {% extends 'layouts/general-layout.html' %}
 
 {% block title %}
-  Perfil de Usuario
+  Perfil de {{ profile_user.username }}
 {% endblock %}
 
 {% block page_content %}
 {% load static %}
 <div class="min-h-full w-full py-8">
+
+    <!-- Datos de Usuario -->
     <h1 class="max-w-4xl mx-auto text-3xl font-bold mb-4">Datos de Usuario</h1>
-
-    <!-- Perfil Usuario -->
-    <section class="mb-8 max-w-4xl mx-auto px-4 py-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700">
-        <div class="flex flex-row items-start gap-8">
-            <div class='w-[200px] h-[200px] bg-gray-500 rounded-full flex items-center justify-center'> 
-                <img src="{{ user.get_avatar_url }}" alt="Avatar" class="rounded-full object-cover w-full h-full"> 
+    <section class="mb-8 max-w-4xl mx-auto px-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-slate-700">        
+        <div class="flex flex-row items-top gap-8 py-4">
+            <div class='w-[200px] h-[200px] rounded-full flex items-center justify-center bg-gray-500'> 
+                <img src="{{ profile_user.get_avatar_url }}" alt="Avatar" class="rounded-full object-cover w-full h-full"> 
             </div>
-
+            
             <div class="flex flex-col gap-2 mt-4">
-                <h2 class="text-xl font-semibold">{{ user.get_full_name }}</h2>
-                {% if user.role %}<p class="text-gray-400 text-sm">{{ user.role }}</p>{% endif %}
-                <p class="text-gray-400 text-sm">{{ user.email }}</p>
-                {% if user.identification %}<p class="text-gray-400 text-sm">{{ user.identification }}</p>{% endif %}
-                {% if user.city %}<p class="text-gray-400 text-sm">Ciudad: {{ user.city }}</p>{% endif %}
-                {% if user.school %}<p class="text-gray-400 text-sm">Escuela: {{ user.school.name }}</p>{% endif %}
-                {% if user.score %}<p class="text-gray-400 text-sm">Puntuación: {{ user.score }}</p>{% endif %}
+                <h2 class="text-xl font-semibold">{{ profile_user.first_name }} {{ profile_user.last_name }}</h2>
+                <p class="text-gray-300 text-sm">{{ profile_user.role|default:"Usuario" }}</p>
+                <p class="text-gray-350 text-sm">{{ profile_user.identification|default:"-" }}</p>
+                <p class="text-gray-400 text-sm">{{ profile_user.email }}</p>
+                {% if profile_user.city %}
+                    <p class="text-gray-400 text-sm">Ciudad: {{ profile_user.city }}</p>
+                {% endif %}
+                {% if profile_user.age %}
+                    <p class="text-gray-400 text-sm">Edad: {{ profile_user.age }} años</p>
+                {% endif %}
             </div>
-
+            
             <div class="ml-auto mt-auto mb-2 flex flex-col h-full">
-                <a href="{% url 'user:user-update' %}" class="px-3 py-1 bg-blue-600 rounded-md text-white mt-auto hover:bg-blue-700 transition-colors">Editar Perfil</a>
-            </div>
-        </div>
+                <a href="{% url 'user:user-update' %}" class="px-3 py-1 bg-blue-600 rounded-md text-white mt-auto">Editar Perfil</a>                
+            </div>            
+        </div>        
     </section>
 
-    <!-- Últimos posts -->
+    <!-- Últimos Posts del Usuario -->
     <h3 class="max-w-4xl mx-auto text-2xl font-bold mb-4">Últimos posts</h3>
-    <section class="pt-4 mb-8 max-w-4xl mx-auto px-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700">
-        <div class="flex flex-col gap-4">
-            {% for post in latest_posts %}
-                {% include 'components/commons/post-card.html' with post=post %}
-            {% empty %}
-                <p class="text-gray-500 text-sm">No hay posts recientes.</p>
-            {% endfor %}
-        </div>
+    <section class="pt-8 mb-8 max-w-4xl mx-auto px-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-slate-700">        
+        {% if latest_posts %}
+            <ul class="flex flex-col gap-4">
+                {% for post in latest_posts %}
+                    <li class="p-4 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 hover:shadow-md transition">
+                        <a href="{% url 'blog:post-detail' post.slug %}" class="text-lg font-semibold text-blue-600 hover:underline">
+                            {{ post.title }}
+                        </a>
+                        <p class="text-gray-500 text-sm mt-1">{{ post.created_at|date:"d/m/Y H:i" }}</p>
+                        <p class="text-gray-700 dark:text-gray-300 mt-2">{{ post.content|truncatechars:150 }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-gray-400">Todavía no has creado ningún post.</p>
+        {% endif %}
         <div class="mt-4 text-center">
             <a href="{% url 'blog:post-list' %}" class="font-secondary text-[var(--color-secondary)] hover:underline text-sm font-semibold">Ver todos los posts</a>
         </div>
     </section>
 
-    <!-- Últimos comentarios -->
-    <h3 class="max-w-4xl mx-auto text-2xl font-bold mb-4">Últimos Comentarios</h3>
-    <section class="pt-4 mb-8 max-w-4xl mx-auto px-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700">
-        <div class="flex flex-col gap-4">
-            {% for comment in latest_comments %}
-                {% include 'components/commons/comment-card.html' with comment=comment %}
-            {% empty %}
-                <p class="text-gray-500 text-sm">No hay comentarios recientes.</p>
-            {% endfor %}
-        </div>
+    <!-- Últimos Comentarios del Usuario -->
+    <h3 class="max-w-4xl mx-auto text-2xl font-bold mb-4">Últimos comentarios</h3>
+    <section class="pt-8 mb-8 max-w-4xl mx-auto px-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-slate-700">
+        {% if latest_comments %}
+            <ul class="flex flex-col gap-4">
+                {% for comment in latest_comments %}
+                    <li class="p-4 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 hover:shadow-md transition">
+                        <p class="text-gray-700 dark:text-gray-300">{{ comment.content }}</p>
+                        <p class="text-gray-500 text-sm mt-1">
+                            En: 
+                            <a href="{% url 'blog:post-detail' comment.post.slug %}" class="text-blue-600 hover:underline">
+                                {{ comment.post.title }}
+                            </a>
+                            — {{ comment.created_at|date:"d/m/Y H:i" }}
+                        </p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-gray-400">No has realizado ningún comentario.</p>
+        {% endif %}
     </section>
+
 </div>
 {% endblock %}

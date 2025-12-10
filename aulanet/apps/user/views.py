@@ -1,4 +1,3 @@
-# apps/user/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
@@ -38,11 +37,11 @@ def auth_register(request):
 
 @login_required
 def user_profile(request):
-    # Traer últimos 10 posts y comentarios del usuario
-    latest_posts = request.user.post_set.all().order_by('-created_at')[:10]
-    latest_comments = request.user.comment_set.all().order_by('-created_at')[:10]
+    latest_posts = request.user.posts.all().order_by('-created_at')[:10]
+    latest_comments = request.user.comments.all().order_by('-created_at')[:10]
+
     return render(request, "user/user-profile.html", {
-        "user": request.user,
+        "profile_user": request.user,
         "latest_posts": latest_posts,
         "latest_comments": latest_comments,
     })
@@ -57,4 +56,5 @@ def user_update(request):
             return redirect("user:user-profile")
     else:
         form = UserUpdateForm(instance=request.user)
+
     return render(request, "user/user-update.html", {"form": form})

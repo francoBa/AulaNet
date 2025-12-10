@@ -1,18 +1,70 @@
-{% extends 'layouts/general-layout.html' %}
+{% extends 'layouts/base-layout.html' %}
 
-{% block title_layout %} Editar Post {% endblock %}
+{% block title_layout %}
+    Editar post
+{% endblock title_layout %}
 
 {% block content_layout %}
-<h2>Editar Post</h2>
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
+<div class="max-w-3xl mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg">
 
-    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
-    <a href="{% url 'blog:post-detail' slug=object.slug %}" class="btn btn-secondary">
-        Cancelar
-    </a>
-</form>
+    <h1 class="text-2xl font-bold mb-4 dark:text-white">
+        Editar publicación:
+        <span class="text-blue-600">{{ post.title }}</span>
+    </h1>
 
-{% endblock %}
+    <form method="POST" enctype="multipart/form-data" class="space-y-4">
+        {% csrf_token %}
+
+        <!-- Título -->
+        <div>
+            <label class="block font-medium dark:text-white">Título</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <p class="text-red-500 text-sm">{{ form.title.errors }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Categoría -->
+        <div>
+            <label class="block font-medium dark:text-white">Categoría</label>
+            {{ form.category }}
+        </div>
+
+        <!-- Contenido -->
+        <div>
+            <label class="block font-medium dark:text-white">Contenido</label>
+            {{ form.content }}
+        </div>
+
+        <!-- Imagen -->
+        <div>
+            <label class="block font-medium dark:text-white">Imagen de portada</label>
+
+            {% if post.image %}
+                <p class="dark:text-gray-300 text-sm mb-2">Imagen actual:</p>
+                <img src="{{ post.image.url }}"
+                     class="h-40 rounded-md mb-3 border border-gray-300 dark:border-gray-700 object-cover">
+            {% endif %}
+
+            {{ form.image }}
+        </div>
+
+        <!-- Botones -->
+        <div class="flex justify-between mt-6">
+            <a href="{% url 'blog:post-detail' post.slug %}"
+               class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">
+                Cancelar
+            </a>
+
+            <button type="submit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Guardar Cambios
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock content_layout %}

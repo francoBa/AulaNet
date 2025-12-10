@@ -1,5 +1,3 @@
-# C:\Users\the_s\OneDrive\Escritorio\Escuela\AulaNet\aulanet\apps\blog\views.py
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
@@ -21,25 +19,39 @@ from apps.school.forms import SchoolRatingForm
 # ==========================
 @method_decorator(login_required, name="dispatch")
 class PostCreateView(View):
-    def get(self, request, school_slug):
+
+    def dispatch(self, request, school_slug, *args, **kwargs):
         school = get_object_or_404(School, slug=school_slug)
+
+        # ❌ Si el usuario NO pertenece a la escuela
+        if request.user.school != school:
+            messages.error(request, "No puedes crear posts en una escuela que no es la tuya.")
+
+            # IMPORTANTE: Renderiza la vista de la escuela SIN redirigir
+            from apps.school.views import SchoolDetailView
+            return SchoolDetailView.as_view()(request, slug=school.slug)
+
+        self.school = school
+        return super().dispatch(request, school_slug, *args, **kwargs)
+
+    def get(self, request, school_slug):
         form = PostForm()
-        return render(request, "blog/post-new.html", {"form": form, "school": school})
+        return render(request, "blog/post-new.html", {"form": form, "school": self.school})
 
     def post(self, request, school_slug):
-        school = get_object_or_404(School, slug=school_slug)
         form = PostForm(request.POST, request.FILES)
 
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.school = school
+            post.school = self.school
             post.save()
 
             messages.success(request, "Tu post fue creado correctamente.")
             return redirect("blog:post-detail", slug=post.slug)
 
-        return render(request, "blog/post-new.html", {"form": form, "school": school})
+        return render(request, "blog/post-new.html", {"form": form, "school": self.school})
+
 
 
 # ==========================
@@ -106,6 +118,7 @@ class PostDetailView(DetailView):
         return context
 
 
+
 # ==========================
 # EDITAR POST (PRIVADO)
 # ==========================
@@ -113,6 +126,7 @@ class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = "blog/post-update.html"
+    context_object_name = "post"
 
     def test_func(self):
         post = self.get_object()
@@ -132,15 +146,13 @@ class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 # ==========================
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    template_name = "blog/post-delete.html"  
+    template_name = "blog/post-delete.html"
     context_object_name = "post"
 
-    # SOLO permite eliminar al autor
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
 
-    # A dónde redirige DESPUÉS de borrar
     def get_success_url(self):
         messages.success(self.request, "El post fue eliminado correctamente.")
         return reverse("blog:post-list")
@@ -166,12 +178,12 @@ class CommentAddView(View):
             comment.post = post
             comment.author = request.user
             comment.save()
-
             messages.success(request, "Comentario agregado correctamente.")
         else:
             messages.error(request, "Hubo un error al agregar el comentario.")
 
         return redirect("blog:post-detail", slug=slug)
+
 
 
 @method_decorator(login_required, name="dispatch")
@@ -203,6 +215,7 @@ class CommentEditView(View):
         return render(request, "blog/comment-edit.html", {"form": form})
 
 
+
 @method_decorator(login_required, name="dispatch")
 class CommentDeleteView(View):
     def post(self, request, pk):
@@ -217,13 +230,13 @@ class CommentDeleteView(View):
         return redirect("blog:post-detail", slug=comment.post.slug)
 
 
+
 # ==========================
 # PUNTUACIÓN DE ESCUELAS
 # ==========================
 @login_required
 def school_rating_view(request, school_slug, post_slug=None):
     school = get_object_or_404(School, slug=school_slug)
-
     post = get_object_or_404(Post, slug=post_slug, school=school) if post_slug else None
 
     if request.method == "POST":

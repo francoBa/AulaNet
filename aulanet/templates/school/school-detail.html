@@ -12,9 +12,16 @@
 
     {% if user.is_authenticated %}
         <a href="{% url 'blog:post-new' school.slug %}"
-           class="mb-6 inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+           class="mb-2 inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
            Crear Post sobre esta escuela
         </a>
+
+        {% if forbidden_create %}
+        <p class="text-red-600 dark:text-red-400 font-semibold mt-2">
+            No puedes crear posts en una escuela que no es la tuya.
+        </p>
+        {% endif %}
+
     {% else %}
         <p class="mb-6 text-gray-600 dark:text-gray-300">
             <a href="/user/login" class="text-indigo-500 underline">Inicia sesión</a> para crear un post.

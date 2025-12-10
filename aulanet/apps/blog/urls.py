@@ -1,4 +1,4 @@
-# C:\Users\the_s\OneDrive\Escritorio\Escuela\AulaNet\aulanet\apps\blog\urls.py
+
 
 from django.urls import path
 from .views import (
@@ -34,8 +34,9 @@ urlpatterns = [
 
     # Comentarios (PRIVADO)
     path("comment/add/<slug:slug>/", CommentAddView.as_view(), name="comment-add"),
-    path("comment/edit/<int:pk>/", CommentEditView.as_view(), name="comment-edit"),
-    path("comment/delete/<int:pk>/", CommentDeleteView.as_view(), name="comment-delete"),
+    path("comment/edit/<uuid:pk>/", CommentEditView.as_view(), name="comment-edit"),
+    path("comment/delete/<uuid:pk>/", CommentDeleteView.as_view(), name="comment-delete"),
+
 
     # Puntuación de escuela (PRIVADO) - USANDO slug
     path("school/<slug:school_slug>/rate/", school_rating_view, name="school-rate"),
