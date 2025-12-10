@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.forms import FileInput
 from .models import User
 
 INPUT_CLASSES = (
@@ -65,13 +66,13 @@ class UserUpdateForm(forms.ModelForm):
             "city",
             "birthdate",
             "school",
-            "type",
+            "related_school",
             "avatar",
         ]
         labels = {
             "first_name": "Nombres",
             "last_name": "Apellidos",
-            "type": "Relación con el colegio",
+            "related_school": "Relación con el colegio",
             "birthdate": "Fecha de Nacimiento",
         }
 
@@ -82,9 +83,9 @@ class UserUpdateForm(forms.ModelForm):
             field.widget.attrs["class"] = INPUT_CLASSES
 
         self.fields["birthdate"].widget = forms.DateInput(
-            attrs={"type": "date", "class": INPUT_CLASSES}
+            format="%Y-%m-%d", attrs={"type": "date", "class": INPUT_CLASSES}
         )
 
-        self.fields["avatar"].widget.attrs.update(
-            {"class": "hidden js-file-input", "id": "avatar"}
+        self.fields["avatar"].widget = FileInput(
+            attrs={"class": "hidden js-file-input", "id": "id_avatar"}
         )
