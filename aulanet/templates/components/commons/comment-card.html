@@ -1,34 +1,121 @@
 <article
-        class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center border border-gray-100 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-750 transition-colors"
-      >
-        <!-- Thumbnail -->
-        <div
-          class="w-full sm:w-24 h-24 bg-gray-200 rounded-md flex-shrink-0 overflow-hidden"
+  class="flex gap-4 p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-100 dark:border-slate-700"
+  id="comment-block-{{ comment.id }}"
+>
+  <!-- Avatar -->
+  <div class="flex-shrink-0">
+    <img
+      class="w-10 h-10 rounded-full object-cover"
+      src="{{ comment.author.avatar.url }}"
+      alt="{{ comment.author.username }}"
+    />
+  </div>
+
+  <div class="flex-grow">
+    <div class="flex justify-between items-start">
+      <div>
+        <h5 class="font-bold text-gray-900 dark:text-white text-sm">
+          {{ comment.author.username }}
+        </h5>
+        <span class="text-xs text-gray-500"
+          >{{ comment.created_at|timesince }} atrás</span
         >
-          <img
-            src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=200&auto=format&fit=crop"
-            class="w-full h-full object-cover"
-            alt="Post"
-          />
-        </div>
+      </div>
 
-        <!-- Info -->
-        <div class="flex-grow">
-          <h4 class="font-main font-bold text-lg text-[var(--color-main)]">
-            Fiestas patrias en el colegio
-          </h4>
-          <div class="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400 font-secondary mt-1">
-            <span>Resistencia</span>
-            <span>•</span>
-            <span>Christian P.</span>
-            <span>•</span>
-            <span>Hace 2 días</span>
-          </div>
-          <div class="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400 font-secondary mt-1">
-            <span>Comentario: </span>
-            <span>¡Me encantó la celebración de las fiestas patrias en el colegio! Fue una experiencia inolvidable para todos nosotros.</span>
-          </div>
+      <!-- BOTONES DE ACCIÓN -->
+      <!-- prettier-ignore -->
+      {% if request.user == comment.author or request.user == comment.post.author or perms.school.change_school and request.user.school == comment.post.school %}
+      <div class="flex gap-2">
+        <!-- Botón Editar -->
+        {% if request.user == comment.author %}
+        <button
+          onclick="toggleEditComment('{{ comment.id }}')"
+          class="text-gray-400 hover:text-blue-500 transition"
+          title="Editar"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+            ></path>
+          </svg>
+        </button>
+        {% endif %}
 
-          <div class="mt-2 text-[var(--bg-icons)] text-sm">★ 5.0</div>
-        </div>
+        <!-- Botón Borrar -->
+        <button
+          type="button"
+          data-url="{% url 'blog:comment-delete' comment.id %}"
+          onclick="openDeleteModal(this.dataset.url)"
+          class="text-gray-400 hover:text-red-500 transition"
+          title="Eliminar"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- ESTADO 1: TEXTO -->
+    <div
+      id="comment-content-{{ comment.id }}"
+      class="mt-2 text-gray-700 dark:text-gray-300 text-sm"
+    >
+      {{ comment.content|linebreaksbr }}
+    </div>
+
+    <!-- ESTADO 2: FORMULARIO -->
+    {% if request.user == comment.author %}
+    <form
+      id="comment-edit-form-{{ comment.id }}"
+      action="{% url 'blog:comment-update' comment.id %}"
+      method="POST"
+      class="hidden mt-2"
+    >
+      {% csrf_token %}
+      <textarea
+        name="content"
+        rows="3"
+        class="w-full p-2 text-sm rounded-md border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      >
+{{ comment.content }}</textarea
+      >
+
+      <div class="flex justify-end gap-2 mt-2">
+        <button
+          type="button"
+          onclick="toggleEditComment('{{ comment.id }}')"
+          class="px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md transition"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="px-3 py-1 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition"
+        >
+          Guardar Cambios
+        </button>
+      </div>
+    </form>
+    {% endif %}
+  </div>
 </article>

@@ -1,0 +1,187 @@
+{% extends "layouts/general-layout.html" %}
+<!-- prettier-ignore -->
+{% block title %}
+    {% if object %}
+        Editar post: {{ object.title }}
+    {% else %}
+        Crear nuevo post
+    {% endif %}
+    — AulaNet
+{% endblock %}
+
+{% block page_content %}
+<div class="flex flex-col items-center pt-8 pb-16 px-4 mx-auto">
+  <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-2">
+    {% if object %}Editar Publicación{% else %}Crear Nuevo Post{% endif %}
+  </h1>
+  <p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
+    <!-- prettier-ignore -->
+    {% if object %}
+            Estás modificando la publicación:
+    <strong>"{{ object.title }}"</strong>
+    <!-- prettier-ignore -->
+    {% else %} 
+        Comparte noticias, eventos o experiencias con la comunidad.
+    {% endif %}
+  </p>
+
+  <div
+    class="w-full max-w-2xl shadow-2xl rounded-lg bg-white dark:bg-slate-800 p-6 sm:p-8"
+  >
+    <h2
+      class="text-3xl font-bold text-blue-700 dark:text-blue-400 text-center mb-6"
+    >
+      Formulario de Publicación
+    </h2>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+      {% csrf_token %}
+
+      <div>
+        <label
+          for="{{ form.title.id_for_label }}"
+          class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >{{ form.title.label }}</label
+        >
+        {{ form.title }}
+      </div>
+      <div>
+        <label
+          for="{{ form.category.id_for_label }}"
+          class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >{{ form.category.label }}</label
+        >
+        {{ form.category }}
+      </div>
+      <div>
+        <label
+          for="{{ form.content.id_for_label }}"
+          class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >{{ form.content.label }}</label
+        >
+        {{ form.content }}
+      </div>
+
+      <div>
+        <label
+          class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >{{ form.image.label }}</label
+        >
+
+        <!-- prettier-ignore -->
+        {% if object.image and object.image.url != 'posts/default/post-default.jpg' %}
+        <div class="mb-3">
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+            Imagen actual:
+          </p>
+          <img
+            src="{{ object.image.url }}"
+            alt="Imagen de portada actual"
+            class="max-h-32 rounded-lg shadow-md"
+          />
+        </div>
+        {% endif %}
+
+        <label
+          class="flex items-center justify-between w-full p-4 border-2 border-dashed border-gray-300 dark:border-slate-600 rounded-lg cursor-pointer bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 transition group"
+        >
+          <span
+            class="text-gray-500 dark:text-gray-400 italic group-hover:text-gray-700 dark:group-hover:text-gray-200 transition js-file-name"
+            data-default-text="Seleccionar imagen de portada..."
+          >
+            Seleccionar imagen de portada...
+          </span>
+          <span class="text-gray-400 group-hover:text-blue-500 transition">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+              ></path>
+            </svg>
+          </span>
+          {{ form.image }}
+        </label>
+      </div>
+
+      <div>
+        <label
+          for="{{ form.extra_images.id_for_label }}"
+          class="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >{{ form.extra_images.label }}</label
+        >
+        <label
+          class="flex items-center justify-between w-full p-4 border-2 border-dashed border-gray-300 dark:border-slate-600 rounded-lg cursor-pointer bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 transition group"
+        >
+          <span
+            class="text-gray-500 dark:text-gray-400 italic group-hover:text-gray-700 dark:group-hover:text-gray-200 transition js-file-name"
+            data-default-text="Seleccionar imágenes..."
+          >
+            Seleccionar imágenes...
+          </span>
+          <span class="text-gray-400 group-hover:text-blue-500 transition">
+            <svg
+              class="w-6 h-6"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 8v8a5 5 0 1 0 10 0V6.5a3.5 3.5 0 1 0-7 0V15a2 2 0 0 0 4 0V8"
+              />
+            </svg>
+          </span>
+          {{ form.extra_images }}
+        </label>
+      </div>
+
+      <div class="flex items-center space-x-3 pt-2">
+        {{ form.allow_comments }}
+        <label
+          for="{{ form.allow_comments.id_for_label }}"
+          class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
+        >
+          {{ form.allow_comments.label }}
+        </label>
+      </div>
+
+      <!-- Botones -->
+      <div
+        class="pt-4 flex flex-col sm:flex-row items-center sm:space-x-4 space-y-3 sm:space-y-0"
+      >
+        <button
+          type="submit"
+          class="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 rounded-lg shadow-md transition duration-150 text-lg uppercase"
+        >
+          <!-- prettier-ignore -->
+          {% if object %}
+            Guardar Cambios
+          {% else %}
+            Publicar Post
+          {% endif %}
+        </button>
+        <a
+          href="{% if object %}{% url 'blog:post-detail' slug=object.slug %}{% else %}{% url 'blog:post-list' %}{% endif %}"
+          class="w-full text-center bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 rounded-lg shadow-md transition duration-150 text-lg uppercase"
+        >
+          Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

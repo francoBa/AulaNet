@@ -1,31 +1,94 @@
 <article
-        class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center border border-gray-100 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-750 transition-colors"
-      >
-        <!-- Thumbnail -->
-        <div
-          class="w-full sm:w-24 h-24 bg-gray-200 rounded-md flex-shrink-0 overflow-hidden"
-        >
-          <img
-            src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=200&auto=format&fit=crop"
-            class="w-full h-full object-cover"
-            alt="Post"
-          />
-        </div>
+  class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 flex flex-col sm:flex-row gap-4 items-start hover:shadow-md transition-shadow duration-300"
+>
+  <div
+    class="w-full sm:w-24 h-24 bg-gray-200 rounded-md flex-shrink-0 overflow-hidden"
+  >
+    {% if post.image %}
+    <img
+      src="{{ post.image.url }}"
+      class="w-full h-full object-cover"
+      alt="{{ post.title }}"
+    />
+    {% else %}
+    <div
+      class="w-full h-full flex items-center justify-center bg-gray-300 text-gray-500"
+    >
+      <span class="text-xs">Sin img</span>
+    </div>
+    {% endif %}
+  </div>
 
-        <!-- Info -->
-        <div class="flex-grow">
-          <h4 class="font-main font-bold text-lg text-[var(--color-main)]">
-            Fiestas patrias en el colegio
-          </h4>
-          <div
-            class="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400 font-secondary mt-1"
-          >
-            <span>Resistencia</span>
-            <span>•</span>
-            <span>Christian P.</span>
-            <span>•</span>
-            <span>Hace 2 días</span>
-          </div>
-          <div class="mt-2 text-[var(--bg-icons)] text-sm">★ 5.0</div>
-        </div>
+  <div class="flex-grow">
+    <h4
+      class="font-main font-bold text-lg text-[var(--color-main)] dark:text-white"
+    >
+      <a href="{% url 'blog:post-detail' post.slug %}" class="hover:underline">
+        {{ post.title|truncatechars:50 }}
+      </a>
+    </h4>
+
+    <div
+      class="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400 font-secondary mt-1"
+    >
+      <span>{{ post.school.city }}</span>
+      <span>•</span>
+      <span class="font-medium text-blue-600 dark:text-blue-400"
+        >{{ post.school.name }}</span
+      >
+      <span>•</span>
+
+      <span>{{ post.created_at|timesince }}</span>
+    </div>
+
+    <div class="mt-2 flex items-center justify-between">
+      <span
+        class="px-2 py-0.5 rounded text-xs bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300"
+      >
+        {{ post.category.name }}
+      </span>
+    </div>
+  </div>
+
+  <!-- prettier-ignore -->
+  {% if request.user.is_superuser or request.user == post.author or perms.school.change_school and request.user.school == post.school %}
+  <div class="flex gap-2">
+    <a
+      href="{% url 'blog:post-update' post.slug %}"
+      class="text-gray-400 hover:text-blue-500"
+    >
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+        ></path>
+      </svg>
+    </a>
+    <a
+      href="{% url 'blog:post-delete' post.slug %}"
+      class="text-gray-400 hover:text-red-500"
+    >
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+        ></path>
+      </svg>
+    </a>
+  </div>
+  {% endif %}
 </article>
