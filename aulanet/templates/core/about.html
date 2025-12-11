@@ -1,109 +1,137 @@
-<!-- prettier-ignore -->
 {% extends "layouts/general-layout.html" %}
+{% load static %}
 
 {% block title %}Sobre Nosotros — AulaNet{% endblock %}
 
 {% block page_content %}
 
+<style>
+  /* Fondo con opacidad controlable */
+  .about-bg {
+    position: relative;
+    min-height: 100%;
+  }
+
+  .about-bg::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("{% static 'img/hallway.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.75;
+    z-index: -1;
+  }
+
+  /* Tarjetas tipo vidrio */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.68);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  /* En modo oscuro */
+  :root.dark .glass-card {
+    background: rgba(30, 30, 30, 0.55);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+</style>
+
+<section class="about-bg">
+
 <section
-  class="min-h-screen py-16 px-6 md:px-12 bg-[var(--bg-main)] text-[var(--color-main)] font-[var(--font-main)]"
+  class="min-h-screen py-16 px-6 md:px-12 bg-transparent text-black dark:text-[var(--color-main)] font-[var(--font-main)]"
 >
   <div class="max-w-5xl mx-auto space-y-14">
+
     <!-- Encabezado -->
-    <header class="text-center space-y-4">
+    <header class="text-center space-y-4 glass-card">
       <h1 class="font-[var(--font-main)] text-[var(--font-size-title)]">
         Sobre <span class="text-[var(--color-secondary)]">AulaNet</span>
       </h1>
       <p class="text-[var(--font-size-subtitle)] max-w-3xl mx-auto">
-        Una plataforma educativa pensada para docentes y estudiantes que buscan
-        herramientas modernas, simples y efectivas.
+        Blog para calificar colegios y compartir experiencias.
+        Conecta docentes, estudiantes y padres buscando las mejores
+        opciones educativas para sus hijos en Resistencia.
       </p>
     </header>
 
     <!-- Sección Misión -->
-    <section class="grid md:grid-cols-2 gap-10 items-center">
-      <div class="space-y-4">
-        <h2
-          class="font-semibold text-[var(--font-size-subtitle)] text-[var(--color-secondary)]"
-        >
-          Nuestra misión
-        </h2>
-        <p>
-          Facilitar y potenciar el proceso de enseñanza-aprendizaje con
-          herramientas intuitivas, rápidas y accesibles para cualquier
-          institución.
-        </p>
-      </div>
-      <div
-        class="rounded-2xl bg-white shadow p-6 flex items-center justify-center dark:bg-slate-800 dark:text-gray-200"
-      >
-        <span class="text-[40px]">🎯</span>
-      </div>
-    </section>
+<section class="glass-card space-y-4 text-center">
+  <div class="text-[40px]">🎯</div>
+  <h2 class="font-semibold text-[var(--font-size-subtitle)] text-[var(--color-secondary)]">
+    Nuestra misión
+  </h2>
+  <p>
+    Conectar estudiantes y colegios a partir de las experiencias compartidas.
+  </p>
+</section>
 
-    <!-- Sección Visión -->
-    <section
-      class="grid md:grid-cols-2 gap-10 items-center md:flex-row-reverse"
-    >
-      <div
-        class="rounded-2xl bg-white shadow p-6 flex items-center justify-center dark:bg-slate-800 dark:text-gray-200"
-      >
-        <span class="text-[40px]">🚀</span>
-      </div>
-      <div class="space-y-4">
-        <h2
-          class="font-semibold text-[var(--font-size-subtitle)] text-[var(--color-secondary)]"
-        >
-          Nuestra visión
-        </h2>
-        <p>
-          Convertirnos en la plataforma educativa más amigable para
-          instituciones de todos los tamaños, integrando tecnología moderna sin
-          perder la simpleza.
-        </p>
-      </div>
-    </section>
+<!-- Sección Visión -->
+<section class="glass-card space-y-4 text-center">
+  <div class="text-[40px]">🚀</div>
+  <h2 class="font-semibold text-[var(--font-size-subtitle)] text-[var(--color-secondary)]">
+    Nuestra visión
+  </h2>
+  <p>
+    Convertirnos en la plataforma de referencia para evaluar colegios de Chaco,
+    integrando tecnología moderna sin perder la simpleza.
+  </p>
+</section>
 
-    <!-- Sección valores -->
-    <section class="space-y-8">
-      <h2
-        class="text-center font-semibold text-[var(--font-size-subtitle)] text-[var(--color-secondary)]"
-      >
-        Nuestros valores
-      </h2>
+<!-- Sección valores -->
+<section class="glass-card space-y-6 text-center">
+  <h2 class="font-semibold text-[var(--font-size-subtitle)] text-[var(--color-secondary)]">
+    Nuestros valores
+  </h2>
 
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="p-6 bg-white rounded-xl shadow space-y-3 text-center dark:bg-slate-800 dark:text-gray-200
-">
-          <div class="text-[40px]">💡</div>
-          <h3 class="font-semibold">Innovación</h3>
-          <p>Siempre buscando nuevas formas de mejorar la educación.</p>
-        </div>
+  <div class="grid md:grid-cols-3 gap-8 pt-4">
 
-        <div class="p-6 bg-white rounded-xl shadow space-y-3 text-center dark:bg-slate-800 dark:text-gray-200">
-          <div class="text-[40px]">🤝</div>
-          <h3 class="font-semibold">Colaboración</h3>
-          <p>Trabajamos en equipo con instituciones y docentes.</p>
-        </div>
+    <div class="p-6 rounded-xl space-y-3 text-center">
+      <div class="text-[40px]">💡</div>
+      <h3 class="font-semibold">Innovación</h3>
+      <p>Tecnología al servicio de compartir experiencias.</p>
+    </div>
 
-        <div class="p-6 bg-white rounded-xl shadow space-y-3 text-center dark:bg-slate-800 dark:text-gray-200">
-          <div class="text-[40px]">🔒</div>
-          <h3 class="font-semibold">Seguridad</h3>
-          <p>Protegemos los datos con responsabilidad y transparencia.</p>
-        </div>
-      </div>
-    </section>
+    <div class="p-6 rounded-xl space-y-3 text-center">
+      <div class="text-[40px]">🤝</div>
+      <h3 class="font-semibold">Colaboración</h3>
+      <p>
+        Construimos la información en equipo con opiniones,
+        calificaciones y publicaciones de estudiantes, docentes y familias.
+      </p>
+    </div>
 
-    <!-- CTA / botón -->
-    <section class="text-center mt-10">
-      <a
-        href="{% url 'core:contact' %}"
-        class="inline-block px-8 py-3 rounded-xl font-semibold bg-[var(--bg-button-primary)] hover:bg-[var(--bg-button-primary-hover)] text-white text-[var(--font-size-button)] transition"
-      >
-        Contáctenos
-      </a>
-    </section>
+    <div class="p-6 rounded-xl space-y-3 text-center">
+      <div class="text-[40px]">🔒</div>
+      <h3 class="font-semibold">Seguridad</h3>
+      <p>Protegemos los datos con responsabilidad y transparencia.</p>
+    </div>
+
   </div>
+</section>
+
+<!-- CTA / botón -->
+<section class="text-center mt-10">
+  <a
+    href="{% url 'core:contact' %}"
+    class="inline-block px-8 py-3 rounded-xl font-semibold bg-[var(--bg-button-primary)] hover:bg-[var(--bg-button-primary-hover)] text-white text-[var(--font-size-button)] transition"
+  >
+    Contáctenos
+  </a>
+</section>
+
+  </div>
+</section>
+
 </section>
 
 {% endblock page_content %}

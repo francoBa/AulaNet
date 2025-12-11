@@ -8,7 +8,7 @@
     <!-- Favicon -->
     <link
       rel="shortcut icon"
-      href="{% static 'favicon.ico' %}"
+      href="{% static 'favicon.png' %}"
       type="image/x-icon"
     />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
@@ -22,11 +22,16 @@
     class="bg-[var(--bg-main)] dark:bg-[var(--bg-main)] text-[var(--color-main)] dark:text-[var(--color-main)]"
   >
     <div class="layout-grid">
-      {% include "components/includes/header.html" %}
+      <!-- prettier-ignore -->
+      {% block header %} 
+        {% include "components/includes/header.html" %}
+      {% endblock %}
 
       <main>{% block content %} {% endblock %}</main>
-
-      {% include "components/includes/footer.html" %}
+      <!-- prettier-ignore -->
+      {% block footer %}
+        {% include "components/includes/footer.html" %}
+      {% endblock %}
     </div>
   </body>
 </html>

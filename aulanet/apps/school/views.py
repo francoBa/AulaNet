@@ -1,12 +1,17 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import TemplateView
-from .models import School
+from django.views.generic import TemplateView, CreateView
+from .models import School, Review, SchoolRating
+from .forms import SchoolForm
+from django.urls import reverse, reverse_lazy
 
 
 # 1) Create (solo plantilla por ahora)
-class CreateSchoolView(TemplateView):
+class CreateSchoolView(CreateView):
+    model = School
+    form_class = SchoolForm
     template_name = "school/create-school.html"
+    success_url = reverse_lazy("school:school-list")
 
 
 # 2) Listado real (CLASE) con filtros
