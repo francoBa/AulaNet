@@ -8,7 +8,7 @@ urlpatterns = [
     # AUTH SYSTEM
     path("login/", AuthLoginView.as_view(), name="login"),
     path("register/", AuthRegisterView.as_view(), name="register"),
-    path("logout/", LogoutView.as_view(), name="logout"),
+    path("logout/", CustomLogoutView.as_view(), name="logout"),
     # USER PROFILE
     path("user/profile/", UserProfileView.as_view(), name="user-profile"),
     path("user/profile/edit/", UserUpdateView.as_view(), name="user-update"),
