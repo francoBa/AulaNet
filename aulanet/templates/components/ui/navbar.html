@@ -63,7 +63,11 @@
         </a>
 
         <!-- Botón de Logout (Formulario por seguridad) -->
-        <form action="{% url 'user:logout' %}" method="post" class="inline">
+        <form
+          action="{% url 'user:logout' %}?next={{ request.path }}"
+          method="post"
+          class="inline"
+        >
           {% csrf_token %}
           <button
             type="submit"
@@ -92,7 +96,7 @@
 
       <!-- Usuario NO Logueado -->
       <a
-        href="{% url 'user:login' %}"
+        href="{% url 'user:login' %}?next={{ request.path }}"
         class="text-sm font-bold px-5 py-2 bg-[var(--bg-button-primary)] text-white rounded-full hover:bg-[var(--bg-button-primary-hover)] transition shadow-md"
       >
         Login
@@ -156,7 +160,11 @@
       </a>
 
       <!-- Logout Mobile -->
-      <form action="{% url 'user:logout' %}" method="post" class="w-full">
+      <form
+        action="{% url 'user:logout' %}?next={{ request.path }}"
+        method="post"
+        class="w-full"
+      >
         {% csrf_token %}
         <button
           type="submit"
@@ -168,7 +176,7 @@
       {% else %}
       <!-- Login Mobile -->
       <a
-        href="{% url 'user:login' %}"
+        href="{% url 'user:login' %}?next={{ request.path }}"
         class="block mt-2 py-2 bg-[var(--bg-button-primary)] text-white text-center rounded hover:bg-[var(--bg-button-primary-hover)]"
       >
         Iniciar Sesión
