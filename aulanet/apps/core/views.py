@@ -9,9 +9,9 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 from .forms import ContactForm
 
+
 class IndexView(TemplateView):
     template_name = "core/index.html"
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -23,6 +23,8 @@ class IndexView(TemplateView):
         context["posts"] = Post.objects.order_by("-created_at")[:4]
 
         return context
+
+
 class AboutView(TemplateView):
     template_name = "core/about.html"
 
@@ -40,8 +42,16 @@ class NotFoundView(TemplateView):
     template_name = "core/errors/not-found.html"
 
 
+class PermissionDeniedView(TemplateView):
+    template_name = "core/errors/forbidden.html"
+
+
 class ServerErrorView(TemplateView):
     template_name = "core/errors/internal-error.html"
+
+
+def custom_403(request, exception):
+    return render(request, "core/errors/forbidden.html", status=403)
 
 
 def custom_404(request, exception=None):
@@ -68,7 +78,6 @@ def contact_send(request):
     email = form.cleaned_data["email"]
     subject = form.cleaned_data["subject"]
     message = form.cleaned_data["message"]
-        
 
     try:
         validate_email(email)
