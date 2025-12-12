@@ -8,6 +8,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
 from .forms import *
 from .models import User
+from apps.blog.models import Post, Comment
 
 
 class AuthLoginView(LoginView):
@@ -63,6 +64,17 @@ class CustomLogoutView(LogoutView):
 class UserProfileView(LoginRequiredMixin, TemplateView):
     template_name = "user/user-profile.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        # Últimos 4 posts del usuario
+        context["user_posts"] = Post.objects.filter(author=user).order_by("-created_at")[:4]
+
+        # Últimos 4 comentarios del usuario
+        context["user_comments"] = Comment.objects.filter(author=user).order_by("-created_at")[:4]
+
+        return context
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = User
