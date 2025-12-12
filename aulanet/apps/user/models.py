@@ -15,6 +15,15 @@ def get_avatar_filename(instance, filename):
     # user/avatar/user-uuid-avatar.png
     return os.path.join("user/avatar/", new_filename)
 
+#Relacion con la escuela:
+RELACION_CHOICES = [
+    ("estudiante", "Estudiante"),
+    ("docente", "Docente"),
+    ("directivo", "Directivo"),
+    ("padre", "Padre / Madre"),
+    ("otro", "Otro"),
+]
+
 
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -23,10 +32,16 @@ class User(AbstractUser):
         "school.School", null=True, blank=True, on_delete=models.SET_NULL
     )
     type = models.CharField(max_length=50, blank=True)
-    related_school = models.CharField(max_length=100, blank=True)
+    #related_school = models.CharField(max_length=100, blank=True) →no va
     birthdate = models.DateField(null=True, blank=True)
     avatar = models.ImageField(
         upload_to=get_avatar_filename, default="user/default/avatar-default.png"
+    )
+    #Opciones de realcion con la escuela:
+    related_school = models.CharField(
+    max_length=100,
+    blank=True,
+    choices=RELACION_CHOICES
     )
 
     @property
