@@ -1,203 +1,88 @@
+<!-- prettier-ignore -->
 {% extends 'layouts/general-layout.html' %}
-{% load static %}
 
-{% block title %}
-Listado de Publicaciones
-{% endblock title %}
+{% block title %}Posts Disponibles{% endblock %}
 
 {% block page_content %}
+<div class="container mx-auto px-4 py-8">
+  <div class="flex flex-col md:flex-row gap-8">
+    <!-- SIDEBAR FILTROS -->
+    <aside class="w-full md:w-1/4 space-y-6">
+      <div
+        class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-slate-700"
+      >
+        <h3 class="font-bold text-lg mb-4 dark:text-white">Filtrar por</h3>
 
-<style>
-    body {
-        margin: 0;
-        font-family: "Inter", sans-serif;
-        background: #f7f7f7;
-    }
-
-    .posts-header {
-        background: #0a6a4a;
-        color: white;
-        padding: 60px 40px;
-        text-align: center;
-    }
-    .posts-header h1 {
-        margin: 0;
-        font-size: 48px;
-        font-weight: 700;
-    }
-    .posts-header p {
-        margin-top: 10px;
-        font-size: 18px;
-    }
-
-    /* FILTER + SEARCH BAR */
-    .filters-area {
-        max-width: 1200px;
-        margin: 30px auto 10px auto;
-        padding: 0 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-
-    .search-input {
-        flex: 1;
-        min-width: 280px;
-        padding: 14px 18px;
-        border-radius: 12px;
-        border: 1px solid #ccc;
-        font-size: 15px;
-        outline: none;
-        transition: 0.2s;
-    }
-    .search-input:focus {
-        border-color: #0a6a4a;
-        box-shadow: 0 0 4px rgba(10, 106, 74, 0.3);
-    }
-
-    .filter-select {
-        padding: 14px 18px;
-        border-radius: 12px;
-        border: 1px solid #ccc;
-        font-size: 15px;
-        background: white;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-    .filter-select:focus {
-        border-color: #0a6a4a;
-        box-shadow: 0 0 4px rgba(10, 106, 74, 0.3);
-    }
-
-    /* POSTS GRID */
-    .posts-container {
-        max-width: 1200px;
-        margin: 20px auto 40px auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 30px;
-        padding: 0 20px;
-    }
-
-    .post-card {
-        background: white;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        display: flex;
-        flex-direction: column;
-    }
-
-    .post-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-    }
-
-    .post-content {
-        padding: 20px;
-    }
-
-    .post-title {
-        margin: 0 0 10px 0;
-        font-size: 22px;
-        font-weight: 600;
-        color: #222;
-    }
-
-    .post-excerpt {
-        font-size: 15px;
-        color: #555;
-        margin-bottom: 20px;
-        line-height: 1.4;
-    }
-
-    .post-btn {
-        background: #0a6a4a;
-        color: white;
-        padding: 10px 16px;
-        border-radius: 10px;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 600;
-        display: inline-block;
-        transition: 0.2s ease;
-    }
-    .post-btn:hover {
-        background: #09563c;
-    }
-</style>
-
-<header class="posts-header">
-    <h1>Posts</h1>
-    <p>Explora puntuaciones, comentarios y noticias sobre colegios.</p>
-</header>
-
-<!-- FILTERS + SEARCH -->
-<section class="filters-area">
-    <input type="text" class="search-input" placeholder="Buscar posts..." style="color:black;" />
-
-    <select class="filter-select" style="color:black;">
-        <option value="">Todos los colegios</option>
-        <option value="colegio1">Colegio 1</option>
-        <option value="colegio2">Colegio 2</option>
-        <option value="colegio3">Colegio 3</option>
-    </select>
-
-    <input type="date" class="filter-select" style="color:black;" />
-    <input type="date" class="filter-select" style="color:black;" />
-
-    <select class="filter-select" style="color:black;">
-        <option value="">Todas las categorías</option>
-        <option value="noticias">Noticias</option>
-        <option value="educacion">Educación</option>
-        <option value="eventos">Eventos</option>
-        <option value="general">General</option>
-    </select>
-</section>
-
-
-<!-- POSTS GRID -->
-<main class="posts-container">
-
-    <article class="post-card">
-        <img src="https://placehold.co/600x400" class="post-image" />
-        <div class="post-content">
-            <h2 class="post-title">Cómo mejorar la comunicación en el aula</h2>
-            <p class="post-excerpt">Consejos prácticos para docentes que buscan crear un ambiente educativo más participativo y dinámico.</p>
-            <a href="#" class="post-btn">Leer más</a>
+        <!-- Categorías -->
+        <div class="mb-4">
+          <h4 class="text-sm font-semibold text-gray-500 mb-2 uppercase">
+            Categorías
+          </h4>
+          <ul class="space-y-2">
+            <li>
+              <a
+                href="{% url 'blog:post-list' %}"
+                class="text-blue-600 hover:underline text-sm"
+                >Todas</a
+              >
+            </li>
+            {% for cat in categories %}
+            <li>
+              <a
+                href="?categoria={{ cat.name }}"
+                class="text-gray-600 dark:text-gray-300 hover:text-blue-500 text-sm"
+              >
+                {{ cat.name }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
         </div>
-    </article>
 
-    <article class="post-card">
-        <img src="https://placehold.co/600x400" class="post-image" />
-        <div class="post-content">
-            <h2 class="post-title">Importancia de las actividades extracurriculares</h2>
-            <p class="post-excerpt">Un análisis del impacto positivo de actividades fuera del horario escolar en el desarrollo integral del estudiante.</p>
-            <a href="#" class="post-btn">Leer más</a>
+        <!-- Botón Limpiar -->
+        <a
+          href="{% url 'blog:post-list' %}"
+          class="block w-full text-center py-2 px-4 border border-gray-300 rounded-md text-sm hover:bg-gray-50 dark:text-white dark:hover:bg-slate-700 transition"
+        >
+          Limpiar Filtros
+        </a>
+      </div>
+    </aside>
+
+    <!-- LISTA DE POSTS -->
+    <main class="w-full md:w-3/4">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold dark:text-white">Posts Disponibles</h1>
+        {% if perms.blog.add_post %}
+        <a
+          href="{% url 'blog:post-create' %}"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+        >
+          + Crear Post
+        </a>
+        {% endif %}
+      </div>
+
+      <div class="grid grid-cols-1 gap-4">
+        <!-- prettier-ignore -->
+        {% for post in posts %}
+            {% include 'components/commons/post-card.html' with post=post %}
+            {% empty %}
+        <div class="text-center py-10">
+          <p class="text-gray-500">
+            No hay posts disponibles con estos filtros.
+          </p>
         </div>
-    </article>
+        {% endfor %}
+      </div>
 
-    <article class="post-card">
-        <img src="https://placehold.co/600x400" class="post-image" />
-        <div class="post-content">
-            <h2 class="post-title">La tecnología en la educación moderna</h2>
-            <p class="post-excerpt">Cómo las herramientas digitales están transformando la experiencia de aprendizaje en las escuelas.</p>
-            <a href="#" class="post-btn">Leer más</a>
-        </div>
-    </article>
-
-    <article class="post-card">
-        <img src="https://placehold.co/600x400" class="post-image" />
-        <div class="post-content">
-            <h2 class="post-title">Técnicas de estudio efectivas para estudiantes</h2>
-            <p class="post-excerpt">Guía completa para ayudar a los estudiantes a organizarse mejor y mejorar su rendimiento académico.</p>
-            <a href="#" class="post-btn">Leer más</a>
-        </div>
-    </article>
-
-</main>
-
-{% endblock page_content %}
+      <!-- Paginación -->
+      {% if is_paginated %}
+      <div class="mt-8 flex justify-center">
+        <!-- ... lógica de paginación ... -->
+      </div>
+      {% endif %}
+    </main>
+  </div>
+</div>
+{% endblock %}

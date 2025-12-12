@@ -1,12 +1,55 @@
+{% extends 'layouts/general-layout.html' %}
 <!-- prettier-ignore -->
-{% extends 'layouts/base-layout.html' %}
+{% block title %}
+    Confirmar Borrado de Publicación
+{% endblock %}
 
-{% block title_layout %}
-    Borrado de Publicación
-{% endblock title_layout %}
+{% block page_content %}
+<div class="flex flex-col items-center pt-8 pb-16 px-4 mx-auto">
+  <div
+    class="w-full max-w-lg shadow-2xl rounded-lg bg-white dark:bg-slate-800 p-6 sm:p-8"
+  >
+    <h1
+      class="text-3xl font-bold text-red-600 dark:text-red-400 text-center mb-4"
+    >
+      Acción Irreversible
+    </h1>
 
-{% block content_layout %}
-<header>
-  <h1>Borrado de Publicación</h1>
-</header>
-{% endblock content_layout %}
+    <p class="text-lg text-center text-gray-700 dark:text-gray-300 mb-6">
+      ¿Estás completamente seguro de que quieres eliminar la publicación
+      titulada:
+      <br />
+      <strong class="font-semibold text-xl mt-2 block"
+        >"{{ object.title }}"</strong
+      >?
+    </p>
+
+    <p class="text-center text-gray-600 dark:text-gray-400 mb-8">
+      Esta acción no se puede deshacer. Se borrará la publicación y todos sus
+      comentarios asociados de forma permanente.
+    </p>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="flex items-center justify-center space-x-4">
+        <!-- Botón de Cancelar -->
+        <a
+          href="{% url 'blog:post-detail' slug=object.slug %}"
+          class="px-8 py-3 bg-gray-500 hover:bg-gray-600 text-white font-bold rounded-lg shadow-md transition duration-150 uppercase"
+        >
+          Cancelar
+        </a>
+
+        <!-- Botón de Confirmar Borrado -->
+        <button
+          type="submit"
+          class="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition duration-150 uppercase"
+        >
+          Sí, eliminar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
