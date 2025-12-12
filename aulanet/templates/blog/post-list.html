@@ -1,7 +1,13 @@
-<!-- prettier-ignore -->
 {% extends 'layouts/general-layout.html' %}
-
-{% block title %}Posts Disponibles{% endblock %}
+<!-- prettier-ignore -->
+{% block title %}
+    {# Título de la pestaña del navegador dinámico #}
+    {% if current_school %}
+        Posts de {{ current_school.name }}
+    {% else %}
+        Posts Disponibles
+    {% endif %}
+{% endblock %}
 
 {% block page_content %}
 <div class="container mx-auto px-4 py-8">
@@ -21,16 +27,16 @@
           <ul class="space-y-2">
             <li>
               <a
-                href="{% url 'blog:post-list' %}"
-                class="text-blue-600 hover:underline text-sm"
-                >Todas</a
+                href="{% url 'blog:post-list' %}{% if current_school %}?school={{ current_school.slug }}{% endif %}"
+                class="text-gray-600 dark:text-gray-300 hover:text-blue-500 text-sm {% if not selected_category %}font-bold text-blue-500{% endif %}"
+                >Todas las categorías</a
               >
             </li>
             {% for cat in categories %}
             <li>
               <a
-                href="?categoria={{ cat.name }}"
-                class="text-gray-600 dark:text-gray-300 hover:text-blue-500 text-sm"
+                href="?{% if current_school %}school={{ current_school.slug }}&{% endif %}categoria={{ cat.name }}"
+                class="text-gray-600 dark:text-gray-300 hover:text-blue-500 text-sm {% if selected_category == cat.name %}font-bold text-blue-500{% endif %}"
               >
                 {{ cat.name }}
               </a>
@@ -42,9 +48,9 @@
         <!-- Botón Limpiar -->
         <a
           href="{% url 'blog:post-list' %}"
-          class="block w-full text-center py-2 px-4 border border-gray-300 rounded-md text-sm hover:bg-gray-50 dark:text-white dark:hover:bg-slate-700 transition"
+          class="block w-full text-center py-2 px-4 border border-gray-300 dark:border-slate-700 rounded-md text-sm hover:bg-gray-50 dark:text-white dark:hover:bg-slate-700 transition"
         >
-          Limpiar Filtros
+          Limpiar Todos los Filtros
         </a>
       </div>
     </aside>
@@ -52,13 +58,26 @@
     <!-- LISTA DE POSTS -->
     <main class="w-full md:w-3/4">
       <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold dark:text-white">Posts Disponibles</h1>
+        <h1 class="text-2xl font-bold dark:text-white">
+          <!-- prettier-ignore -->
+          {% if current_school %}
+            Publicaciones de: <br />
+          <span class="text-blue-500">{{ current_school.name }}</span>
+          <!-- prettier-ignore -->
+          {% elif selected_category %}
+            Publicaciones en:
+          <span class="text-blue-500">{{ selected_category }}</span>
+          <!-- prettier-ignore -->
+          {% else %}
+            Posts Disponibles
+          {% endif %}
+        </h1>
         {% if perms.blog.add_post %}
         <a
           href="{% url 'blog:post-create' %}"
           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
         >
-          + Crear Post
+          Crear Post
         </a>
         {% endif %}
       </div>
@@ -67,10 +86,12 @@
         <!-- prettier-ignore -->
         {% for post in posts %}
             {% include 'components/commons/post-card.html' with post=post %}
-            {% empty %}
-        <div class="text-center py-10">
-          <p class="text-gray-500">
-            No hay posts disponibles con estos filtros.
+        {% empty %}
+        <div
+          class="text-center py-10 bg-white dark:bg-slate-800 rounded-lg shadow-sm"
+        >
+          <p class="text-gray-500 dark:text-gray-400 text-lg">
+            No se encontraron publicaciones con los filtros seleccionados.
           </p>
         </div>
         {% endfor %}
@@ -79,7 +100,7 @@
       <!-- Paginación -->
       {% if is_paginated %}
       <div class="mt-8 flex justify-center">
-        <!-- ... lógica de paginación ... -->
+        <!-- ... tu lógica de paginación aquí ... -->
       </div>
       {% endif %}
     </main>
