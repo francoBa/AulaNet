@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, DetailView
 from .models import School, Review, SchoolRating
 from .forms import SchoolForm
 from django.urls import reverse, reverse_lazy
@@ -53,12 +53,12 @@ class ReviewSchoolView(View):
 
 
 # Detalle de la escuela sin ratings
-class SchoolDetailView(View):
-    def get(self, request, pk):
-        school = get_object_or_404(School, pk=pk)
-        return render(request, "school/school-detail.html", {
-            "school": school
-        })
+class SchoolDetailView(DetailView):
+    model = School
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+    template_name = "school/school-detail.html"
+
 
     def post(self, request, pk):
         # Sin ratings, solo redirigir al detalle
