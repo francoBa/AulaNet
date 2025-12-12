@@ -1,8 +1,8 @@
-📘 AulaNet – Plataforma para Calificar Colegios
+# 📘 AulaNet – **Plataforma para Calificar Colegios**
 Plataforma desarrollada con Django para calificar colegios. Conecta docentes, estudiantes y padres buscando las mejores opciones educativas para sus hijos en Resistencia (Chaco, Argentina).
 Permite calificar, compartir experiencias, acceder a información útil y construir una comunidad informada para mejorar la calidad educativa.
 
-🚀 Características principales
+🚀 **Características principales**
 
 🏫 Directorio de Colegios de Resistencia con perfiles.
 
@@ -20,7 +20,8 @@ Permite calificar, compartir experiencias, acceder a información útil y constr
 
 🧩 Panel de administración Django para gestionar colegios, usuarios y contenidos.
 
-🏗️ Tecnologías utilizadas
+
+🏗️ **Tecnologías utilizadas**
 
 Backend: Django 5.x, Python 3.x
 
@@ -29,27 +30,29 @@ Base de datos: SQLite (desarrollo) / PostgreSQL (producción opcional)
 Frontend: HTML, CSS, TailwindCSS (opcional), JavaScript
 
 
-📁 Estructura del proyecto
+📁 **Estructura del proyecto**
 Aulanet/
-├── aulanet/                # Configuraciones generales del proyecto
-├── blog/                   # App del blog (posts, categorías, comentarios)
-├── schools/                # App para colegios, valoraciones, perfiles
-├── users/                  # App para gestión de usuarios y autenticación
+├── aulanet/                # Configuración principal del proyecto
 ├── core/                   # App para gestión de contactos
+├── blog/                   # Blog (posts, categorías, comentarios)
+├── schools/                # Colegios, calificaciones, reseñas
+├── users/                  # Autenticación y perfiles de usuario
 ├── static/                 # Archivos estáticos
 ├── templates/              # Templates globales
 ├── media/                  # Imágenes subidas por usuarios
-└── README.md
+├── requirements.txt        # Dependencias del proyecto
+└── README.md               # Documentación del proyecto
 
-▶️ Cómo ejecutar el proyecto (Producción en PythonAnywhere)
+
+▶️ **Cómo ejecutar el proyecto** (Producción en PythonAnywhere)
 
 La versión en línea de Aulanet está desplegada en PythonAnywhere, lo que permite acceder al sitio desde cualquier navegador sin necesidad de instalar dependencias localmente.
 
-🔗 Acceso a la plataforma
+🔗 **Acceso a la plataforma**
 
 La aplicación está disponible en: [text](https://francobarreto.pythonanywhere.com/)
 
-🔐 Roles de usuario
+🔐 **Roles de usuario**
 
 | Rol                    | Descripción                                                      |
 | ---------------------- | ---------------------------------------------------------------- |
@@ -58,7 +61,8 @@ La aplicación está disponible en: [text](https://francobarreto.pythonanywhere.
 | **Usuario registrado** | Califica colegios, carga posts y comenta otros post de su colegio|
 | **Visitante**          | Navega información pública del sitio                             |
 
-🤝 Trabajo en equipo
+
+🤝 **Trabajo en equipo**
 
 Este proyecto se desarrolla de forma colaborativa. Buenas prácticas adoptadas:
 
@@ -70,7 +74,8 @@ Estilo PEP8
 
 Comunicación por Discord / WhatsApp
 
-🚧 Estado del proyecto
+
+🚧 **Estado del proyecto**
 
  Modelos iniciados (colegios, usuarios, blog)
 
@@ -81,17 +86,21 @@ Comunicación por Discord / WhatsApp
  Buscador 
 
 
-🎓 Objetivo académico
+🎓 **Objetivo académico**
 
 Este proyecto forma parte del Proyecto Final del Informatorio 2025B - C3, cuyo propósito es:
 
 Crear una aplicación web utilizando el framework Django y aplicando los conocimientos adquiridos durante el
 curso.
 
-👥 Integrantes del grupo
+👥 **Integrantes del grupo**
 
 Franco Barreto
+
 Cristian Vazquez
+
 Martin Romero
+
 Rocio Ramirez
+
 Adriana Chavez
