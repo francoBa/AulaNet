@@ -1,63 +1,41 @@
 {% load static %}
 
-<footer class="bg-white dark:bg-gray-800 border-t dark:border-gray-700 py-8 mt-10">
-  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_2fr] gap-10">
+<footer class="bg-white dark:bg-gray-800 border-t dark:border-gray-700 py-2 mt-10">
+  <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-600 dark:text-gray-300 leading-tight">
 
-    <!-- Logo + descripción -->
-    <div>
-      <img src="{% static 'img/logo-rombo-amarillo.png' %}" alt="Logo" class="h-12 mb-4">
-      <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-        Tu blog para encontrar, calificar y compartir experiencias sobre 
-        colegios de Resistencia - Chaco.
-      </p>
-    </div>
+    <div class="flex flex-col items-center gap-1">
 
-    <!-- Navegación -->
-    <nav>
-      <h3 class="text-gray-800 dark:text-gray-100 font-semibold mb-3">Explorar</h3>
-      <ul class="space-y-3">
+      <!-- Logo + texto principal -->
+      <div class="flex items-center gap-2 flex-wrap justify-center">
+        <img src="{% static 'img/logo-rombo-amarillo.png' %}" alt="Logo" class="h-5">
+        <span>
+          Plataforma para buscar, calificar y compartir experiencias sobre colegios de Resistencia - Chaco.
+        </span>
+      </div>
 
-        <li>
-          <a href="{% url 'core:about' %}" 
-             class="text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:underline">
-            Nosotros
-          </a>
-        </li>
+      <!-- Texto + enlaces en una línea -->
+      <p class="flex items-center gap-3 flex-wrap justify-center">
+        <span>Proyecto Final Informatorio — Comisión 3</span>
 
-        <li>
-          <a href="{% url 'core:contact' %}" 
-             class="text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:underline">
-            Contacto
-          </a>
-        </li>
-
-      </ul>
-    </nav>
-
-    <!-- Botón destacado -->
-    <div>
-              <a href="{% url 'user:login' %}"
-           class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
-           Calificar un colegio
+        <!-- Enlaces -->
+        <a href="{% url 'core:about' %}" class="hover:underline text-blue-600 dark:text-blue-400">
+          Nosotros
         </a>
-    </div>
-    
-    <!-- Sección institucional -->
-    <div>
-      <h3 class="text-gray-800 dark:text-gray-100 font-semibold mb-3">Información</h3>
-      <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-        Proyecto Final Informatorio | Comisión 3  
-        <br>
-        Sitio desarrollado por alumnos en formación en tecnologías digitales.
+
+        <a href="{% url 'core:contact' %}" class="hover:underline text-blue-600 dark:text-blue-400">
+          Contacto
+        </a>
+
+        <span>© {% now "Y" %} AulaNet — Todos los derechos reservados.</span>
       </p>
+
     </div>
 
-  </div>
-
-  <!-- Línea inferior -->
-  <div class="mt-8 border-t pt-4 border-gray-200 dark:border-gray-700 text-center">
-    <p class="text-gray-500 dark:text-gray-400 text-sm">
-      © {% now "Y" %} AulaNet — Todos los derechos reservados.
-    </p>
   </div>
 </footer>
+
+<!-- Flecha subir -->
+<a href="#"
+   class="fixed bottom-5 right-5 bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-full shadow-md text-sm transition">
+  ↑
+</a>

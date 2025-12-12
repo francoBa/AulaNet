@@ -28,6 +28,12 @@
         >Colegios</a
       >
       <a
+      href="{% url 'blog:post-list' %}"
+      class="text-lg text-gray-200 hover:text-white transition"
+      >Posts</a
+      >
+
+      <a
         href="{% url 'core:about' %}"
         class="text-lg text-gray-200 hover:text-white transition"
         >Nosotros</a
@@ -130,6 +136,12 @@
       class="block py-2 px-2 text-gray-200 hover:text-white hover:bg-white/10 rounded"
       >Colegios</a
     >
+    <a
+    href="{% url 'blog:post-list' %}"
+    class="block py-2 px-2 text-gray-200 hover:text-white hover:bg-white/10 rounded"
+    >Posts</a
+    >
+
     <a
       href="{% url 'core:about' %}"
       class="block py-2 px-2 text-gray-200 hover:text-white hover:bg-white/10 rounded"
