@@ -29,6 +29,7 @@ urlpatterns = [
 ]
 
 # Handlers para producción
+handler403 = "apps.core.views.custom_403"
 handler404 = "apps.core.views.custom_404"
 handler500 = "apps.core.views.custom_500"
 
@@ -37,3 +38,12 @@ if settings.DEBUG:
 
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    # Rutas de previsualización de errores solo para desarrollo
+    from apps.core import views as core_views
+
+    urlpatterns += [
+        path("403-preview/", core_views.PermissionDeniedView.as_view()),
+        path("404-preview/", core_views.NotFoundView.as_view()),
+        path("500-preview/", core_views.ServerErrorView.as_view()),
+    ]

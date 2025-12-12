@@ -27,10 +27,21 @@
         class="text-lg text-gray-200 hover:text-white transition"
         >Colegios</a
       >
+      <!-- prettier-ignore -->
+      {% if user.is_authenticated %}
+        {% for group in user.groups.all %}
+            {% if group.name == 'Admin' %}
+      <a href="{% url 'school:school-user-list' %}" class="nav-link">
+        Administrar Usuarios
+      </a>
+      <!-- prettier-ignore -->
+      {% endif %}
+        {% endfor %}
+      {% endif %}
       <a
-      href="{% url 'blog:post-list' %}"
-      class="text-lg text-gray-200 hover:text-white transition"
-      >Posts</a
+        href="{% url 'blog:post-list' %}"
+        class="text-lg text-gray-200 hover:text-white transition"
+        >Posts</a
       >
 
       <a
@@ -136,10 +147,21 @@
       class="block py-2 px-2 text-gray-200 hover:text-white hover:bg-white/10 rounded"
       >Colegios</a
     >
+    <!-- prettier-ignore -->
+    {% if user.is_authenticated %}
+        {% for group in user.groups.all %}
+            {% if group.name == 'Admin' %}
+    <a href="{% url 'school:school-user-list' %}" class="nav-link">
+      Administrar Usuarios
+    </a>
+    <!-- prettier-ignore -->
+    {% endif %}
+        {% endfor %}
+    {% endif %}
     <a
-    href="{% url 'blog:post-list' %}"
-    class="block py-2 px-2 text-gray-200 hover:text-white hover:bg-white/10 rounded"
-    >Posts</a
+      href="{% url 'blog:post-list' %}"
+      class="block py-2 px-2 text-gray-200 hover:text-white hover:bg-white/10 rounded"
+      >Posts</a
     >
 
     <a

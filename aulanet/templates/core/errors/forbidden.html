@@ -1,0 +1,49 @@
+<!-- prettier-ignore -->
+{% extends "layouts/general-layout.html" %}
+{% load static %}
+
+{% block title %}Acceso Denegado{% endblock %}
+
+{% block page_content %}
+<div
+  class="min-h-[70vh] flex flex-col items-center justify-center text-center px-6"
+  style="color: var(--color-main); font-family: var(--font-main)"
+>
+  <div class="mb-6">
+    <img
+      src="{% static 'img/403.svg' %}"
+      alt="403 — Acceso Denegado"
+      class="w-80 mx-auto drop-shadow-md"
+    />
+  </div>
+
+  <h1
+    class="font-bold mb-4"
+    style="font-size: var(--font-size-title); color: var(--color-secondary)"
+  >
+    403 — Acceso Denegado
+  </h1>
+
+  <p
+    class="mb-8"
+    style="font-size: var(--font-size-subtitle); max-width: 550px"
+  >
+    No tienes los permisos necesarios para acceder a esta página. Por favor,
+    contacta a un administrador si crees que es un error.
+  </p>
+
+  <a
+    href="/"
+    class="px-6 py-3 rounded-lg transition font-semibold shadow-md"
+    style="
+      background: var(--bg-button-primary);
+      font-size: var(--font-size-button);
+      color: white;
+    "
+    onmouseover="this.style.background='var(--bg-button-primary-hover)'"
+    onmouseout="this.style.background='var(--bg-button-primary)'"
+  >
+    Volver al inicio
+  </a>
+</div>
+{% endblock %}
