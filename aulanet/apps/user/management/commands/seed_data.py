@@ -5,36 +5,69 @@ from django.utils.text import slugify
 from faker import Faker
 from datetime import date
 
-# Importar modelos
+# modelos
 from apps.user.models import User
 from apps.school.models import School, Review, SchoolRating
 from apps.blog.models import Category, Post, Comment
+from apps.core.models import Contact
 
 
 class Command(BaseCommand):
-    help = "Seeds database with Schools (Resistencia, Chaco), Users, Posts, Comments and Reviews"
+    help = "Seeds database with real Schools (Resistencia, Chaco), Users, Contacts, Posts, etc."
 
     def handle(self, *args, **options):
         self.stdout.write("🌱 Seeding data...")
         fake = Faker(["es_ES"])
 
-        # 1. Asegurar Grupos
+        # 1. Limpiar datos existentes para un entorno limpio
+        Post.objects.all().delete()
+        School.objects.all().delete()
+        User.objects.filter(is_superuser=False).delete()
+        Category.objects.all().delete()
+        Contact.objects.all().delete()
+
+        # 2. Asegurar Grupos
         grp_admin, _ = Group.objects.get_or_create(name="Admin")
         grp_contrib, _ = Group.objects.get_or_create(name="Contributor")
         grp_reg, _ = Group.objects.get_or_create(name="Registered")
 
-        # 2. Crear Categorías de Blog
+        # 3. Crear Categorías de Blog
         categories = []
-        cat_names = ["Noticias", "Eventos", "Deportes", "Ciencia", "Arte", "Tecnología"]
+        cat_names = [
+            "Noticias Institucionales",
+            "Eventos",
+            "Deportes",
+            "Ciencia y Tecnología",
+            "Arte y Cultura",
+            "Comunicados",
+        ]
         for name in cat_names:
             cat, _ = Category.objects.get_or_create(name=name)
             categories.append(cat)
         self.stdout.write(f"📚 Categories created: {len(categories)}")
 
-        # 3. Crear Colegios (Datos Reales de Resistencia, Chaco)
+        # 4. Crear Mensajes de Contacto
+        self.stdout.write("✉️  Creating contact messages...")
+        contact_subjects = [
+            "Consulta sobre inscripción 2026",
+            "Sugerencia para la plataforma",
+            "Reporte de un error en la sección de noticias",
+            "Pregunta sobre eventos deportivos",
+            "Agradecimiento al personal docente",
+        ]
+        for _ in range(8):
+            Contact.objects.create(
+                name=fake.name(),
+                email=fake.email(),
+                subject=random.choice(contact_subjects),
+                message=fake.text(max_nb_chars=250),
+            )
+        self.stdout.write(f"✉️  Created 8 contact messages.")
+
+        # 5. Crear Colegios (Datos Reales de Resistencia, Chaco)
         school_data = [
             {
-                "name": 'E.E.T. N° 21 "General Manuel Belgrano" (Industrial)',
+                "name": 'E.E.T. N° 21 "Gral. Manuel Belgrano" (Industrial)',
                 "type": "publica",
                 "level": "secundaria",
             },
@@ -44,7 +77,27 @@ class Command(BaseCommand):
                 "level": "secundaria",
             },
             {
+                "name": 'E.E.S. N° 66 "Roberto A. Muller" (Comercio N°1)',
+                "type": "publica",
+                "level": "secundaria",
+            },
+            {
+                "name": 'E.E.S. N° 87 "Normal Sarmiento"',
+                "type": "publica",
+                "level": "secundaria",
+            },
+            {
                 "name": 'U.E.G.P. N° 19 "Don Bosco"',
+                "type": "privada",
+                "level": "secundaria",
+            },
+            {
+                "name": 'U.E.G.P. N° 172 "Gobernador A. Goitía" (Liceo)',
+                "type": "privada",
+                "level": "secundaria",
+            },
+            {
+                "name": 'U.E.G.P. N° 78 "Fe y Alegría"',
                 "type": "privada",
                 "level": "secundaria",
             },
@@ -54,7 +107,22 @@ class Command(BaseCommand):
                 "level": "primaria",
             },
             {
-                "name": 'U.E.G.P. N° 16 "José Manuel Estrada"',
+                "name": 'E.E.P. N° 2 "Raúl B. Díaz"',
+                "type": "publica",
+                "level": "primaria",
+            },
+            {
+                "name": 'E.E.T. N° 16 "1° de Mayo"',
+                "type": "publica",
+                "level": "secundaria",
+            },
+            {
+                "name": 'E.E.P. N° 33 "Independencia"',
+                "type": "publica",
+                "level": "primaria",
+            },
+            {
+                "name": 'U.E.G.P. N° 23 "María Auxiliadora"',
                 "type": "privada",
                 "level": "secundaria",
             },
@@ -68,27 +136,22 @@ class Command(BaseCommand):
                     "school_type": data["type"],
                     "school_level": data["level"],
                     "city": "Resistencia",
-                    "address": fake.address(),  # Genera una dirección aleatoria
-                    "description": f"Institución educativa ubicada en Resistencia. {fake.text(max_nb_chars=100)}",
+                    "address": fake.address(),
+                    "description": f"Prestigiosa institución educativa con una larga trayectoria en la ciudad de {fake.city()}.",
                 },
             )
             schools.append(school)
             if created:
                 self.stdout.write(f"🏫 Created School: {school.name}")
-            else:
-                self.stdout.write(f"🏫 Existing School: {school.name}")
 
         COMMON_PASS = "password123"
 
-        # 4. Crear Jerarquía de Usuarios y Contenido
+        # 6. Crear Jerarquía de Usuarios y Contenido por cada Colegio
         for school in schools:
             self.stdout.write(f"\n--- Processing {school.name} ---")
 
             # A. ADMIN (Director) - 1 por colegio
-            # slugify para que el username sea seguro (ej: admin_eet_n_21...)
-            admin_username = (
-                f"admin_{slugify(school.name)[:15]}_{random.randint(100,999)}"
-            )
+            admin_username = f"admin_{slugify(school.name)[:20]}"
             self.create_user(
                 username=admin_username,
                 email=fake.email(),
@@ -96,16 +159,14 @@ class Command(BaseCommand):
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
                 school=school,
-                related_school="Director",
+                related_school="directivo",
                 group=grp_admin,
                 role_name="Admin",
             )
 
             # B. CONTRIBUTORS (Docentes) - 2 por colegio
             for i in range(2):
-                contrib_username = (
-                    f"prof_{school.id.hex[:4]}_{i}_{random.randint(100,999)}"
-                )
+                contrib_username = f"prof_{school.id.hex[:4]}_{i}"
                 teacher = self.create_user(
                     username=contrib_username,
                     email=fake.email(),
@@ -113,30 +174,27 @@ class Command(BaseCommand):
                     first_name=fake.first_name(),
                     last_name=fake.last_name(),
                     school=school,
-                    related_school="Docente",
+                    related_school="docente",
                     group=grp_contrib,
                     role_name="Contributor",
                 )
 
-                # El docente crea 3 Posts
+                # El docente crea 2 Posts
                 teacher_posts = []
-                for _ in range(3):
+                for _ in range(2):
                     post = Post.objects.create(
                         title=fake.sentence(nb_words=6),
                         content=fake.text(max_nb_chars=800),
                         author=teacher,
                         school=school,
                         category=random.choice(categories),
-                        allow_comments=True,
                     )
                     teacher_posts.append(post)
-                print(f"      📝 Created 3 posts for {teacher.username}")
+                print(f"      📝 Created 2 posts for {teacher.username}")
 
                 # C. REGISTERED (Estudiantes) - 3 por cada docente
                 for j in range(3):
-                    student_username = (
-                        f"alumno_{school.id.hex[:4]}_{i}_{j}_{random.randint(100,999)}"
-                    )
+                    student_username = f"alumno_{school.id.hex[:4]}_{i}_{j}"
                     student = self.create_user(
                         username=student_username,
                         email=fake.email(),
@@ -144,7 +202,7 @@ class Command(BaseCommand):
                         first_name=fake.first_name(),
                         last_name=fake.last_name(),
                         school=school,
-                        related_school="Estudiante",
+                        related_school="estudiante",
                         group=grp_reg,
                         role_name="Registered",
                     )
@@ -155,8 +213,8 @@ class Command(BaseCommand):
                             content=fake.sentence(), author=student, post=post
                         )
 
-                    # El estudiante deja Review y Rating a la escuela
-                    if j == 0:  # Solo el primero deja review para no saturar
+                    # El primer estudiante de cada grupo deja Review y Rating a la escuela
+                    if j == 0:
                         Review.objects.get_or_create(
                             school=school,
                             author=student,
@@ -169,7 +227,7 @@ class Command(BaseCommand):
                         )
 
         self.stdout.write(self.style.SUCCESS("\n✨ Database seeded successfully!"))
-        self.stdout.write(f"🔑 All users password: {COMMON_PASS}")
+        self.stdout.write(f"🔑 All non-superuser users password: {COMMON_PASS}")
 
     def create_user(
         self,
@@ -183,7 +241,9 @@ class Command(BaseCommand):
         group,
         role_name,
     ):
+        # Evita duplicados
         if User.objects.filter(username=username).exists():
+            self.stdout.write(f"   👤 User {username} already exists. Skipping.")
             return User.objects.get(username=username)
 
         user = User.objects.create_user(
@@ -195,12 +255,11 @@ class Command(BaseCommand):
             school=school,
             related_school=related_school,
             city="Resistencia",
-            birthdate=date(2006, 5, 20),
+            birthdate=date(
+                random.randint(2005, 2008), random.randint(1, 12), random.randint(1, 28)
+            ),
         )
 
-        user.groups.clear()
         user.groups.add(group)
-        user.save()
-
         print(f"   👤 Created {role_name}: {username}")
         return user
