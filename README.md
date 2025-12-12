@@ -27,7 +27,7 @@ Permite calificar, compartir experiencias, acceder a información útil y constr
 
 Backend: Django 5.x, Python 3.x
 
-Base de datos: SQLite (desarrollo) / PostgreSQL (producción opcional)
+Base de datos: SQLite (desarrollo) / MySQL (producción)
 
 Frontend: HTML, CSS, TailwindCSS (opcional), JavaScript
 
@@ -61,7 +61,7 @@ La aplicación está disponible en: [AulaNet](https://francobarreto.pythonanywhe
 | ---------------------- | ---------------------------------------------------------------- |
 | **Administrador**      | Administra colegios, usuarios, posts y categorías desde el panel |
 | **Colaborador**        | Carga, edita y elimina posts y comentarios de los demás usuarios |
-| **Usuario registrado** | Califica colegios, carga posts y comenta otros post de su colegio|
+| **Usuario registrado** | Califica su colegio, comenta post y edita sus comentarios|
 | **Visitante**          | Navega información pública del sitio                             |
 
 
