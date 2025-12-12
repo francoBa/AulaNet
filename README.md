@@ -2,6 +2,7 @@
 Plataforma desarrollada con Django para calificar colegios. Conecta docentes, estudiantes y padres buscando las mejores opciones educativas para sus hijos en Resistencia (Chaco, Argentina).
 Permite calificar, compartir experiencias, acceder a información útil y construir una comunidad informada para mejorar la calidad educativa.
 
+
 🚀 **Características principales**
 
 🏫 Directorio de Colegios de Resistencia con perfiles.
@@ -21,6 +22,7 @@ Permite calificar, compartir experiencias, acceder a información útil y constr
 🧩 Panel de administración Django para gestionar colegios, usuarios y contenidos.
 
 
+
 🏗️ **Tecnologías utilizadas**
 
 Backend: Django 5.x, Python 3.x
@@ -31,6 +33,7 @@ Frontend: HTML, CSS, TailwindCSS (opcional), JavaScript
 
 
 📁 **Estructura del proyecto**
+```
 Aulanet/
 ├── aulanet/                # Configuración principal del proyecto
 ├── core/                   # App para gestión de contactos
@@ -42,7 +45,7 @@ Aulanet/
 ├── media/                  # Imágenes subidas por usuarios
 ├── requirements.txt        # Dependencias del proyecto
 └── README.md               # Documentación del proyecto
-
+```
 
 ▶️ **Cómo ejecutar el proyecto** (Producción en PythonAnywhere)
 
@@ -50,7 +53,7 @@ La versión en línea de Aulanet está desplegada en PythonAnywhere, lo que perm
 
 🔗 **Acceso a la plataforma**
 
-La aplicación está disponible en: [text](https://francobarreto.pythonanywhere.com/)
+La aplicación está disponible en: [AulaNet](https://francobarreto.pythonanywhere.com/)
 
 🔐 **Roles de usuario**
 
@@ -60,6 +63,7 @@ La aplicación está disponible en: [text](https://francobarreto.pythonanywhere.
 | **Colaborador**        | Carga, edita y elimina posts y comentarios de los demás usuarios |
 | **Usuario registrado** | Califica colegios, carga posts y comenta otros post de su colegio|
 | **Visitante**          | Navega información pública del sitio                             |
+
 
 
 🤝 **Trabajo en equipo**
@@ -75,6 +79,7 @@ Estilo PEP8
 Comunicación por Discord / WhatsApp
 
 
+
 🚧 **Estado del proyecto**
 
  Modelos iniciados (colegios, usuarios, blog)
@@ -86,12 +91,14 @@ Comunicación por Discord / WhatsApp
  Buscador 
 
 
+
 🎓 **Objetivo académico**
 
-Este proyecto forma parte del Proyecto Final del Informatorio 2025B - C3, cuyo propósito es:
+Este proyecto forma parte del **Proyecto Final del Informatorio 2025B - C3**, cuyo propósito es:
 
 Crear una aplicación web utilizando el framework Django y aplicando los conocimientos adquiridos durante el
 curso.
+
 
 👥 **Integrantes del grupo**
 
