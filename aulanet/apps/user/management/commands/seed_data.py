@@ -8,7 +8,7 @@ from datetime import date
 # modelos
 from apps.user.models import User
 from apps.school.models import School, Review, SchoolRating
-from apps.blog.models import Category, Post, Comment
+from apps.blog.models import Category, Post, Comment, PostImage
 from apps.core.models import Contact
 
 
@@ -19,12 +19,20 @@ class Command(BaseCommand):
         self.stdout.write("🌱 Seeding data...")
         fake = Faker(["es_ES"])
 
-        # 1. Limpiar datos existentes para un entorno limpio
+        # 1. Limpiar datos existentes
+        self.stdout.write(self.style.WARNING("  🗑️  Deleting existing data..."))
+        # Modelos con dependencias
+        PostImage.objects.all().delete()
+        Comment.objects.all().delete()
+        Review.objects.all().delete()
+        SchoolRating.objects.all().delete()
         Post.objects.all().delete()
+        # Modelos base
+        Contact.objects.all().delete()
         School.objects.all().delete()
         User.objects.filter(is_superuser=False).delete()
         Category.objects.all().delete()
-        Contact.objects.all().delete()
+        self.stdout.write(self.style.SUCCESS("  ✅ Data deleted successfully."))
 
         # 2. Asegurar Grupos
         grp_admin, _ = Group.objects.get_or_create(name="Admin")

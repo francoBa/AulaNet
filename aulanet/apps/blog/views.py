@@ -14,6 +14,7 @@ from django.views.generic import (
 from django.views import View
 
 from .models import Post, PostImage, Comment, Category
+from apps.school.models import School
 from .forms import *
 
 
@@ -98,12 +99,23 @@ class PostListView(ListView):
         categoria_nombre = self.request.GET.get("categoria")
         if categoria_nombre:
             queryset = queryset.filter(category__name=categoria_nombre)
+
+        # --- LÓGICA DE FILTRADO POR COLEGIO ---
+        school_slug = self.request.GET.get("school")
+        if school_slug:
+            queryset = queryset.filter(school__slug=school_slug)
+
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # menú de filtros
         context["categories"] = Category.objects.all()
+        school_slug = self.request.GET.get("school")
+        if school_slug:
+            context["current_school"] = get_object_or_404(School, slug=school_slug)
+
+        context["selected_category"] = self.request.GET.get("categoria")
         return context
 
 

@@ -4,6 +4,7 @@ from django.views.generic import TemplateView, CreateView, DetailView
 from .models import School, Review, SchoolRating
 from .forms import SchoolForm
 from django.urls import reverse, reverse_lazy
+from apps.blog.models import Post
 
 
 # 1) Create (solo plantilla por ahora)
@@ -26,7 +27,9 @@ class ListSchoolView(View):
 
         # Filtro por buscador
         if search:
-            schools = schools.filter(name__icontains=search) | schools.filter(city__icontains=search)
+            schools = schools.filter(name__icontains=search) | schools.filter(
+                city__icontains=search
+            )
 
         # Filtro por tipo
         if tipo:
@@ -40,7 +43,7 @@ class ListSchoolView(View):
         return render(request, self.template_name, context)
 
 
-#ReviewSchoolView eliminado o simplificado si no hay ratings
+# ReviewSchoolView eliminado o simplificado si no hay ratings
 # solo para mostrar las escuelas
 class ReviewSchoolView(View):
     def get(self, request):
@@ -49,7 +52,9 @@ class ReviewSchoolView(View):
 
     def post(self, request):
         # Si no vas a manejar ratings, por ahora solo redirige
-        return render(request, "school/review-school.html", {"schools": School.objects.all()})
+        return render(
+            request, "school/review-school.html", {"schools": School.objects.all()}
+        )
 
 
 # Detalle de la escuela sin ratings
@@ -58,7 +63,19 @@ class SchoolDetailView(DetailView):
     slug_field = "slug"
     slug_url_kwarg = "slug"
     template_name = "school/school-detail.html"
+    context_object_name = "school"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        school = self.get_object()
+        # los últimos 4 posts de ESTE colegio
+        latest_posts = Post.objects.filter(school=school).order_by("-created_at")[:4]
+
+        # Añadimos los posts al contexto
+        context["latest_posts"] = latest_posts
+
+        return context
 
     def post(self, request, pk):
         # Sin ratings, solo redirigir al detalle

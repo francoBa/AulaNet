@@ -6,15 +6,16 @@ from django.utils.text import slugify
 
 import uuid
 
+
 class School(models.Model):
     SCHOOL_TYPES = [
-        ('publica', 'Pública'),
-        ('privada', 'Privada'),
-        ('especial', 'Especial'),
+        ("publica", "Pública"),
+        ("privada", "Privada"),
+        ("especial", "Especial"),
     ]
     SCHOOL_LEVEL = [
-        ('primaria', 'Primaria'),
-        ('secundaria', 'Secundaria'),
+        ("primaria", "Primaria"),
+        ("secundaria", "Secundaria"),
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -25,11 +26,13 @@ class School(models.Model):
     city = models.CharField(max_length=120)
     address = models.CharField(max_length=120)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='schools/', blank=True, null=True)
+    image = models.ImageField(
+        upload_to="schools/", blank=True, default="schools/default/school-default.png"
+    )
 
     def __str__(self):
         return self.name
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             base_slug = slugify(self.name)
@@ -46,29 +49,23 @@ class School(models.Model):
         super().save(*args, **kwargs)
 
 
-
 class Review(models.Model):
     id = id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name= 'reviews')
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name="reviews")
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     comment = models.TextField(max_length=500, null=False)
     created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(auto_now = True)
-    
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class SchoolRating(models.Model):
-    school = models.ForeignKey(
-        School,
-        related_name='ratings',
-        on_delete=models.CASCADE
-    )
+    school = models.ForeignKey(School, related_name="ratings", on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     value = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('school', 'user')
+        unique_together = ("school", "user")
 
     def __str__(self):
         return f"{self.school.name} - {self.value}★"
