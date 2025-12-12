@@ -1,58 +1,59 @@
+<!-- prettier-ignore -->
 {% extends 'layouts/general-layout.html' %}
-
-{% block title %}
-  Perfil de Usuario
-{% endblock %}
-
-{% block page_content %}
 {% load static %}
+{% block title %} Perfil de Usuario {% endblock %}
+{% block page_content %}
 <div class="min-h-full w-full py-8">
-    <h1 class="max-w-4xl mx-auto text-3xl font-bold mb-4">Datos de Usuario</h1>
-    <section class="mb-8 p-auto max-w-4xl mx-auto px-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700" >        
-        <div class="flex flex-row items-top gap-8 py-4">
-            <div class='w-[200px] h-[200px] bg-gray-500 rounded-full flex items-center justify-center' > 
-                <img src="{% static 'img/default-user.png' %}" alt="Actualizar Perfil" class="rounded-full object-cover "> 
-            </div>
-            
-            <div class="flex flex-col gap-6 mt-4">
-                <h2 class="text-xl font-semibold">Nombre, Apellido</h2>
-                <p class="text-gray-300 text-sm">Rol (Docente, Estudiante, etc)</p>
-                <p class="text-gray-350 text-sm">Identificacion (Nro Legajo, Nro documento, etc)</p>
-                <p class="text-gray-400 text-sm">email@example.com</p>
-            </div>
-            
-            <div class="ml-auto mt-auto mb-2 flex flex-col h-full">
-                <a href= "{% url 'user:user-update' %}" class="px-3 py-1 bg-blue-600 rounded-md text-white mt-auto">Editar Perfil</a>                
-            </div>            
-        </div>        
-    </section>
+  <h1 class="max-w-4xl mx-auto text-3xl font-bold mb-4">Datos de Usuario</h1>
+  <section
+    class="mb-8 p-auto max-w-4xl mx-auto px-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700"
+  >
+    <div class="flex flex-row items-top gap-8 py-4">
+      <div class="w-[200px] h-[200px] bg-gray-500 rounded-full overflow-hidden">
+        <img
+          src="{{ request.user.get_avatar_url|default:'/static/img/default-user.png' }}"
+          alt="Avatar del usuario"
+          class="w-full h-full object-cover rounded-full"
+        >
+      </div>
 
-    <h3 class="max-w-4xl mx-auto text-2xl font-bold mb-4">Últimos posts</h3>
-    <section class="pt-8 mb-8 p-auto max-w-4xl mx-auto px-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700">        
-            <div class="flex flex-col gap-4">
-                <!-- Post Card Loop -->
-                {% for i in "10" %}
-                {% include 'components/commons/post-card.html' %}
-                {% endfor %}
-            </div>
 
-        <!-- Link Ver Todos -->
-        <div class="mt-8 text-center">
-        <a href="{% url 'blog:post-list' %}" class="font-secondary text-[var(--color-secondary)] hover:underline text-sm font-semibold">Ver todos los posts</a>
-        </div>
-    </section>
+      <div class="flex flex-col gap-6 mt-4">
+        <h2 class="text-xl font-semibold">{{ request.user.first_name }} {{ request.user.last_name }}</h2>
+        <p class="text-gray-300 text-sm">Rol: {{ request.user.groups.first.name|default:"Sin Rol" }}</p>
+        <p class="text-gray-350 text-sm">
+          Escuela: {{ request.user.school }}
+        </p>
+        <p class="text-gray-400 text-sm">{{ request.user.email }}</p>
+      </div>
 
-    <h3 class="max-w-4xl mx-auto text-2xl font-bold mb-4">Ultimos Comentarios</h3>
-    <section class="pt-8 mb-8 p-auto max-w-4xl mx-auto px-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700">        
-            <div class="flex flex-col gap-4">
-                <!-- Post Card Loop -->
-                {% for i in "10" %}
-                {% include 'components/commons/comment-card.html' %}
-                {% endfor %}
-            </div>
+      <div class="ml-auto mt-auto mb-2 flex flex-col h-full">
+        <a
+          href="{% url 'user:user-update' %}"
+          class="px-3 py-1 bg-blue-600 rounded-md text-white mt-auto"
+          >Editar Perfil</a>
+      </div>
+    </div>
+  </section>
 
-        <!-- Link Ver Todos -->
-    </section>
+  <h3 class="max-w-4xl mx-auto text-2xl font-bold mb-4">Últimos posts</h3>
+  <section
+    class="pt-8 mb-8 p-auto max-w-4xl mx-auto px-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700"
+  >
+    <div class="flex flex-col gap-4">
+      <!-- Post Card Loop -->
+      <!-- prettier-ignore -->
+    </div>
 
+    <!-- Link Ver Todos -->
+    <div class="mt-8 text-center"></div>
+  </section>
+
+  <h3 class="max-w-4xl mx-auto text-2xl font-bold mb-4">Ultimos Comentarios</h3>
+  <section
+    class="pt-8 mb-8 p-auto max-w-4xl mx-auto px-4 bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700"
+  >
+    <!-- Link Ver Todos -->
+  </section>
 </div>
 {% endblock %}
