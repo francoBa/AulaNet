@@ -15,7 +15,7 @@ class UserAdmin(UserAdminDjango):
             "Campos Personalizados",
             {
                 "fields": (
-                    "id",
+                    #"id",
                     "city",
                     "school",
                     "type",
