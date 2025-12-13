@@ -129,6 +129,8 @@ class PostDetailView(DetailView):
         context["comments"] = self.object.comments.select_related("author").order_by(  # type: ignore
             "-created_at"
         )
+        if self.object.allow_comments:  # type: ignore
+            context["comment_form"] = CommentForm()
         return context
 
 
