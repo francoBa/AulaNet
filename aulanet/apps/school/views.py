@@ -12,7 +12,7 @@ from django.views.generic import (
     DeleteView,
 )
 from .models import School, Review, SchoolRating
-from .forms import SchoolForm
+from .forms import *
 from django.urls import reverse, reverse_lazy
 from apps.blog.models import Post
 from apps.user.models import User
@@ -54,19 +54,70 @@ class ListSchoolView(View):
         return render(request, self.template_name, context)
 
 
-# ReviewSchoolView eliminado o simplificado si no hay ratings
-# solo para mostrar las escuelas
-class ReviewSchoolView(View):
-    def get(self, request):
-        schools = School.objects.all()
-        return render(request, "school/review-school.html", {"schools": schools})
 
-    def post(self, request):
-        # Si no vas a manejar ratings, por ahora solo redirige
-        return render(
-            request, "school/review-school.html", {"schools": School.objects.all()}
+class SchoolRatingView(View):
+    def get(self, request, slug):
+        school = get_object_or_404(School, slug=slug)
+
+        if request.user.school != school:
+            return HttpResponseForbidden()
+
+        if SchoolRating.objects.filter(school=school, user=request.user).exists():
+            return redirect("school:school-detail", slug=slug)
+
+        form = SchoolRatingForm()
+
+        return render(request, "school/review-school.html", {
+            "school": school,
+            "form": form,
+        })
+
+    def post(self, request, slug):
+        school = get_object_or_404(School, slug=slug)
+        user = request.user
+
+        if user.school != school:
+            return HttpResponseForbidden()
+
+        if SchoolRating.objects.filter(school=school, user=user).exists():
+            return redirect("school:school-detail", slug=slug)
+
+        form = SchoolRatingForm(request.POST)
+
+        if not form.is_valid():
+            return render(request, "school/review-school.html", {
+                "school": school,
+                "form": form,
+            })
+
+        # ---- agrupar datos por área ----
+        pedagogica = {k: int(form.cleaned_data[k]) for k in PEDAGOGICA_FIELDS}
+        cultura = {k: int(form.cleaned_data[k]) for k in CULTURA_FIELDS}
+        bienestar = {k: int(form.cleaned_data[k]) for k in BIENESTAR_FIELDS}
+        recursos = {k: int(form.cleaned_data[k]) for k in RECURSOS_FIELDS}
+
+        all_scores = (
+            list(pedagogica.values())
+            + list(cultura.values())
+            + list(bienestar.values())
+            + list(recursos.values())
         )
 
+        average = round(sum(all_scores) / len(all_scores), 2)
+
+        SchoolRating.objects.create(
+            school=school,
+            user=user,
+            pedagogica=pedagogica,
+            cultura=cultura,
+            bienestar=bienestar,
+            recursos=recursos,
+            average_score=average,
+        )
+
+        school.update_rating()
+
+        return redirect("school:school-detail", slug=slug)
 
 # Detalle de la escuela sin ratings
 class SchoolDetailView(DetailView):
@@ -80,6 +131,15 @@ class SchoolDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         school = self.get_object()
+        user = self.request.user
+        if user.is_authenticated:
+            context["user_rating"] = SchoolRating.objects.filter(
+                school=school, user=user
+            ).first()
+        else:
+            context["user_rating"] = None
+
+        return context
         # los últimos 4 posts de ESTE colegio
         latest_posts = Post.objects.filter(school=school).order_by("-created_at")[:4]
 
@@ -91,6 +151,8 @@ class SchoolDetailView(DetailView):
     def post(self, request, pk):
         # Sin ratings, solo redirigir al detalle
         return redirect("school:school-detail", pk=pk)
+    
+    
 
 
 # --- administración de usuarios del colegio (Admin role) -----
