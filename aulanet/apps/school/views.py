@@ -54,7 +54,6 @@ class ListSchoolView(View):
         return render(request, self.template_name, context)
 
 
-
 class SchoolRatingView(View):
     def get(self, request, slug):
         school = get_object_or_404(School, slug=slug)
@@ -67,10 +66,14 @@ class SchoolRatingView(View):
 
         form = SchoolRatingForm()
 
-        return render(request, "school/review-school.html", {
-            "school": school,
-            "form": form,
-        })
+        return render(
+            request,
+            "school/review-school.html",
+            {
+                "school": school,
+                "form": form,
+            },
+        )
 
     def post(self, request, slug):
         school = get_object_or_404(School, slug=slug)
@@ -85,10 +88,14 @@ class SchoolRatingView(View):
         form = SchoolRatingForm(request.POST)
 
         if not form.is_valid():
-            return render(request, "school/review-school.html", {
-                "school": school,
-                "form": form,
-            })
+            return render(
+                request,
+                "school/review-school.html",
+                {
+                    "school": school,
+                    "form": form,
+                },
+            )
 
         # ---- agrupar datos por área ----
         pedagogica = {k: int(form.cleaned_data[k]) for k in PEDAGOGICA_FIELDS}
@@ -119,6 +126,7 @@ class SchoolRatingView(View):
 
         return redirect("school:school-detail", slug=slug)
 
+
 # Detalle de la escuela sin ratings
 class SchoolDetailView(DetailView):
     model = School
@@ -139,7 +147,6 @@ class SchoolDetailView(DetailView):
         else:
             context["user_rating"] = None
 
-        return context
         # los últimos 4 posts de ESTE colegio
         latest_posts = Post.objects.filter(school=school).order_by("-created_at")[:4]
 
@@ -151,8 +158,6 @@ class SchoolDetailView(DetailView):
     def post(self, request, pk):
         # Sin ratings, solo redirigir al detalle
         return redirect("school:school-detail", pk=pk)
-    
-    
 
 
 # --- administración de usuarios del colegio (Admin role) -----
