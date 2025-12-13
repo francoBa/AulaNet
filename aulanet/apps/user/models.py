@@ -63,18 +63,18 @@ class User(AbstractUser):
         if self.avatar:
             return self.avatar.url
 
-@property
-def is_Registered(self):
-    return self.groups.filter(name="Registered").exists()
+    @property
+    def is_Registered(self):
+        return self.groups.filter(name="Registered").exists()
 
 
-@property
-def is_Contributor(self):
-    return self.groups.filter(name="Contributor").exists()
+    @property
+    def is_Contributor(self):
+        return self.groups.filter(name="Contributor").exists()
 
-@property
-def is_Admin(self):
-    return self.groups.filter(name="Admin").exists()
+    @property
+    def is_Admin(self):
+        return self.groups.filter(name="Admin").exists()
 
     
 # --- SIGNAL PARA ASIGNAR ROL POR DEFECTO ---
