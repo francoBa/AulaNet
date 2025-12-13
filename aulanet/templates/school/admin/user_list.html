@@ -1,0 +1,57 @@
+<!-- prettier-ignore -->
+{% extends "layouts/general-layout.html" %}
+
+{% block title %}Administrar Usuarios del Colegio{% endblock %}
+
+{% block page_content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6 dark:text-white">Administrar Usuarios de {{ user.school.name }}</h1>
+
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-slate-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Usuario</th>
+                    <th scope="col" class="px-6 py-3">Nombre Completo</th>
+                    <th scope="col" class="px-6 py-3">Rol Actual</th>
+                    <th scope="col" class="px-6 py-3">Cambiar Rol</th>
+                    <th scope="col" class="px-6 py-3">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user_to_manage in users %}
+                <tr class="bg-white dark:bg-slate-800 border-b dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600">
+                    <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ user_to_manage.username }}</td>
+                    <td class="px-6 py-4">{{ user_to_manage.get_full_name|default:"-" }}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                            {{ user_to_manage.groups.first.name|default:"Sin rol" }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <form action="{% url 'school:school-user-role-update' user_to_manage.pk %}" method="POST" class="flex items-center gap-2">
+                            {% csrf_token %}
+                            <select name="group" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white">
+                                {% for group in available_groups %}
+                                    <option value="{{ group.pk }}" {% if user_to_manage.groups.first.pk == group.pk %}selected{% endif %}>
+                                        {{ group.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-4 py-2">Guardar</button>
+                        </form>
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="{% url 'school:school-user-delete' user_to_manage.pk %}" class="font-medium text-red-600 dark:text-red-500 hover:underline">Eliminar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="px-6 py-4 text-center">No hay otros usuarios en este colegio.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

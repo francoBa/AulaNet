@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   themeToggleMobileBtn?.addEventListener('click', toggleTheme);
 
   const savedTheme = localStorage.getItem('theme');
-
   if (savedTheme === 'dark') {
     root.classList.add('dark');
   } else if (savedTheme === 'light') {
@@ -32,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('scroll', () => {
     const header = document.querySelector('header');
     if (!header) return;
-
     if (window.scrollY > 10) {
       header.classList.add('bg-[#101e37]/60', 'dark:bg-gray-800/60');
     } else {
@@ -50,13 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Input de Archivos
   const fileInputs = document.querySelectorAll('.js-file-input');
-
   fileInputs.forEach((input) => {
     input.addEventListener('change', function () {
-      // Buscamos el contenedor
       const container = this.closest('label') || this.parentElement;
       const fileDisplay = container.querySelector('.js-file-name');
-
       if (!fileDisplay) return;
 
       if (this.files && this.files.length > 0) {
@@ -65,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           fileDisplay.textContent = `${this.files.length} archivos seleccionados`;
         }
-        // Estilos de "Activo"
         fileDisplay.classList.remove(
           'italic',
           'text-gray-500',
@@ -77,11 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
           'dark:text-white'
         );
       } else {
-        // Estilos de "Reset"
         const defaultText =
           fileDisplay.dataset.defaultText || 'Seleccionar archivo...';
         fileDisplay.textContent = defaultText;
-
         fileDisplay.classList.add(
           'italic',
           'text-gray-500',
@@ -95,4 +87,85 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // --- Image Gallery Modal ---
+  const imageModal = document.getElementById('imageModal');
+  const galleryImages = document.querySelectorAll('.gallery-image');
+
+  if (imageModal && galleryImages.length > 0) {
+    const modalImage = document.getElementById('modalImage');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+
+    const openModal = (src) => {
+      modalImage.src = src;
+      imageModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeModal = () => {
+      imageModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    };
+
+    galleryImages.forEach((img) => {
+      img.addEventListener('click', () => {
+        openModal(img.src);
+      });
+    });
+
+    closeModalBtn?.addEventListener('click', closeModal);
+    modalBackdrop?.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !imageModal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  }
 });
+
+// Editar comentarios
+function toggleEditComment(commentId) {
+  const contentDiv = document.getElementById(`comment-content-${commentId}`);
+  const form = document.getElementById(`comment-edit-form-${commentId}`);
+
+  if (contentDiv && form) {
+    if (form.classList.contains('hidden')) {
+      contentDiv.classList.add('hidden');
+      form.classList.remove('hidden');
+    } else {
+      contentDiv.classList.remove('hidden');
+      form.classList.add('hidden');
+    }
+  }
+}
+
+// Modal borrar comentario
+function openDeleteModal(url) {
+  const deleteModal = document.getElementById('deleteModal');
+  const deleteForm = document.getElementById('deleteForm');
+
+  if (deleteModal && deleteForm) {
+    deleteForm.action = url;
+    deleteModal.classList.remove('hidden');
+  }
+}
+
+function closeDeleteModal() {
+  const deleteModal = document.getElementById('deleteModal');
+  if (deleteModal) {
+    deleteModal.classList.add('hidden');
+  }
+}
+
+window.onclick = function (event) {
+  const deleteModal = document.getElementById('deleteModal');
+  if (deleteModal && !deleteModal.classList.contains('hidden')) {
+    if (
+      event.target == document.querySelector('.fixed.inset-0.bg-gray-900\\/75')
+    ) {
+      closeDeleteModal();
+    }
+  }
+};

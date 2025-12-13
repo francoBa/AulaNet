@@ -15,7 +15,10 @@
   <form method="POST" class="space-y-4">
     <!-- prettier-ignore -->
     {% csrf_token %}
-
+      {% if request.GET.next %}
+    <input type="hidden" name="next" value="{{ request.GET.next }}" />
+    <!-- prettier-ignore -->
+    {% endif %}
       {% if form.non_field_errors %}
     <div
       class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 text-sm"

@@ -35,6 +35,10 @@
         <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
             Buscar
         </button>
+        <!-- BOTÓN CREAR ESCUELA -->
+        <a href="{% url 'school:create-school' %}" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+            + Crear Escuela
+        </a>
 
     </form>
 
@@ -43,7 +47,7 @@
 
             {% for school in schools %}
             <div class="group">
-                <a href="/escuela/{{ school.id }}/"
+                <a href="{% url 'school:school-detail' school.slug %}"
                 class="block bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
                        rounded-xl overflow-hidden shadow-sm 
                        group-hover:shadow-xl 
