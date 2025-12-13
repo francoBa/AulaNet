@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.utils.text import slugify
 from faker import Faker
 from datetime import date
+from statistics import mean  # IMPORTANTE: Necesario para calcular el promedio
 
 # modelos
 from apps.user.models import User
@@ -19,7 +20,9 @@ class Command(BaseCommand):
         self.stdout.write("🌱 Seeding data...")
         fake = Faker(["es_ES"])
 
+        # -----------------------------------------------------------
         # 1. Limpiar datos existentes
+        # -----------------------------------------------------------
         self.stdout.write(self.style.WARNING("  🗑️  Deleting existing data..."))
         # Modelos con dependencias
         PostImage.objects.all().delete()
@@ -34,12 +37,16 @@ class Command(BaseCommand):
         Category.objects.all().delete()
         self.stdout.write(self.style.SUCCESS("  ✅ Data deleted successfully."))
 
+        # -----------------------------------------------------------
         # 2. Asegurar Grupos
+        # -----------------------------------------------------------
         grp_admin, _ = Group.objects.get_or_create(name="Admin")
         grp_contrib, _ = Group.objects.get_or_create(name="Contributor")
         grp_reg, _ = Group.objects.get_or_create(name="Registered")
 
+        # -----------------------------------------------------------
         # 3. Crear Categorías de Blog
+        # -----------------------------------------------------------
         categories = []
         cat_names = [
             "Noticias Institucionales",
@@ -54,7 +61,9 @@ class Command(BaseCommand):
             categories.append(cat)
         self.stdout.write(f"📚 Categories created: {len(categories)}")
 
+        # -----------------------------------------------------------
         # 4. Crear Mensajes de Contacto
+        # -----------------------------------------------------------
         self.stdout.write("✉️  Creating contact messages...")
         contact_subjects = [
             "Consulta sobre inscripción 2026",
@@ -72,7 +81,9 @@ class Command(BaseCommand):
             )
         self.stdout.write(f"✉️  Created 8 contact messages.")
 
+        # -----------------------------------------------------------
         # 5. Crear Colegios (Datos Reales de Resistencia, Chaco)
+        # -----------------------------------------------------------
         school_data = [
             {
                 "name": 'E.E.T. N° 21 "Gral. Manuel Belgrano" (Industrial)',
@@ -154,7 +165,9 @@ class Command(BaseCommand):
 
         COMMON_PASS = "password123"
 
+        # -----------------------------------------------------------
         # 6. Crear Jerarquía de Usuarios y Contenido por cada Colegio
+        # -----------------------------------------------------------
         for school in schools:
             self.stdout.write(f"\n--- Processing {school.name} ---")
 
@@ -221,18 +234,67 @@ class Command(BaseCommand):
                             content=fake.sentence(), author=student, post=post
                         )
 
-                    # El primer estudiante de cada grupo deja Review y Rating a la escuela
-                    if j == 0:
+                    # --- CAMBIO IMPORTANTE AQUI ---
+                    # Antes solo el j==0 dejaba review. Ahora lo hacemos aleatorio (70% de prob)
+                    # O si quieres asegurar, dejamos que todos menos 1 lo hagan.
+
+                    if random.random() < 0.7:  # 70% de los alumnos dejan review
+                        # 1. Crear Review de texto
                         Review.objects.get_or_create(
                             school=school,
                             author=student,
                             defaults={"comment": fake.text(max_nb_chars=100)},
                         )
+
+                        # 2. Generar datos JSON para los campos nuevos de SchoolRating
+                        # Generamos valores aleatorios entre 2 y 5
+                        pedagogica_data = {
+                            "calidad": random.randint(3, 5),
+                            "exigencia": random.randint(2, 5),
+                            "dedicacion": random.randint(3, 5),
+                        }
+                        cultura_data = {
+                            "valores": random.randint(3, 5),
+                            "talleres": random.randint(2, 5),
+                            "ambiente": random.randint(3, 5),
+                        }
+                        bienestar_data = {
+                            "seguridad": random.randint(3, 5),
+                            "compañerismo": random.randint(3, 5),
+                            "apoyo": random.randint(2, 5),
+                        }
+                        recursos_data = {
+                            "instalaciones": random.randint(2, 5),
+                            "tecnologia": random.randint(2, 5),
+                            "limpieza": random.randint(3, 5),
+                        }
+
+                        # Calcular el promedio exacto
+                        all_values = (
+                            list(pedagogica_data.values())
+                            + list(cultura_data.values())
+                            + list(bienestar_data.values())
+                            + list(recursos_data.values())
+                        )
+                        avg_score = mean(all_values)
+
+                        # Crear el Rating con la estructura nueva
                         SchoolRating.objects.get_or_create(
                             school=school,
                             user=student,
-                            defaults={"value": random.randint(3, 5)},
+                            defaults={
+                                "pedagogica": pedagogica_data,
+                                "cultura": cultura_data,
+                                "bienestar": bienestar_data,
+                                "recursos": recursos_data,
+                                "average_score": avg_score,
+                            },
                         )
+
+            # --- AL FINALIZAR EL COLEGIO ---
+            # Actualizamos el promedio en la tabla School para que se vea en el front
+            school.update_rating()
+            self.stdout.write(f"      ⭐ Ratings updated for {school.name}")
 
         self.stdout.write(self.style.SUCCESS("\n✨ Database seeded successfully!"))
         self.stdout.write(f"🔑 All non-superuser users password: {COMMON_PASS}")
