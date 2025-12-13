@@ -87,6 +87,42 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // --- Image Gallery Modal ---
+  const imageModal = document.getElementById('imageModal');
+  const galleryImages = document.querySelectorAll('.gallery-image');
+
+  if (imageModal && galleryImages.length > 0) {
+    const modalImage = document.getElementById('modalImage');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+
+    const openModal = (src) => {
+      modalImage.src = src;
+      imageModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeModal = () => {
+      imageModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    };
+
+    galleryImages.forEach((img) => {
+      img.addEventListener('click', () => {
+        openModal(img.src);
+      });
+    });
+
+    closeModalBtn?.addEventListener('click', closeModal);
+    modalBackdrop?.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !imageModal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  }
 });
 
 // Editar comentarios
