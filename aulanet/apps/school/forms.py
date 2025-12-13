@@ -47,4 +47,77 @@ class SchoolForm(forms.ModelForm):
                          "text-gray-900 dark:text-white" +"appearance-none",
             }),
         }
-    
+
+RATING_CHOICES = [
+    (1, "Muy malo"),
+    (2, "Malo"),
+    (3, "Regular"),
+    (4, "Bueno"),
+    (5, "Muy bueno"),
+]
+
+PEDAGOGICA_FIELDS = ["docentes", "metodologia", "contenidos"]
+CULTURA_FIELDS = ["convivencia", "inclusion"]
+BIENESTAR_FIELDS = ["acompanamiento", "orientacion"]
+RECURSOS_FIELDS = ["infraestructura", "tecnologia"]
+
+
+class SchoolRatingForm(forms.ModelForm):
+    docentes = forms.ChoiceField(
+        label="Calidad de los docentes",
+        choices=RATING_CHOICES,
+        widget=forms.RadioSelect
+    )
+
+    metodologia = forms.ChoiceField(
+        label="Metodología de enseñanza",
+        choices=RATING_CHOICES,
+        widget=forms.RadioSelect
+    )
+
+    contenidos = forms.ChoiceField(
+        label="Contenidos educativos",
+        choices=RATING_CHOICES,
+        widget=forms.RadioSelect
+    )
+
+    convivencia = forms.ChoiceField(
+        label="Convivencia escolar",
+        choices=RATING_CHOICES,
+        widget=forms.RadioSelect
+    )
+
+    inclusion = forms.ChoiceField(
+        label="Inclusión",
+        choices=RATING_CHOICES,
+        widget=forms.RadioSelect
+    )
+
+    acompanamiento = forms.ChoiceField(
+        label="Acompañamiento al alumno",
+        choices=RATING_CHOICES,
+        widget=forms.RadioSelect
+    )
+
+    orientacion = forms.ChoiceField(
+        label="Orientación escolar",
+        choices=RATING_CHOICES,
+        widget=forms.RadioSelect
+    )
+
+    infraestructura = forms.ChoiceField(
+        label="Infraestructura",
+        choices=RATING_CHOICES,
+        widget=forms.RadioSelect
+    )
+
+    tecnologia = forms.ChoiceField(
+        label="Tecnología y recursos digitales",
+        choices=RATING_CHOICES,
+        widget=forms.RadioSelect
+    )
+
+    class Meta:
+        model = SchoolRating
+        fields = []
+
