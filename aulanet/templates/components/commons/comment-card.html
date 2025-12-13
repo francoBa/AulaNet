@@ -24,10 +24,10 @@
 
       <!-- BOTONES DE ACCIÓN -->
       <!-- prettier-ignore -->
-      {% if request.user == comment.author or request.user == comment.post.author or perms.school.change_school and request.user.school == comment.post.school %}
+      {% if request.user == comment.author or request.user == comment.post.author or perms.school.change_school and request.user.school == comment.post.school or request.user.is_superuser %}
       <div class="flex gap-2">
         <!-- Botón Editar -->
-        {% if request.user == comment.author %}
+        {% if request.user == comment.author or request.user.is_superuser %}
         <button
           onclick="toggleEditComment('{{ comment.id }}')"
           class="text-gray-400 hover:text-blue-500 transition"

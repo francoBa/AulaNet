@@ -144,6 +144,7 @@
 
   <!-- SECCIÓN DE COMENTARIOS -->
   <section class="mt-12">
+    {% if post.allow_comments %}
     <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">
       Comentarios ({{ comments.count }})
     </h3>
@@ -160,12 +161,11 @@
       <form method="POST" action="{% url 'blog:comment-create' post.slug %}">
         {% csrf_token %}
         <div class="mb-4">
-          <textarea
-            name="content"
-            rows="3"
-            class="w-full p-3 rounded-lg border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="Escribe tu opinión..."
-          ></textarea>
+          <!-- prettier-ignore -->
+          {{ comment_form.content }}
+            {% for error in comment_form.content.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+          {% endfor %}
         </div>
         <div class="flex justify-end">
           <button
@@ -212,6 +212,17 @@
       <p class="text-gray-500 italic text-center">Sé el primero en comentar.</p>
       {% endfor %}
     </div>
+
+    {% else %}
+
+    <!-- Mensaje que se muestra si los comentarios están desactivados -->
+    <div class="bg-gray-100 dark:bg-slate-800 p-6 rounded-lg text-center">
+      <p class="text-gray-600 dark:text-gray-400 font-medium">
+        Los comentarios para esta publicación han sido desactivados.
+      </p>
+    </div>
+
+    {% endif %}
   </section>
 </div>
 
