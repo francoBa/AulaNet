@@ -36,9 +36,11 @@
             Buscar
         </button>
         <!-- BOTÓN CREAR ESCUELA -->
+        {% if user.is_authenticated and user.is_Admin or user.is_superuser %}
         <a href="{% url 'school:create-school' %}" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
             + Crear Escuela
         </a>
+        {% endif %}
 
     </form>
 
