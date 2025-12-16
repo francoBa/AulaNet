@@ -125,6 +125,12 @@ La aplicación está disponible en: [AulaNet](https://francobarreto.pythonanywhe
 
 👤 **Usuarios de prueba**
 
+**Superadmin**
+
+USUARIO: adminifopython122025
+
+CONTRASEÑA: qbu464TS@i95#$035
+
 **Admin**
 
 USUARIO: admin_eet-n-16-1-de-mayo
