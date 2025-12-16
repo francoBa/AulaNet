@@ -158,17 +158,17 @@
     >
       Calificar este colegio
     </a>
-    {% endif %}
-  </div>
-  <!-- 
+  {% endif %}
+</div>
 
+{% comment %}
   <hr class="my-10 border-gray-300 dark:border-gray-700" />
 
-   REVIEWS
-  <h2 class="text-2xl font-bold dark:text-white mb-4">Opiniones de usuarios</h2>
-   prettier-ignore
-  {#% if reviews %#}
-        {#% for r in reviews %#}
+  <!-- REVIEWS -->
+    <h2 class="text-2xl font-bold dark:text-white mb-4">Opiniones de usuarios</h2>
+  <!-- prettier-ignore -->
+  {% if reviews %}
+        {% for r in reviews %}
   <div class="border dark:border-gray-700 rounded-xl p-4 mb-4 dark:bg-gray-800">
     <p class="font-semibold dark:text-white">{{ r.user.username }}</p>
 
@@ -190,6 +190,8 @@
   {#% endfor %#}
     {#% else %#}
   <p class="text-gray-600 dark:text-gray-400">Todavía no hay calificaciones.</p>
-  {#% endif %#}-->
+  {% endif %}
+
+  {% endcomment %}
 </section>
 {% endblock %}
