@@ -46,11 +46,15 @@ Aulanet/
 ├── requirements.txt        # Dependencias del proyecto
 └── README.md               # Documentación del proyecto
 ```
+
 📰 **Material de apoyo al proyecto**
 
 El proyecto está disponible en: [Trello](https://trello.com/b/NW81mkfl/proyectofinalinformatorio)
+
 El MER está disponible en: [Diagrams](https://app.diagrams.net/#G1YWnLF-XOxPUnNwg_EJyCvGriuzsQUq7-#%7B"pageId"%3A"dRRcaojLNauk_A8AwtsO"%7D)
+
 El diseño está disponible en: [Figma](https://www.figma.com/design/yQzeD6InM4rgbbM6kyPs4Q/AulaNet)
+
 El Video de presentación está disponible en: [Youtube](https://www.youtube.com/watch?v=zqP_Ryp8jbI)
 
 
@@ -58,9 +62,11 @@ El Video de presentación está disponible en: [Youtube](https://www.youtube.com
 
 La versión en línea de Aulanet está desplegada en PythonAnywhere, lo que permite acceder al sitio desde cualquier navegador sin necesidad de instalar dependencias localmente.
 
+
 🔗 **Acceso a la plataforma**
 
 La aplicación está disponible en: [AulaNet](https://francobarreto.pythonanywhere.com/)
+
 
 📌**Pantallas principales**
 
@@ -85,7 +91,7 @@ La aplicación está disponible en: [AulaNet](https://francobarreto.pythonanywhe
 <p align="center">
   <img src="https://github.com/user-attachments/assets/0a398ea4-73d9-4252-97a8-3d3158e41503" 
        alt="Formulario de contacto de Aulanet" 
-       width="700">
+       width="500">
 </p>
 
 ## 🛠️ Administración de colegios
@@ -93,7 +99,7 @@ La aplicación está disponible en: [AulaNet](https://francobarreto.pythonanywhe
 <p align="center">
   <img src="https://github.com/user-attachments/assets/f6bb45d2-fc53-4211-b073-0c6c27efe178" 
        alt="Panel de administración de colegios en Django" 
-       width="900">
+       width="600">
 </p>
 
 ## ⭐ Sistema de calificaciones
@@ -116,18 +122,28 @@ La aplicación está disponible en: [AulaNet](https://francobarreto.pythonanywhe
 | **Visitante**          | Navega información pública del sitio                             |
 
 
+
 👤 **Usuarios de prueba**
-Admin
+
+**Admin**
+
 USUARIO: admin_eet-n-16-1-de-mayo
+
 CONTRASEÑA: password123
 
 **Colaborador**
+
 USUARIO: prof_be15_1
+
 CONTRASEÑA: password123
 
 **Registrado**
+
 USUARIO: usuarioejemplo
+
 CONTRASEÑA: password123
+
+
 
 🤝 **Trabajo en equipo**
 
