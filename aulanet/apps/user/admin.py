@@ -46,6 +46,12 @@ class UserAdmin(UserAdminDjango):
         ),
     )
 
+    def is_Admin(self, obj):
+        return obj.groups.filter(name="Admin").exists()
+
+    is_Admin.short_description = "Es usuario administrador"
+    is_Admin.boolean = True
+
 
     def is_Registered(self, obj):
         return obj.groups.filter(name="Registered").exists()
@@ -63,6 +69,17 @@ class UserAdmin(UserAdminDjango):
     is_Contributor.boolean = True
 
     
+    def add_to_Admin(self, request, queryset):
+        admin_group = Group.objects.get(name="Admin")
+        for user in queryset:
+            user.groups.add(admin_group)
+        self.message_user(
+            request, "Usuarios añadidos al grupo 'Administrador' correctamente."
+        )
+
+    add_to_Admin.short_description = "Agregar al grupo 'Administrador'"
+
+
     def add_to_Registered(self, request, queryset):
         registered_group = Group.objects.get(name="Registered")
         for user in queryset:
@@ -88,6 +105,17 @@ class UserAdmin(UserAdminDjango):
 
 
    
+    def remove_from_Admin(self, request, queryset):
+        admin_group = Group.objects.get(name="Admin")
+        for user in queryset:
+            user.groups.remove(admin_group)
+        self.message_user(
+            request, "Usuarios eliminados del grupo 'Administrador' correctamente."
+        )
+    
+    remove_from_Admin.short_description = "Eliminar del grupo 'Administrador'"
+
+
     def remove_from_Registered(self, request, queryset):
         registered_group = Group.objects.get(name="Registered")
         for user in queryset:
@@ -114,14 +142,16 @@ class UserAdmin(UserAdminDjango):
 
    
     actions = [
+        add_to_Admin,
         add_to_Registered,
         add_to_Contributor,
+        remove_from_Admin,
         remove_from_Registered,
         remove_from_Contributor,
     ]
 
 
-    list_display = ("username", "email", "is_Registered", "is_Contributor")
+    list_display = ("username", "email", "is_Registered", "is_Contributor", "is_Admin")
 
     ordering = [
         "-date_joined",
