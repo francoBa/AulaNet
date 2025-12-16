@@ -91,9 +91,7 @@ class PostListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        queryset = Post.objects.select_related("author", "category", "school").order_by(
-            "-created_at"
-        )
+        queryset = Post.objects.select_related("author", "category", "school")
 
         # --- LÓGICA DE FILTRADO POR CATEGORÍA ---
         categoria_nombre = self.request.GET.get("categoria")
@@ -105,17 +103,31 @@ class PostListView(ListView):
         if school_slug:
             queryset = queryset.filter(school__slug=school_slug)
 
+        # --- LÓGICA DE ORDEN POR FECHA ---
+        orden = self.request.GET.get("orden", "recientes")
+
+        if orden == "antiguos":
+            queryset = queryset.order_by("created_at")
+        elif orden == "a_z":
+            queryset = queryset.order_by("title")
+        elif orden == "z_a":
+            queryset = queryset.order_by("-title")
+        else:
+            queryset = queryset.order_by("-created_at")
+
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # menú de filtros
         context["categories"] = Category.objects.all()
+        context["selected_category"] = self.request.GET.get("categoria")
+        context["selected_order"] = self.request.GET.get("orden", "recientes")
+
         school_slug = self.request.GET.get("school")
         if school_slug:
             context["current_school"] = get_object_or_404(School, slug=school_slug)
 
-        context["selected_category"] = self.request.GET.get("categoria")
         return context
 
 
