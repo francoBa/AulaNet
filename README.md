@@ -145,7 +145,7 @@ CONTRASEÑA: password123
 
 **Registrado**
 
-USUARIO: usuarioejemplo
+USUARIO: alumno_be15_1_0
 
 CONTRASEÑA: password123
 
