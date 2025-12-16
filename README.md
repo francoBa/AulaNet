@@ -46,6 +46,13 @@ Aulanet/
 ├── requirements.txt        # Dependencias del proyecto
 └── README.md               # Documentación del proyecto
 ```
+📰 **Material de apoyo al proyecto**
+
+El proyecto está disponible en: [Trello](https://trello.com/b/NW81mkfl/proyectofinalinformatorio)
+El MER está disponible en: [Diagrams](https://app.diagrams.net/#G1YWnLF-XOxPUnNwg_EJyCvGriuzsQUq7-#%7B"pageId"%3A"dRRcaojLNauk_A8AwtsO"%7D)
+El diseño está disponible en: [Figma](https://www.figma.com/design/yQzeD6InM4rgbbM6kyPs4Q/AulaNet)
+El Video de presentación está disponible en: [Youtube](https://www.youtube.com/watch?v=zqP_Ryp8jbI)
+
 
 ▶️ **Cómo ejecutar el proyecto** (Producción en PythonAnywhere)
 
@@ -54,6 +61,50 @@ La versión en línea de Aulanet está desplegada en PythonAnywhere, lo que perm
 🔗 **Acceso a la plataforma**
 
 La aplicación está disponible en: [AulaNet](https://francobarreto.pythonanywhere.com/)
+
+📌**Pantallas principales**
+
+## 🔍 Buscador de colegios
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ccc91cc3-e874-4352-b635-ef25e4b62338" 
+       alt="Buscador de colegios en Aulanet" 
+       width="800">
+</p>
+
+## 🏷️ Filtro por categoría
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a4777196-7507-40be-8f7e-e4c0c4681182" 
+       alt="Filtro de colegios por categoría" 
+       width="800">
+</p>
+
+## 📩 Sección de contacto
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0a398ea4-73d9-4252-97a8-3d3158e41503" 
+       alt="Formulario de contacto de Aulanet" 
+       width="700">
+</p>
+
+## 🛠️ Administración de colegios
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f6bb45d2-fc53-4211-b073-0c6c27efe178" 
+       alt="Panel de administración de colegios en Django" 
+       width="900">
+</p>
+
+## ⭐ Sistema de calificaciones
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/fca3508f-b705-4193-9acb-b9108aac334d" 
+       alt="Sistema de calificaciones de colegios" 
+       width="800">
+</p>
+
+
 
 🔐 **Roles de usuario**
 
@@ -65,6 +116,18 @@ La aplicación está disponible en: [AulaNet](https://francobarreto.pythonanywhe
 | **Visitante**          | Navega información pública del sitio                             |
 
 
+👤 **Usuarios de prueba**
+Admin
+USUARIO: admin_eet-n-16-1-de-mayo
+CONTRASEÑA: password123
+
+**Colaborador**
+USUARIO: prof_be15_1
+CONTRASEÑA: password123
+
+**Registrado**
+USUARIO: usuarioejemplo
+CONTRASEÑA: password123
 
 🤝 **Trabajo en equipo**
 
